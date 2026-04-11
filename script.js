@@ -25,7 +25,8 @@ function registrarAsignatura(nombre, preguntas) {
             esDelProfe: p.profe === true,
             explicacion: p.exp || p.explicacion || "Sin explicación disponible",
             unit: p.unit || "",
-            case: p.case || ""
+            case: p.case || "",
+            extra: p.extra || ""
         };
     });
     
@@ -275,9 +276,9 @@ function mostrarPregunta(index) {
         const esCorrecta = (respuestaGuardada === pregunta.correcta);
         feedbackHTML = `
             <div class="feedback show ${esCorrecta ? 'correct-fb' : 'wrong-fb'}">
-                <strong>${esCorrecta ? '✓ Correcto' : '✗ Incorrecto'}</strong>
-                ${pregunta.explicacion || (esCorrecta ? '¡Bien respondido!' : `La respuesta correcta era: ${pregunta.opciones[pregunta.correcta]}`)}
-            </div>
+        <strong>${esCorrecta ? '✓ Correcto' : '✗ Incorrecto'}</strong>
+        ${(pregunta.explicacion || (esCorrecta ? '¡Bien respondido!' : `La respuesta correcta era: ${pregunta.opciones[pregunta.correcta]}`)).replace(/\n/g, '<br>')}
+    </div>
         `;
     }
     
@@ -286,22 +287,46 @@ function mostrarPregunta(index) {
     if (pregunta.case) {
         caseHTML = `<div class="case-box">📖 <strong>Caso práctico:</strong> ${pregunta.case}</div>`;
     }
+
+    let extraHTML = '';
+if (pregunta.extra) {
+    extraHTML = `
+        <div class="extra-content">
+            ${pregunta.extra}
+
+            <div class="work-area">
+                <p><strong>🧠 Desarrollo:</strong></p>
+                <textarea 
+                    class="work-input" 
+                    oninput="guardarTrabajo(${index})"
+                >${pregunta.work || ''}</textarea>
+            </div>
+        </div>
+    `;
+}
+
     
     container.innerHTML = `
-        <div class="q-card">
-            <div class="q-meta">
-                <span class="q-num">Pregunta ${index + 1} / ${preguntasActuales.length}</span>
-                <span class="q-diff ${nivelClase}">⭐ ${nivelTexto}</span>
-                ${pregunta.esDelProfe ? '<span class="q-profe">🎓 Del Profesor</span>' : ''}
-                ${pregunta.unit ? `<span class="q-unit">📚 ${pregunta.unit}</span>` : ''}
-            </div>
-            ${caseHTML}
-            <div class="q-text">${pregunta.texto}</div>
-            <div class="options">
-                ${opcionesHTML}
-            </div>
-            ${feedbackHTML}
+    <div class="q-card">
+        <div class="q-meta">
+            <span class="q-num">Pregunta ${index + 1} / ${preguntasActuales.length}</span>
+            <span class="q-diff ${nivelClase}">⭐ ${nivelTexto}</span>
+            ${pregunta.esDelProfe ? '<span class="q-profe">🎓 Del Profesor</span>' : ''}
+            ${pregunta.unit ? `<span class="q-unit">📚 ${pregunta.unit}</span>` : ''}
         </div>
+
+        ${caseHTML}
+
+        <div class="q-text">${pregunta.texto}</div>
+
+        ${extraHTML}  <!-- 👈 ESTO ES LO QUE FALTABA -->
+
+        <div class="options">
+            ${opcionesHTML}
+        </div>
+
+        ${feedbackHTML}
+    </div>
     `;
     
     // Actualizar botones de navegación
@@ -392,7 +417,7 @@ function finishQuiz() {
                 <div class="review-q"><strong>${idx + 1}.</strong> ${preg.texto}</div>
                 <div class="review-ans">📌 Tu respuesta: ${preg.opciones[userResp] || 'Sin responder'}</div>
                 ${!esCorrecta ? `<div class="review-ans">✅ Correcta: ${preg.opciones[preg.correcta]}</div>` : ''}
-                ${preg.explicacion ? `<div class="review-exp">💡 ${preg.explicacion}</div>` : ''}
+               ${preg.explicacion ? `<div class="review-exp">💡 ${preg.explicacion.replace(/\n/g, '<br>')}</div>` : ''}
             </div>
         `;
     });
@@ -431,3 +456,14 @@ window.finishQuiz = finishQuiz;
 window.restartSame = restartSame;
 window.goHome = goHome;
 window.irAPregunta = irAPregunta;
+
+function guardarTrabajo(index) {
+    const textarea = document.querySelector('.work-input');
+    if (!textarea) return;
+
+    if (!preguntasActuales[index].work) {
+        preguntasActuales[index].work = "";
+    }
+
+    preguntasActuales[index].work = textarea.value;
+}

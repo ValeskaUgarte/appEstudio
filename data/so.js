@@ -2099,10 +2099,1115 @@ BANK.so = [
         "exp": "PASO 1: Analizar bits de host para 50 dispositivos. $2^5=32$ (insuficiente), $2^6=64$.\n" +
             "PASO 2: Calcular hosts útiles. $64 - 2 = 62$ (cumple para 50).\n" +
             "PASO 3: Determinar máscara. 32 bits totales - 6 bits de host = /26 (255.255.255.192)."
-    }
+    },
+    // ==================== SUBNETING ====================
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Subneteo", diff: "easy",
+        q: "Cuantas direcciones IP validas para hosts tiene una mascara /24",
+        opts: ["254", "256", "255", "253"],
+        ans: 0, exp: "/24 = 256 direcciones totales - red - broadcast = 254"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Subneteo", diff: "medium",
+        q: "Dada la red 192.168.1.0/26, cual es la mascara de subred",
+        opts: ["255.255.255.192", "255.255.255.224", "255.255.255.240", "255.255.255.128"],
+        ans: 0, exp: "/26 = 255.255.255.192"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Subneteo", diff: "medium",
+        q: "Cuantas subredes se pueden crear con una mascara /27 a partir de una /24",
+        opts: ["8", "4", "16", "32"],
+        ans: 0, exp: "/27 - /24 = 3 bits, 2^3 = 8 subredes"
+    },
+    {
+        intermedio: false, avanzado: true, experto: false, unit: "Subneteo", diff: "hard",
+        q: "Dada la direccion 10.0.0.55/18, cual es la direccion de red",
+        opts: ["10.0.0.0", "10.0.64.0", "10.0.32.0", "10.0.16.0"],
+        ans: 0, exp: "/18 en 10.x.x.x afecta al tercer octeto, 0.0.0.0/18 = 10.0.0.0"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "CIDR", diff: "easy",
+        q: "Que representa /24 en notacion CIDR",
+        opts: ["255.255.255.0", "255.255.0.0", "255.0.0.0", "255.255.255.128"],
+        ans: 0, exp: "/24 = 255.255.255.0"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "VLSM", diff: "medium",
+        q: "Si necesitas una subred con 30 hosts, que mascara es la mas eficiente",
+        opts: ["/27", "/26", "/28", "/25"],
+        ans: 0, exp: "/27 da 32 direcciones totales, 30 hosts validos"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Broadcast", diff: "easy",
+        q: "Cual es la direccion de broadcast de la red 192.168.1.0/24",
+        opts: ["192.168.1.255", "192.168.1.0", "192.168.1.1", "192.168.0.255"],
+        ans: 0, exp: "broadcast es la ultima direccion de la red"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Wildcard", diff: "medium",
+        q: "Cual es la mascara wildcard para una /26",
+        opts: ["0.0.0.63", "0.0.0.31", "0.0.0.127", "0.0.0.15"],
+        ans: 0, exp: "wildcard = 255.255.255.255 - mascara"
+    },
+    {
+        intermedio: false, avanzado: true, experto: false, unit: "Superneteo", diff: "hard",
+        q: "Para unir 4 redes /24 en una sola superred, que mascara se usa",
+        opts: ["/22", "/23", "/21", "/20"],
+        ans: 0, exp: "4 redes = 2^2, /24 - 2 = /22"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "IP Privadas", diff: "easy",
+        q: "Cual de estas es una direccion IP privada",
+        opts: ["10.0.0.1", "8.8.8.8", "1.1.1.1", "9.9.9.9"],
+        ans: 0, exp: "10.0.0.0/8 es rango privado"
+    },
+
+    // ==================== SISTEMAS OPERATIVOS ====================
+
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Linux", diff: "easy",
+        q: "Que comando se usa para listar archivos en Linux",
+        opts: ["ls", "dir", "list", "ll"],
+        ans: 0, exp: "ls es el comando para listar"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Linux", diff: "easy",
+        q: "Que comando se usa para cambiar permisos en Linux",
+        opts: ["chmod", "chown", "chgrp", "perm"],
+        ans: 0, exp: "chmod cambia permisos de archivos"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Linux", diff: "easy",
+        q: "Que significa el permiso 755 en un archivo",
+        opts: ["rwxr-xr-x", "rwxrwxrwx", "rw-r--r--", "r-xr-xr-x"],
+        ans: 0, exp: "7=rwx,5=r-x,5=r-x"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Linux", diff: "medium",
+        q: "Que comando mata un proceso por su PID",
+        opts: ["kill", "stop", "end", "terminate"],
+        ans: 0, exp: "kill + PID termina el proceso"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Linux", diff: "medium",
+        q: "Que comando muestra procesos en ejecucion",
+        opts: ["ps", "top", "htop", "todos"],
+        ans: 3, exp: "ps, top y htop muestran procesos"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Windows", diff: "easy",
+        q: "Que comando en CMD muestra la configuracion IP",
+        opts: ["ipconfig", "ifconfig", "netstat", "ping"],
+        ans: 0, exp: "ipconfig en Windows, ifconfig en Linux"
+    },
+    {
+        intermedio: false, avanzado: false, experto: false, unit: "Windows", diff: "easy",
+        q: "Que tecla abre el administrador de tareas en Windows",
+        opts: ["Ctrl+Shift+Esc", "Ctrl+Alt+Del", "ambas", "ninguna"],
+        ans: 2, exp: "ambas abren el administrador"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Procesos", diff: "medium",
+        q: "Que es un proceso zombie",
+        opts: ["proceso que ya termino pero su entrada sigue en tabla", "proceso que no responde", "proceso en espera", "proceso con prioridad baja"],
+        ans: 0, exp: "zombie = proceso terminado esperando que el padre recoja su estado"
+    },
+    {
+        intermedio: true, avanzado: false, experto: false, unit: "Memoria", diff: "medium",
+        q: "Que es swapping",
+        opts: ["mover paginas de memoria a disco", "intercambiar procesos", "priorizar procesos", "liberar memoria"],
+        ans: 0, exp: "swap mueve memoria RAM a disco cuando falta espacio"
+    },
+    {
+        intermedio: false, avanzado: true, experto: false, unit: "Planificacion", diff: "hard",
+        q: "Que algoritmo de planificacion es apropiativo",
+        opts: ["Round Robin", "FCFS", "SJF no apropiativo", "todos"],
+        ans: 0, exp: "Round Robin asigna tiempo fijo y cambia"
+    },
+
+ {
+        unit: "Mascara de red",
+        diff: "medium",
+        q: "Se necesita una subred que soporte 2000 hosts. Determine la máscara en formato decimal y prefijo CIDR",
+        extra: `
+      <div>
+        <p>Hosts requeridos: 2000</p>
+        <p>Máscara decimal: <input type="text" class="subnet-input" data-field="mascara_decimal"></p>
+        <p>Prefijo CIDR: <input type="text" class="subnet-input" data-field="prefijo"></p>
+        <p>Total de direcciones: <input type="text" class="subnet-input" data-field="total"></p>
+        <p>Hosts útiles: <input type="text" class="subnet-input" data-field="hosts"></p>
+      </div>
+    `,
+        opts: ["Correcto", "Incorrecto"],
+        ans: 0,
+        exp: "PASO 1: 2^n - 2 >= 2000 → 2^n >= 2002 → n = 11 bits host (2^11 = 2048, 2048-2=2046 hosts)\nPASO 2: bits de red = 32 - 11 = 21 bits → /21\nPASO 3: Máscara decimal: 255.255.248.0"
+    },
+
+    // ==================== VLSM ====================
+    {
+        unit: "VLSM",
+        diff: "hard",
+        case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
+        q: "VLSM: Red base 172.20.10.0/24 → Ventas (60), RRHH (20), Enlace (2)",
+        extra: `
+      <table class="subnet-table">
+      <tr>
+        <th>Área</th>
+        <th>Red</th>
+        <th>Máscara</th>
+        <th>Primera IP</th>
+        <th>Última IP</th>
+        <th>Broadcast</th>
+      </tr>
+
+      <tr>
+        <td>Ventas (60)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+
+      <tr>
+        <td>RRHH (20)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+
+      <tr>
+        <td>Enlace (2)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+      
+    表格
+
+  `,
+        opts: ["Correcto", "Incorrecto"],
+        ans: 0,
+        exp: "PASO 1: Ordenar\n60 → 20 → 2\n\nPASO 2: Máscaras\n60 → /26 → 62 host\n20 → /27 → 30 host\n2 → /30 → 2 host\n\nPASO 3: Asignación\n\nSUBRED 1 (60)\nRed: 172.20.10.0\nPrimera: 172.20.10.1\nÚltima: 172.20.10.62\nBroadcast: 172.20.10.63\n\nSUBRED 2 (20)\nRed: 172.20.10.64\nPrimera: 172.20.10.65\nÚltima: 172.20.10.94\nBroadcast: 172.20.10.95\n\nSUBRED 3 (2)\nRed: 172.20.10.96\nPrimera: 172.20.10.97\nÚltima: 172.20.10.98\nBroadcast: 172.20.10.99"
+    },
+
+    // ==================== VLSM 2 ====================
+    {
+        unit: "VLSM",
+        diff: "hard",
+        case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 192.168.1.0/24 → Administracion (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
+        extra: `
+      <table class="subnet-table">
+      <tr>
+        <th>Área</th>
+        <th>Red</th>
+        <th>Máscara</th>
+        <th>Primera IP</th>
+        <th>Última IP</th>
+        <th>Broadcast</th>
+      </tr>
+
+      <tr>
+        <td>Administracion (50)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+
+      <tr>
+        <td>Finanzas (25)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+
+      <tr>
+        <td>TI (10)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+
+      <tr>
+        <td>Enlace1 (2)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+
+      <tr>
+        <td>Enlace2 (2)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+      </tr>
+      
+    表格
+
+  `,
+        opts: ["Correcto", "Incorrecto"],
+        ans: 0,
+        exp: "PASO 1: Ordenar: 50, 25, 10, 2, 2\n\nPASO 2: Máscaras:\n50 → /26 (62 hosts)\n25 → /27 (30 hosts)\n10 → /28 (14 hosts)\n2 → /30 (2 hosts)\n\nPASO 3: Asignación:\nADMIN: 192.168.1.0/26, hosts 1-62, broadcast 63\nFINANZAS: 192.168.1.64/27, hosts 65-94, broadcast 95\nTI: 192.168.1.96/28, hosts 97-110, broadcast 111\nENLACE1: 192.168.1.112/30, hosts 113-114, broadcast 115\nENLACE2: 192.168.1.116/30, hosts 117-118, broadcast 119"
+    },
+
+    // ==================== IPv6 ====================
+    {
+        unit: "Direccionamiento IPv6",
+        diff: "intermedio",
+        q: "En la dirección IPv6 D46C::B:98:F:C:5, el equivalente en decimal al tercer Hexteto es:",
+        opts: [
+            "000000000000001010",
+            "000000000000000101",
+            "101010000000000000",
+            "000000000000000000"
+        ],
+        ans: 3,
+        exp: "PASO 1: Identificar hextetos omitidos. La dirección tiene 6 hextetos visibles, por lo que '::' representa dos grupos de ceros.\n" +
+            "PASO 2: Expandir la dirección completa: D46C:0000:0000:000B:0098:000F:000C:0005.\n" +
+            "PASO 3: Localizar el tercer hexteto, que corresponde a '0000'.\n" +
+            "PASO 4: Convertir a binario de 16 bits. El valor hexadecimal 0 equivale a 0000000000000000."
+    },
+
+    // ==================== CÁLCULO DE MÁSCARA ====================
+    {
+        unit: "Mascara de red",
+        diff: "medium",
+        q: "Se necesita una subred que soporte 2000 hosts. Determine la máscara en formato decimal y prefijo CIDR",
+        extra: `
+      <div>
+        <p>Hosts requeridos: 2000</p>
+        <p>Máscara decimal: <input type="text" class="subnet-input" data-field="mascara_decimal"></p>
+        <p>Prefijo CIDR: <input type="text" class="subnet-input" data-field="prefijo"></p>
+        <p>Total de direcciones: <input type="text" class="subnet-input" data-field="total"></p>
+        <p>Hosts útiles: <input type="text" class="subnet-input" data-field="hosts"></p>
+      </div>
+    `,
+        opts: ["Correcto", "Incorrecto"],
+        ans: 0,
+        exp: "PASO 1: 2^n - 2 >= 2000 → 2^n >= 2002 → n = 11 bits host (2^11 = 2048, 2048-2=2046 hosts)\nPASO 2: bits de red = 32 - 11 = 21 bits → /21\nPASO 3: Máscara decimal: 255.255.248.0"
+    },
+
+
+   {
+  unit: "VLSM",
+  diff: "hard",
+  case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 192.168.1.0/24 → Administracion (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
+  extra: `
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Administracion (50)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Finanzas (25)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>TI (10)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace1 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace2 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: "PASO 1: Ordenar: 50, 25, 10, 2, 2\n\nPASO 2: Máscaras:\n50 → /26 (62 hosts)\n25 → /27 (30 hosts)\n10 → /28 (14 hosts)\n2 → /30 (2 hosts)\n\nPASO 3: Asignación:\nADMIN: 192.168.1.0/26, hosts 1-62, broadcast 63\nFINANZAS: 192.168.1.64/27, hosts 65-94, broadcast 95\nTI: 192.168.1.96/28, hosts 97-110, broadcast 111\nENLACE1: 192.168.1.112/30, hosts 113-114, broadcast 115\nENLACE2: 192.168.1.116/30, hosts 117-118, broadcast 119"
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuántos hosts útiles entrega una subred /26?",
+  opts: ["62", "64", "30", "126"],
+  ans: 0,
+  exp: "Una /26 tiene 6 bits para hosts → 2⁶ = 64 direcciones totales. Se restan 2 (red y broadcast) → 62 hosts útiles. Regla: 2ⁿ − 2, donde n = 32 − prefijo = 32 − 26 = 6."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuántos hosts útiles entrega una subred /27?",
+  opts: ["30", "32", "62", "28"],
+  ans: 0,
+  exp: "Una /27 tiene 5 bits para hosts → 2⁵ = 32 direcciones totales. Se restan 2 → 30 hosts útiles. n = 32 − 27 = 5 → 2⁵ − 2 = 30."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuántos hosts útiles entrega una subred /28?",
+  opts: ["14", "16", "12", "30"],
+  ans: 0,
+  exp: "Una /28 tiene 4 bits para hosts → 2⁴ = 16 direcciones totales. Se restan 2 → 14 hosts útiles. n = 32 − 28 = 4 → 2⁴ − 2 = 14."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuántos hosts útiles entrega una subred /30?",
+  opts: ["2", "4", "6", "30"],
+  ans: 0,
+  exp: "Una /30 tiene 2 bits para hosts → 2² = 4 direcciones totales. Se restan 2 → 2 hosts útiles. Se usa típicamente para enlaces punto a punto entre routers."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Qué máscara en decimal corresponde a /26?",
+  opts: ["255.255.255.192", "255.255.255.224", "255.255.255.240", "255.255.255.128"],
+  ans: 0,
+  exp: "/26 → 26 bits en 1 → los primeros 3 octetos son 255.255.255 y el cuarto tiene 11000000 en binario = 192. Truco: bloque /26 = 64 → 256 − 64 = 192."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Qué máscara en decimal corresponde a /27?",
+  opts: ["255.255.255.224", "255.255.255.192", "255.255.255.240", "255.255.255.252"],
+  ans: 0,
+  exp: "/27 → bloque de 32 → 256 − 32 = 224 → 255.255.255.224. En binario el cuarto octeto es 11100000 = 224."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Qué máscara en decimal corresponde a /28?",
+  opts: ["255.255.255.240", "255.255.255.224", "255.255.255.248", "255.255.255.192"],
+  ans: 0,
+  exp: "/28 → bloque de 16 → 256 − 16 = 240 → 255.255.255.240. En binario el cuarto octeto es 11110000 = 240."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Qué máscara en decimal corresponde a /30?",
+  opts: ["255.255.255.252", "255.255.255.248", "255.255.255.240", "255.255.255.254"],
+  ans: 0,
+  exp: "/30 → bloque de 4 → 256 − 4 = 252 → 255.255.255.252. En binario el cuarto octeto es 11111100 = 252."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuál es la dirección de broadcast de la red 192.168.1.0/26?",
+  opts: ["192.168.1.63", "192.168.1.64", "192.168.1.62", "192.168.1.127"],
+  ans: 0,
+  exp: "Red: 192.168.1.0/26 → bloque de 64 → la red ocupa de .0 a .63. El broadcast es siempre la última dirección del bloque → 192.168.1.63. Primera IP útil: .1, Última IP útil: .62."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuál es la dirección de broadcast de la red 192.168.1.64/27?",
+  opts: ["192.168.1.95", "192.168.1.96", "192.168.1.94", "192.168.1.127"],
+  ans: 0,
+  exp: "Red: 192.168.1.64/27 → bloque de 32 → ocupa de .64 a .95. Broadcast = última dirección = 192.168.1.95. Primera útil: .65, Última útil: .94."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "¿Cuántos bits de host tiene una máscara /29?",
+  opts: ["3", "4", "5", "2"],
+  ans: 0,
+  exp: "Bits de host = 32 − prefijo = 32 − 29 = 3 bits. Hosts útiles = 2³ − 2 = 6. Bloque = 2³ = 8. Máscara = 256 − 8 = 248 → 255.255.255.248."
+},
+
+{
+  unit: "Subnetting",
+  diff: "easy",
+  profe: false,
+  q: "Necesitas conectar 2 routers con un enlace punto a punto. ¿Qué prefijo usas?",
+  opts: ["/30", "/29", "/28", "/31"],
+  ans: 0,
+  exp: "/30 entrega exactamente 2 hosts útiles (2² − 2 = 2), perfecto para un enlace punto a punto. /29 daría 6 hosts, desperdiciando 4 IPs. /31 es válido en algunos routers Cisco pero no es el estándar clásico de examen."
+},
+
+{
+  unit: "VLSM",
+  diff: "medium",
+  profe: false,
+  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 10.0.0.0/24 → Ventas (60), Soporte (28), Enlace (2)",
+  extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Ventas (60)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Soporte (28)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: `PASO 1 — Ordenar de mayor a menor:
+60 → 28 → 2
+
+PASO 2 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+
+Ventas (60): 2⁶ − 2 = 62 ✓ → n=6 → prefijo /26 → bloque 64 → máscara 255.255.255.192
+Soporte (28): 2⁵ − 2 = 30 ✓ → n=5 → prefijo /27 → bloque 32 → máscara 255.255.255.224
+Enlace  (2):  2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+
+PASO 3 — Asignar en orden (cada red empieza donde termina la anterior):
+
+Ventas:  10.0.0.0/26   → Primera: 10.0.0.1   → Última: 10.0.0.62  → Broadcast: 10.0.0.63
+         (siguiente red = 0 + 64 = 64)
+
+Soporte: 10.0.0.64/27  → Primera: 10.0.0.65  → Última: 10.0.0.94  → Broadcast: 10.0.0.95
+         (siguiente red = 64 + 32 = 96)
+
+Enlace:  10.0.0.96/30  → Primera: 10.0.0.97  → Última: 10.0.0.98  → Broadcast: 10.0.0.99
+         (siguiente red = 96 + 4 = 100)
+
+PASO 4 — Verificar espacio usado:
+/26 usa 64 IPs + /27 usa 32 IPs + /30 usa 4 IPs = 100 IPs usadas de 256 disponibles.
+Quedan 156 IPs libres desde 10.0.0.100 hasta 10.0.0.255.`
+},
+
+{
+  unit: "VLSM",
+  diff: "medium",
+  profe: false,
+  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 172.16.0.0/24 → RRHH (100), Contabilidad (50), Marketing (20), Enlace1 (2), Enlace2 (2)",
+  extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>RRHH (100)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Contabilidad (50)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Marketing (20)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace1 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace2 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: `PASO 1 — Ordenar de mayor a menor:
+100 → 50 → 20 → 2 → 2
+
+PASO 2 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+
+RRHH        (100): 2⁷ − 2 = 126 ✓ → n=7 → prefijo /25 → bloque 128 → máscara 255.255.255.128
+Contabilidad (50): 2⁶ − 2 = 62  ✓ → n=6 → prefijo /26 → bloque 64  → máscara 255.255.255.192
+Marketing    (20): 2⁵ − 2 = 30  ✓ → n=5 → prefijo /27 → bloque 32  → máscara 255.255.255.224
+Enlace1       (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+Enlace2       (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+
+PASO 3 — Asignar en orden:
+
+RRHH:         172.16.0.0/25   → Primera: 172.16.0.1   → Última: 172.16.0.126  → Broadcast: 172.16.0.127
+              (siguiente red = 0 + 128 = 128)
+
+Contabilidad: 172.16.0.128/26 → Primera: 172.16.0.129 → Última: 172.16.0.190  → Broadcast: 172.16.0.191
+              (siguiente red = 128 + 64 = 192)
+
+Marketing:    172.16.0.192/27 → Primera: 172.16.0.193 → Última: 172.16.0.222  → Broadcast: 172.16.0.223
+              (siguiente red = 192 + 32 = 224)
+
+Enlace1:      172.16.0.224/30 → Primera: 172.16.0.225 → Última: 172.16.0.226  → Broadcast: 172.16.0.227
+              (siguiente red = 224 + 4 = 228)
+
+Enlace2:      172.16.0.228/30 → Primera: 172.16.0.229 → Última: 172.16.0.230  → Broadcast: 172.16.0.231
+              (siguiente red = 228 + 4 = 232)
+
+PASO 4 — Verificar espacio usado:
+/25 usa 128 + /26 usa 64 + /27 usa 32 + /30 usa 4 + /30 usa 4 = 232 IPs usadas de 256.
+Quedan 24 IPs libres desde 172.16.0.232 hasta 172.16.0.255.`
+},
+
+{
+  unit: "VLSM",
+  diff: "medium",
+  profe: false,
+  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 192.168.5.0/24 → Producción (110), Logística (55), Administración (25), Enlace (2)",
+  extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Producción (110)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Logística (55)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Administración (25)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: `PASO 1 — Ordenar de mayor a menor:
+110 → 55 → 25 → 2
+
+PASO 2 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+
+Producción   (110): 2⁷ − 2 = 126 ✓ → n=7 → prefijo /25 → bloque 128 → máscara 255.255.255.128
+Logística     (55): 2⁶ − 2 = 62  ✓ → n=6 → prefijo /26 → bloque 64  → máscara 255.255.255.192
+Administración(25): 2⁵ − 2 = 30  ✓ → n=5 → prefijo /27 → bloque 32  → máscara 255.255.255.224
+Enlace         (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+
+PASO 3 — Asignar en orden:
+
+Producción:    192.168.5.0/25   → Primera: 192.168.5.1   → Última: 192.168.5.126  → Broadcast: 192.168.5.127
+               (siguiente red = 0 + 128 = 128)
+
+Logística:     192.168.5.128/26 → Primera: 192.168.5.129 → Última: 192.168.5.190  → Broadcast: 192.168.5.191
+               (siguiente red = 128 + 64 = 192)
+
+Administración:192.168.5.192/27 → Primera: 192.168.5.193 → Última: 192.168.5.222  → Broadcast: 192.168.5.223
+               (siguiente red = 192 + 32 = 224)
+
+Enlace:        192.168.5.224/30 → Primera: 192.168.5.225 → Última: 192.168.5.226  → Broadcast: 192.168.5.227
+               (siguiente red = 224 + 4 = 228)
+
+PASO 4 — Verificar espacio usado:
+/25 usa 128 + /26 usa 64 + /27 usa 32 + /30 usa 4 = 228 IPs usadas de 256.
+Quedan 28 IPs libres desde 192.168.5.228 hasta 192.168.5.255.`
+},
+
+{
+  unit: "VLSM",
+  diff: "hard",
+  profe: false,
+  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 10.10.0.0/23 → Planta (200), Oficinas (120), Bodega (60), TI (25), Enlace1 (2), Enlace2 (2), Enlace3 (2)",
+  extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Planta (200)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Oficinas (120)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bodega (60)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>TI (25)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace1 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace2 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace3 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: `PASO 1 — Ordenar de mayor a menor:
+200 → 120 → 60 → 25 → 2 → 2 → 2
+
+PASO 2 — Entender la red base /23:
+Una /23 tiene 9 bits de host → 2⁹ = 512 IPs totales.
+Abarca: 10.10.0.0 hasta 10.10.1.255 (dos bloques /24 consecutivos).
+
+PASO 3 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+
+Planta   (200): 2⁸ − 2 = 254 ✓ → n=8 → prefijo /24 → bloque 256 → máscara 255.255.255.0
+Oficinas (120): 2⁷ − 2 = 126 ✓ → n=7 → prefijo /25 → bloque 128 → máscara 255.255.255.128
+Bodega    (60): 2⁶ − 2 = 62  ✓ → n=6 → prefijo /26 → bloque 64  → máscara 255.255.255.192
+TI        (25): 2⁵ − 2 = 30  ✓ → n=5 → prefijo /27 → bloque 32  → máscara 255.255.255.224
+Enlace1    (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+Enlace2    (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+Enlace3    (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+
+PASO 4 — Asignar en orden:
+Importante: al llegar a 10.10.0.255 el siguiente bloque continúa en 10.10.1.0
+
+Planta:   10.10.0.0/24   → Primera: 10.10.0.1   → Última: 10.10.0.254  → Broadcast: 10.10.0.255
+          (siguiente red = 10.10.1.0, pasamos al segundo bloque del /23)
+
+Oficinas: 10.10.1.0/25   → Primera: 10.10.1.1   → Última: 10.10.1.126  → Broadcast: 10.10.1.127
+          (siguiente red = 10.10.1.128)
+
+Bodega:   10.10.1.128/26 → Primera: 10.10.1.129 → Última: 10.10.1.190  → Broadcast: 10.10.1.191
+          (siguiente red = 10.10.1.192)
+
+TI:       10.10.1.192/27 → Primera: 10.10.1.193 → Última: 10.10.1.222  → Broadcast: 10.10.1.223
+          (siguiente red = 10.10.1.224)
+
+Enlace1:  10.10.1.224/30 → Primera: 10.10.1.225 → Última: 10.10.1.226  → Broadcast: 10.10.1.227
+          (siguiente red = 10.10.1.228)
+
+Enlace2:  10.10.1.228/30 → Primera: 10.10.1.229 → Última: 10.10.1.230  → Broadcast: 10.10.1.231
+          (siguiente red = 10.10.1.232)
+
+Enlace3:  10.10.1.232/30 → Primera: 10.10.1.233 → Última: 10.10.1.234  → Broadcast: 10.10.1.235
+          (siguiente red = 10.10.1.236)
+
+PASO 5 — Verificar espacio usado:
+/24 usa 256 + /25 usa 128 + /26 usa 64 + /27 usa 32 + /30×3 usa 12 = 492 IPs usadas de 512.
+Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
+},
+
+{
+  unit: "VLSM",
+  diff: "hard",
+  profe: false,
+  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 192.168.10.0/24 → Gerencia (14), Diseño (12), Contabilidad (6), Recepción (4), Enlace1 (2), Enlace2 (2)",
+  extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Gerencia (14)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Diseño (12)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Contabilidad (6)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Recepción (4)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace1 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace2 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: `PASO 1 — Ordenar de mayor a menor:
+14 → 12 → 6 → 4 → 2 → 2
+
+PASO 2 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+
+Gerencia     (14): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
+Diseño       (12): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
+             (12 no cabe en /29 que da solo 6, así que también necesita /28)
+Contabilidad  (6): 2³ − 2 = 6  ✓ → n=3 → prefijo /29 → bloque 8  → máscara 255.255.255.248
+Recepción     (4): 2³ − 2 = 6  ✓ → n=3 → prefijo /29 → bloque 8  → máscara 255.255.255.248
+             (4 no cabe en /30 que da solo 2, necesita /29)
+Enlace1       (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+Enlace2       (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+
+PASO 3 — Asignar en orden:
+
+Gerencia:     192.168.10.0/28  → Primera: 192.168.10.1  → Última: 192.168.10.14  → Broadcast: 192.168.10.15
+              (siguiente red = 0 + 16 = 16)
+
+Diseño:       192.168.10.16/28 → Primera: 192.168.10.17 → Última: 192.168.10.30  → Broadcast: 192.168.10.31
+              (siguiente red = 16 + 16 = 32)
+
+Contabilidad: 192.168.10.32/29 → Primera: 192.168.10.33 → Última: 192.168.10.38  → Broadcast: 192.168.10.39
+              (siguiente red = 32 + 8 = 40)
+
+Recepción:    192.168.10.40/29 → Primera: 192.168.10.41 → Última: 192.168.10.46  → Broadcast: 192.168.10.47
+              (siguiente red = 40 + 8 = 48)
+
+Enlace1:      192.168.10.48/30 → Primera: 192.168.10.49 → Última: 192.168.10.50  → Broadcast: 192.168.10.51
+              (siguiente red = 48 + 4 = 52)
+
+Enlace2:      192.168.10.52/30 → Primera: 192.168.10.53 → Última: 192.168.10.54  → Broadcast: 192.168.10.55
+              (siguiente red = 52 + 4 = 56)
+
+PASO 4 — Verificar espacio usado:
+/28×2 usa 32 + /29×2 usa 16 + /30×2 usa 8 = 56 IPs usadas de 256.
+Quedan 200 IPs libres desde 192.168.10.56 hasta 192.168.10.255.
+
+ATENCIÓN — Truco para no equivocarse con hosts similares:
+Gerencia(14) y Diseño(12) → ambos necesitan /28 porque /29 solo da 6 hosts útiles.
+Recepción(4) → necesita /29 porque /30 solo da 2 hosts útiles, no alcanza para 4.`
+},
+
+{
+  unit: "VLSM",
+  diff: "hard",
+  profe: false,
+  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+  q: "VLSM: Red base 192.168.1.0/24 → Administración (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
+  extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Administración (50)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Finanzas (25)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>TI (10)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace1 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace2 (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+  `,
+  opts: ["Correcto", "Incorrecto"],
+  ans: 0,
+  exp: `PASO 1 — Ordenar de mayor a menor:
+50 → 25 → 10 → 2 → 2
+
+PASO 2 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+
+Administración (50): 2⁶ − 2 = 62 ✓ → n=6 → prefijo /26 → bloque 64 → máscara 255.255.255.192
+Finanzas       (25): 2⁵ − 2 = 30 ✓ → n=5 → prefijo /27 → bloque 32 → máscara 255.255.255.224
+TI             (10): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
+Enlace1         (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+Enlace2         (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+
+PASO 3 — Asignar en orden:
+
+Administración: 192.168.1.0/26   → Primera: 192.168.1.1   → Última: 192.168.1.62   → Broadcast: 192.168.1.63
+                (siguiente red = 0 + 64 = 64)
+
+Finanzas:       192.168.1.64/27  → Primera: 192.168.1.65  → Última: 192.168.1.94   → Broadcast: 192.168.1.95
+                (siguiente red = 64 + 32 = 96)
+
+TI:             192.168.1.96/28  → Primera: 192.168.1.97  → Última: 192.168.1.110  → Broadcast: 192.168.1.111
+                (siguiente red = 96 + 16 = 112)
+
+Enlace1:        192.168.1.112/30 → Primera: 192.168.1.113 → Última: 192.168.1.114  → Broadcast: 192.168.1.115
+                (siguiente red = 112 + 4 = 116)
+
+Enlace2:        192.168.1.116/30 → Primera: 192.168.1.117 → Última: 192.168.1.118  → Broadcast: 192.168.1.119
+                (siguiente red = 116 + 4 = 120)
+
+PASO 4 — Verificar espacio usado:
+/26 usa 64 + /27 usa 32 + /28 usa 16 + /30×2 usa 8 = 120 IPs usadas de 256.
+Quedan 136 IPs libres desde 192.168.1.120 hasta 192.168.1.255.`
+},
+
+
+
+    
+
 
 ];
 
 
 
 registrarAsignatura('so', BANK.so);
+window.guardarTrabajo = guardarTrabajo;
