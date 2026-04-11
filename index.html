@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App de Estudio</title>
+  <!-- <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"> -->
+    <link rel="stylesheet" href="style.css">
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-badge">App de Estudio · Valeska Ugarte</div>
+    <h1>Cuestionarios de Estudio</h1>
+    <p>Selecciona asignatura, cantidad de preguntas y comienza</p>
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="prog-label">—</span>
+        <span id="prog-pct">—</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="prog-fill"></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════════════════════════ START ══════════════════════════════ -->
+    <div class="screen active" id="screen-start">
+      <p class="start-title">¿Qué quieres estudiar hoy?</p>
+      <p class="start-sub">Las preguntas del profe siempre aparecen primero; se mezcla aleatoriamente.<br>Las opciones
+        de cada pregunta también se mezclan.</p>
+
+      <!-- Subject selector -->
+      <!-- ASIGNATURAS -->
+
+  <div class="subject-grid" id="subject-grid">
+        
+        <div class="subject-card selected" id="card-seg" onclick="selectSubject('seg')">
+          <div class="subject-icon"></div>
+          <img src="img/Seguridad de la Información01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Seguridad de la Información</div>
+          <div class="subject-meta">Prueba 1 · Solo las 32 primeras preguntas son de la prueba</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('seg'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material - 140 Preguntas</span></div>        
+        </div>
+        
+        <div class="subject-card" id="card-so" onclick="selectSubject('so')">
+          <div class="subject-icon"></div>
+          <img src="img/Sistemas Operativos01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Sistemas Operativos</div>
+          <div class="subject-meta">Prueba 1 · Subnetting, Las primeras 38 preguntas son los cuestionarios del profesor y una prueba</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('so'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material de Clases - 131 Preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-examen" onclick="selectSubject('examen')">
+          <div class="subject-icon"></div>
+          <img src="img/Seguridad de la Información02.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Fundamentos de Seguridad de la Información</div>
+          <div class="subject-meta">Cuestionario Examen Final otorgado por el profesor</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('examen'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Cuestionario Examen - 55 Preguntas</span></div>
+        </div>
+
+        <!-- Nuevas asignaturas -->
+        <div class="subject-card" id="card-algebra" onclick="selectSubject('algebra')">
+          <div class="subject-icon"></div>
+          <img src="img/Algebra01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Resolución de Problemas de Álgebra</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('algebra'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-funciones" onclick="selectSubject('funciones')">
+          <div class="subject-icon"></div>
+          <img src="img/FuncionesMatrices01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Funciones y Matrices</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('funciones'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-metodologia" onclick="selectSubject('metodologia')">
+          <div class="subject-icon"></div>
+          <img src="img/Desarrollo Agil01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Metodología de Desarrollo Ágil</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('metodologia'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-frontend" onclick="selectSubject('frontend')">
+          <div class="subject-icon"></div>
+            <img src="img/Programación FrontEnd01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Programación Front End</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('frontend'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-backend" onclick="selectSubject('backend')">
+          <div class="subject-icon"></div>
+          <img src="img/Programación BackEnd01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Programación Back End</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('backend'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-bd_estructurados" onclick="selectSubject('bd_estructurados')">
+          <div class="subject-icon"></div>
+          <img src="img/bdestructuradas01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Base de Datos Estructurados</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('bd_estructurados'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-bd_no_estructurados" onclick="selectSubject('bd_no_estructurados')">
+          <div class="subject-icon"></div>
+          <img src="img/bdnoestructuradas01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Base de Datos No Estructurados</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('bd_no_estructurados'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-fundamentos_bd" onclick="selectSubject('fundamentos_bd')">
+          <div class="subject-icon"></div>
+          <img src="img/Base de datos01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Fundamentos de Base de Datos</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('fundamentos_bd'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-administracion" onclick="selectSubject('administracion')">
+          <div class="subject-icon"></div>
+          <img src="img/Administración01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">   
+          <div class="subject-name">Administración</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('administracion'); startQuiz();">📖 Ingresar</button>
+        </div>
+        
+        <div class="subject-card" id="card-ingenieria_software" onclick="selectSubject('ingenieria_software')">
+          <div class="subject-icon"></div>
+            <img src="img/Inhgenieriasoftware01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Ingeniería de Software</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('ingenieria_software'); startQuiz();">📖 Ingresar</button>
+        </div>
+        
+        <div class="subject-card" id="card-hardware_software" onclick="selectSubject('hardware_software')">
+          <div class="subject-icon"></div>
+            <img src="img/Hardware y Software01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Fundamentos de Hardware y Software</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('hardware_software'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-modelamiento" onclick="selectSubject('modelamiento')">
+          <div class="subject-icon"></div>
+            <img src="img/Modelamiento01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Modelamiento de Soluciones Informáticas</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('modelamiento'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-mobile_iot" onclick="selectSubject('mobile_iot')">
+          <div class="subject-icon"></div>
+            <img src="img/Apps Móviles para IoT02.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Aplicaciones Móviles IoT</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('mobile_iot'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-ingles_inicial" onclick="selectSubject('ingles_inicial')">
+          <div class="subject-icon"></div>
+            <img src="img/Ingles Imicial01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Inglés Inicial</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('ingles_inicial'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-ingles_intermedio" onclick="selectSubject('ingles_intermedio')">
+          <div class="subject-icon"></div>
+            <img src="img/InglesIntermedio01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Inglés Intermedio</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('ingles_intermedio'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-ingles_avanzado" onclick="selectSubject('ingles_avanzado')">
+          <div class="subject-icon"></div>
+            <img src="img/Inglesavanzado01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Inglés Avanzado</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('ingles_avanzado'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-japones" onclick="selectSubject('japones')">
+          <div class="subject-icon"></div>
+            <img src="img/japones01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Japonés</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('japones'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-chino" onclick="selectSubject('chino')">
+          <div class="subject-icon"></div>
+            <img src="img/Chino01.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Chino</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('chino'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+        
+        <div class="subject-card" id="card-coreano" onclick="selectSubject('coreano')">
+          <div class="subject-icon"></div>
+            <img src="img/Coreano02.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Coreano</div>
+          <div class="subject-meta">Pendiente: agregar preguntas</div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('coreano'); startQuiz();">📖 Ingresar</button>
+          <div><span class="coming-badge">Material- Aun sin preguntas</span></div>
+        </div>
+      </div>
+
+      <div class="config-panel">
+        <h3>Configuración de sesión</h3>
+        <div class="config-row">
+          <span class="config-label">Número de preguntas, las cantidades 32 y 55 son expresamente solo cuestionarios dados por el profesor:</span>
+          <div class="count-btns" id="count-btns">
+            <button class="count-btn" onclick="setCount(10)">10</button>
+            <button class="count-btn" onclick="setCount(20)">20</button>
+            <button class="count-btn" onclick="setCount(30)">30</button>
+            <button class="count-btn" onclick="setCount(32)">32</button>
+            <button class="count-btn" onclick="setCount(50)">50</button>
+            <button class="count-btn" onclick="setCount(55)">55</button>
+            <button class="count-btn selected" onclick="setCount(999)">Todas</button>
+          </div>
+          <div class="config-row" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem;">
+            <span class="config-label">Modo de estudio:</span>
+            <div style="display: flex; gap: 0.8rem;">
+              <label style="display: flex; align-items: center; gap: 0.3rem;">
+                <input type="radio" name="studyMode" value="normal" checked onchange="toggleMode()"> 📚 Cuestionario normal
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.3rem;">
+                <input type="radio" name="studyMode" value="levels" onchange="toggleMode()"> 🏆 Por niveles
+              </label>
+            </div>
+          </div>
+          <div id="levelPanel" style="display: none; margin-top: 0.8rem;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button id="levelBasico" class="level-btn" data-level="basico" onclick="selectLevel('basico')">Básico</button>
+              <button id="levelIntermedio" class="level-btn" data-level="intermedio" onclick="selectLevel('intermedio')">Intermedio</button>
+              <button id="levelAvanzado" class="level-btn" data-level="avanzado" onclick="selectLevel('avanzado')">Avanzado</button>
+              <button id="levelExperto" class="level-btn" data-level="experto" onclick="selectLevel('experto')">Experto</button>
+            </div>
+            <div id="levelStatus" style="font-size: 0.7rem; margin-top: 0.5rem; color: var(--text-muted);"></div>
+          </div>
+        </div>
+        <div class="config-row">
+          <span class="config-label">Orden:</span>
+          <span style="font-size:0.85rem;color:var(--text-soft);">🎓 Preguntas del profe primero · 🔀 Aleatorio · 🔤 Opciones mezcladas</span>
+        </div>
+      </div>
+
+      <div class="info-row" id="info-row">
+        <div class="info-pill"><strong id="info-q">60</strong> preguntas</div>
+        <div class="info-pill"><strong>incluye</strong> cuestionario del profe</div>
+        <div class="info-pill">Escala 1.0 – 7.0</div>
+      </div>
+
+      <div class="btn-center">
+        <button class="btn btn-primary" onclick="startQuiz()">Comenzar sesión →</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-quiz">
+      <div class="dots-wrap" id="dots-container"></div>
+      <div id="question-area"></div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" id="btn-prev" onclick="prevQ()">← Anterior</button>
+        <button class="btn btn-primary" id="btn-next" onclick="nextQ()" disabled>Siguiente →</button>
+        <button class="btn btn-primary" id="btn-finish" onclick="finishQuiz()" style="display:none">Ver resultado ✓</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-result">
+      <div class="result-card">
+        <div class="result-grade" id="res-grade">–</div>
+        <div class="result-label">Nota Final · Escala 1.0 – 7.0</div>
+        <div class="result-msg" id="res-msg"></div>
+        <div class="result-grid">
+          <div class="result-stat">
+            <div class="rs-val" id="res-correct">0</div>
+            <div class="rs-lbl">Correctas</div>
+          </div>
+          <div class="result-stat">
+            <div class="rs-val" id="res-wrong">0</div>
+            <div class="rs-lbl">Incorrectas</div>
+          </div>
+          <div class="result-stat">
+            <div class="rs-val" id="res-pct">0%</div>
+            <div class="rs-lbl">Porcentaje</div>
+          </div>
+        </div>
+        <div class="result-btns">
+          <button class="btn btn-primary" onclick="restartSame()">Repetir misma config</button>
+          <button class="btn btn-secondary" onclick="goHome()">Volver al inicio</button>
+        </div>
+      </div>
+      <div class="review-section" id="review-area"></div>
+    </div>
+
+  </main>
+
+
+
+  </script>
+
+  <script src="script.js"></script>
+  
+<script src="data/seg.js"></script>
+<script src="data/so.js"></script>
+<script src="data/examen.js"></script>
+<script src="data/algebra.js"></script>
+<script src="data/funciones.js"></script>
+<script src="data/metodologia.js"></script>
+<script src="data/frontend.js"></script>
+<script src="data/backend.js"></script>
+<script src="data/bd_estructurados.js"></script>
+<script src="data/bd_no_estructurados.js"></script>
+<script src="data/fundamentos_bd.js"></script>
+<script src="data/administracion.js"></script>
+<script src="data/ingenieria_software.js"></script>
+<script src="data/hardware_software.js"></script>
+<script src="data/modelamiento.js"></script>
+<script src="data/mobile_iot.js"></script>
+<script src="data/ingles_inicial.js"></script>
+<script src="data/ingles_intermedio.js"></script>
+<script src="data/ingles_avanzado.js"></script>
+<script src="data/japones.js"></script>
+<script src="data/chino.js"></script>
+<script src="data/coreano.js"></script>
+
+
+  
+  <footer style="
+  margin-top: 3rem;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #e8dff8 0%, #f5e8f0 100%);
+  border-top: 1px solid var(--border, #d3c1e4);
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+">
+    <div style="max-width: 860px; margin: 0 auto;">
+      <p style="font-size: 0.85rem; color: #5a4e6a; margin-bottom: 0.5rem;">
+        Material de estudio personal
+      </p>
+      <p style="font-size: 0.9rem; font-weight: 600; color: #2a2230; font-family: 'Lora', serif;">
+        Creado con dedicación por <span style="color: #8a6bb8;">Valeska Ugarte</span> · INACAP 2026
+      </p>
+      <p style="font-size: 0.7rem; color: #8a7e9a; margin-top: 0.5rem;">
+        "La práctica constante es la clave del éxito"
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>
