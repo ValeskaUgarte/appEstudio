@@ -196,7 +196,6 @@ function startQuiz() {
     renderizarDots();
     mostrarPregunta(0);
 }
-
 function actualizarProgreso() {
     const respondidas = respuestasUsuario.filter(r => r !== null).length;
     const porcentaje = preguntasActuales.length > 0 ? (respondidas / preguntasActuales.length) * 100 : 0;
