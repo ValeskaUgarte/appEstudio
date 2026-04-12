@@ -8,12 +8,766 @@ BANK.so = [
 
     // ==================== SUBNETTING BÁSICO ====================
 
-    // Selección múltiple
+    // POSIBLE PRUEBA
     {
-        profe: true,
-        unit: "Unidad Redes",
-        diff: "medium",
-        q: "En la dirección IPv6 D46C::B:98:F:C:5, ¿cuál es el equivalente en decimal (binario en opciones) del tercer hexteto?",
+    profe: true,
+    unit: "Networking - Organismos",
+    diff: "easy",
+    q: "¿Qué institución desarrolla los estándares que permiten la interoperabilidad de la Web, como el lenguaje HTML y protocolos relacionados?",
+    opts: [
+        "IANA",
+        "IEEE",
+        "W3C",
+        "ISO"
+    ],
+    ans: 2,
+    exp: "W3C (World Wide Web Consortium) es el organismo fundado por Tim Berners-Lee encargado de desarrollar estándares abiertos para la Web: HTML, CSS, XML y protocolos relacionados.\n" +
+         "IANA gestiona la asignación de recursos de Internet (IPs, números de puerto).\n" +
+         "IEEE desarrolla estándares de hardware y redes físicas (como Ethernet 802.3 o Wi-Fi 802.11).\n" +
+         "ISO es un organismo de normalización industrial general, no específico de la Web."
+},
+{
+    profe: true,
+    unit: "IPv6",
+    diff: "easy",
+    q: "Una dirección IPv6, a diferencia de IPv4, se caracteriza por tener una longitud de:",
+    opts: [
+        "64 bits",
+        "128 bits",
+        "48 bits",
+        "256 bits"
+    ],
+    ans: 1,
+    exp: "IPv6 utiliza direcciones de 128 bits, representadas en 8 grupos de 16 bits (hextetos) separados por ':'. Ejemplo: 2001:0DB8:0000:0000:0000:0000:0000:0001.\n" +
+         "IPv4 usa solo 32 bits (4 octetos en decimal punteado), lo que limita el espacio a ~4.300 millones de direcciones.\n" +
+         "El salto a 128 bits en IPv6 permite aproximadamente 3,4 × 10^38 direcciones únicas, resolviendo el agotamiento de IPv4."
+},
+
+{
+    profe: true,
+    unit: "IPv4 - Clases",
+    diff: "easy",
+    q: "Si una dirección IP comienza con el octeto 10 (ej. 10.50.1.1), ¿cuál es su clasificación por defecto y tipo de uso?",
+    opts: [
+        "Clase A - Pública",
+        "Clase C - Privada",
+        "Clase A - Privada",
+        "Clase B - Reservada"
+    ],
+    ans: 2,
+    exp: "La dirección 10.0.0.0/8 pertenece a Clase A porque su primer octeto está entre 1 y 126. Es de uso PRIVADO según el RFC 1918, que define tres rangos privados:\n" +
+         "  - 10.0.0.0 /8       → Clase A Privada\n" +
+         "  - 172.16.0.0 /12    → Clase B Privada\n" +
+         "  - 192.168.0.0 /16   → Clase C Privada\n" +
+         "Las IPs privadas no son enrutables en Internet y se usan exclusivamente en redes internas (LAN)."
+},
+
+{
+    profe: true,
+    unit: "Subnetting - AND lógico",
+    diff: "medium",
+    q: "El proceso de 'AND lógico' entre una dirección IP y su máscara de subred da como resultado:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Dirección IP</td>
+    <td><input placeholder="ej: 11000000"></td>
+    <td><input placeholder="ej: 10101000"></td>
+    <td><input placeholder="ej: 00000001"></td>
+    <td><input placeholder="ej: 00101101"></td>
+  </tr>
+  <tr>
+    <td>Máscara</td>
+    <td><input placeholder="ej: 11111111"></td>
+    <td><input placeholder="ej: 11111111"></td>
+    <td><input placeholder="ej: 11111111"></td>
+    <td><input placeholder="ej: 00000000"></td>
+  </tr>
+  <tr>
+    <td>AND (resultado)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Dirección de Red</td>
+    <td colspan="4"><input style="width:100%" placeholder="resultado en decimal punteado"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "La dirección de Gateway",
+        "La dirección de Broadcast",
+        "La primera IP utilizable",
+        "La dirección de Red"
+    ],
+    ans: 3,
+    exp: "El AND lógico bit a bit entre la IP y su máscara entrega la DIRECCIÓN DE RED.\n" +
+         "Regla del AND: 1 AND 1 = 1 | 1 AND 0 = 0 | 0 AND 0 = 0\n" +
+         "Ejemplo con 192.168.1.45 y máscara 255.255.255.0:\n" +
+         "  192.168.1.45  → 11000000.10101000.00000001.00101101\n" +
+         "  255.255.255.0 → 11111111.11111111.11111111.00000000\n" +
+         "  AND resultado → 11000000.10101000.00000001.00000000 = 192.168.1.0\n" +
+         "El Gateway se define manualmente. El Broadcast se obtiene poniendo todos los bits de host en 1."
+},
+
+{
+    profe: true,
+    unit: "Subnetting",
+    diff: "medium",
+    q: "En una red con máscara /26, ¿cuántos hosts reales (utilizables) se pueden conectar?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Prefijo</th>
+    <th>Bits de host</th>
+    <th>Total IPs (2^n)</th>
+    <th>Hosts utilizables (2^n - 2)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>/25</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>/26</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>/27</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>/28</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "64",
+        "62",
+        "30",
+        "126"
+    ],
+    ans: 1,
+    exp: "Con prefijo /26 quedan 6 bits para hosts (32 - 26 = 6).\n" +
+         "Total IPs = 2^6 = 64\n" +
+         "Hosts utilizables = 64 - 2 = 62  (se restan dirección de red y broadcast)\n" +
+         "Tabla comparativa:\n" +
+         "  /25 → 7 bits → 128 IPs → 126 hosts\n" +
+         "  /26 → 6 bits →  64 IPs →  62 hosts ✓\n" +
+         "  /27 → 5 bits →  32 IPs →  30 hosts\n" +
+         "  /28 → 4 bits →  16 IPs →  14 hosts"
+},
+
+{
+    profe: true,
+    unit: "Comandos de Red",
+    diff: "easy",
+    q: "¿Qué comando se utiliza en la terminal para verificar la conectividad básica y latencia enviando paquetes ICMP?",
+    opts: [
+        "nslookup",
+        "netstat",
+        "ping",
+        "nmap"
+    ],
+    ans: 2,
+    exp: "El comando PING envía paquetes ICMP Echo Request al destino y espera respuestas ICMP Echo Reply, midiendo tiempo de ida y vuelta (RTT/latencia) y detectando pérdida de paquetes.\n" +
+         "nslookup → consulta resolución de nombres DNS (no conectividad).\n" +
+         "netstat  → muestra conexiones de red activas, puertos y estadísticas (no prueba conectividad).\n" +
+         "nmap     → escáner de puertos y servicios en hosts remotos (no es herramienta de conectividad básica)."
+},
+
+{
+    profe: true,
+    unit: "CIDR - VLSM",
+    diff: "medium",
+    q: "La principal ventaja de usar el esquema CIDR/VLSM frente al direccionamiento con clases (Classful) es:",
+    opts: [
+        "Que las redes son más veloces",
+        "La eliminación de colisiones en la capa 2",
+        "El aprovechamiento eficiente del direccionamiento para evitar el desperdicio de IPs",
+        "Que no requiere el uso de routers para interconexión"
+    ],
+    ans: 2,
+    exp: "CIDR (Classless Inter-Domain Routing) y VLSM (Variable Length Subnet Mask) permiten dividir el espacio de direcciones con máscaras de longitud variable, asignando exactamente el tamaño de subred que cada segmento necesita.\n" +
+         "En el modelo Classful, una red Clase B entregaba 65.534 hosts aunque solo se necesitaran 300, desperdiciando más de 65.000 IPs.\n" +
+         "Con VLSM se asigna /26 para 62 hosts, /30 para enlaces punto a punto (2 hosts), etc., optimizando cada bloque.\n" +
+         "La velocidad de red (op. A) depende del hardware/medio. Las colisiones de capa 2 (op. B) se evitan con switches, no con CIDR. Los routers (op. D) siguen siendo necesarios para interconectar subredes."
+},
+
+{
+    profe: true,
+    unit: "Linux - Configuración de Red",
+    diff: "medium",
+    q: "Para configurar una dirección IP estática en Debian 12 (sin entorno gráfico), el comando para editar el archivo de configuración es:",
+    opts: [
+        "nano /etc/network/interfaces",
+        "nano /etc/dhcp/dhclient.conf",
+        "nano /etc/sysconfig/network",
+        "nano /etc/hostname"
+    ],
+    ans: 0,
+    exp: "En Debian y sus derivados (Ubuntu, etc.), la configuración de interfaces de red estáticas se realiza editando el archivo /etc/network/interfaces.\n" +
+         "Ejemplo de configuración estática dentro del archivo:\n" +
+         "  auto eth0\n" +
+         "  iface eth0 inet static\n" +
+         "    address 192.168.1.10\n" +
+         "    netmask 255.255.255.0\n" +
+         "    gateway 192.168.1.1\n" +
+         "/etc/dhcp/dhclient.conf → configuración del cliente DHCP, no de IP estática.\n" +
+         "/etc/sysconfig/network → corresponde a distribuciones Red Hat/CentOS, no a Debian.\n" +
+         "/etc/hostname → solo define el nombre del equipo, no la IP."
+},
+
+{
+    profe: true,
+    unit: "Linux - Comandos de Red",
+    diff: "easy",
+    q: "¿Qué comando de Linux permite visualizar las direcciones IP asignadas a todas las interfaces, incluyendo la dirección MAC?",
+    opts: [
+        "ip route show",
+        "ip addr show",
+        "systemctl status network",
+        "hostname -I"
+    ],
+    ans: 1,
+    exp: "El comando 'ip addr show' (abreviable como 'ip a') muestra todas las interfaces de red con sus IPs (IPv4 e IPv6) y dirección MAC (link/ether).\n" +
+         "ip route show       → muestra la tabla de enrutamiento, no las IPs de interfaces.\n" +
+         "systemctl status network → muestra el estado del servicio de red, no las IPs.\n" +
+         "hostname -I         → muestra solo las IPs asignadas al host, sin MAC ni detalles de interfaz.\n" +
+         "Nota: el comando clásico 'ifconfig' cumple función similar pero está obsoleto; 'ip addr show' es su reemplazo moderno."
+},
+
+{
+    profe: true,
+    unit: "Subnetting - Overlap",
+    diff: "medium",
+    q: "Cuando dos interfaces de red en el mismo router se configuran con rangos que se cruzan entre sí, el sistema arrojará un error de:",
+    opts: [
+        "Packet Loss",
+        "Latency Error",
+        "Overlap (Solapamiento)",
+        "DNS Failure"
+    ],
+    ans: 2,
+    exp: "El error de Overlap (Solapamiento) ocurre cuando dos interfaces del mismo router reciben rangos de red que comparten IPs.\n" +
+         "Ejemplo de solapamiento:\n" +
+         "  eth0: 192.168.1.0/24  (rango: 192.168.1.0 - 192.168.1.255)\n" +
+         "  eth1: 192.168.1.128/25 (rango: 192.168.1.128 - 192.168.1.255)\n" +
+         "Ambas interfaces 'reclaman' el rango .128-.255, generando ambigüedad en el enrutamiento.\n" +
+         "El router no puede determinar por cuál interfaz enviar un paquete destinado a una IP del rango solapado, por lo que rechaza la configuración con error de overlap."
+},
+
+{
+    profe: true,
+    unit: "DNS",
+    diff: "easy",
+    q: "¿Cuál es el propósito del servicio DNS en una infraestructura de red?",
+    opts: [
+        "Asignar máscaras de subred dinámicamente",
+        "Traducir nombres de dominio (como google.cl) en direcciones IP",
+        "Filtrar el tráfico malicioso del firewall",
+        "Conectar dos redes LAN distintas"
+    ],
+    ans: 1,
+    exp: "DNS (Domain Name System) es el sistema de resolución de nombres de Internet. Actúa como una 'agenda telefónica' que traduce nombres legibles por humanos (como www.google.cl) en direcciones IP numéricas (como 142.250.78.68) que las máquinas pueden usar para enrutar tráfico.\n" +
+         "Sin DNS, los usuarios deberían memorizar IPs para acceder a cada sitio web.\n" +
+         "Asignar máscaras dinámicamente → función de DHCP (no DNS).\n" +
+         "Filtrar tráfico malicioso → función de Firewall/IDS.\n" +
+         "Conectar dos redes LAN → función de un Router."
+},
+
+{
+    profe: true,
+    unit: "Linux - Gestión de Paquetes",
+    diff: "easy",
+    q: "El comando 'apt-get update' en sistemas basados en Debian sirve para:",
+    opts: [
+        "Actualizar todos los programas instalados a su última versión",
+        "Descargar e instalar el kernel de Linux",
+        "Sincronizar el índice de paquetes desde los repositorios oficiales",
+        "Reiniciar los servicios de red"
+    ],
+    ans: 2,
+    exp: "El comando 'apt-get update' descarga la lista actualizada de paquetes disponibles desde los repositorios configurados en /etc/apt/sources.list, pero NO instala ni actualiza ningún programa.\n" +
+         "Es el primer paso antes de instalar o actualizar software:\n" +
+         "  1. apt-get update           → actualiza el índice de paquetes\n" +
+         "  2. apt-get upgrade          → INSTALA las actualizaciones disponibles\n" +
+         "  3. apt-get install <paquete> → instala un paquete nuevo\n" +
+         "Confundir update con upgrade es un error común: update solo refresca la lista, upgrade aplica los cambios."
+},
+
+{
+    profe: true,
+    unit: "Modelo OSI",
+    diff: "easy",
+    q: "¿A qué capa del modelo OSI corresponde el direccionamiento MAC (Físico)?",
+    opts: [
+        "Capa 1 (Física)",
+        "Capa 2 (Enlace de Datos)",
+        "Capa 3 (Red)",
+        "Capa 4 (Transporte)"
+    ],
+    ans: 1,
+    exp: "La dirección MAC (Media Access Control) opera en la Capa 2 - Enlace de Datos del modelo OSI.\n" +
+         "Resumen de capas relevantes:\n" +
+         "  Capa 1 - Física       → bits, señales eléctricas, cables, voltajes\n" +
+         "  Capa 2 - Enlace       → frames, dirección MAC, switches, ARP\n" +
+         "  Capa 3 - Red          → paquetes, dirección IP, routers\n" +
+         "  Capa 4 - Transporte   → segmentos, TCP/UDP, puertos\n" +
+         "La MAC es una dirección grabada en la tarjeta de red (NIC), de 48 bits en hexadecimal (ej: AA:BB:CC:DD:EE:FF), usada para entrega local dentro de la misma red (LAN)."
+},
+
+{
+    profe: true,
+    unit: "Subnetting - Broadcast",
+    diff: "medium",
+    q: "En una subred 192.168.10.0/24, ¿cuál es la dirección de Broadcast?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Red (binario)</td>
+    <td><input placeholder="11000000"></td>
+    <td><input placeholder="10101000"></td>
+    <td><input placeholder="00001010"></td>
+    <td><input placeholder="00000000"></td>
+  </tr>
+  <tr>
+    <td>Broadcast (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Broadcast (decimal)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Primera IP útil</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Última IP útil</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "192.168.10.1",
+        "192.168.10.0",
+        "192.168.10.255",
+        "192.168.10.254"
+    ],
+    ans: 2,
+    exp: "En /24 hay 8 bits de host. Broadcast = todos los bits de host en 1.\n" +
+         "  Red:             192.168.10.00000000 → 192.168.10.0\n" +
+         "  Broadcast:       192.168.10.11111111 → 192.168.10.255 ✓\n" +
+         "  Primera IP útil: 192.168.10.1\n" +
+         "  Última IP útil:  192.168.10.254\n" +
+         "192.168.10.254 es la ÚLTIMA IP utilizable, no el broadcast. El broadcast es siempre un número antes del inicio de la siguiente red."
+},
+
+{
+    profe: true,
+    unit: "Linux - Servicios de Red",
+    diff: "easy",
+    q: "Para reiniciar el servicio de red en Debian y aplicar cambios de configuración, se utiliza:",
+    opts: [
+        "apt install networking",
+        "ifconfig eth0 up",
+        "systemctl restart networking",
+        "reboot /all"
+    ],
+    ans: 2,
+    exp: "En Debian con systemd, el comando correcto para reiniciar el servicio de red y aplicar cambios hechos en /etc/network/interfaces es:\n" +
+         "  systemctl restart networking\n" +
+         "Otros comandos útiles relacionados:\n" +
+         "  systemctl stop networking    → detiene el servicio de red\n" +
+         "  systemctl start networking   → inicia el servicio de red\n" +
+         "  systemctl status networking  → verifica el estado actual\n" +
+         "  ip link set eth0 down/up     → baja/sube una interfaz específica\n" +
+         "'ifconfig eth0 up' solo levanta la interfaz pero no recarga la configuración completa del archivo interfaces.\n" +
+         "'apt install networking' no es un comando válido.\n" +
+         "'reboot /all' no existe en Linux (en Linux se usa 'reboot' sin parámetros)."
+},
+
+//PRUEBA 1 SECCION II VLSM
+
+{
+    profe: true,
+    unit: "VLSM",
+    diff: "hard",
+    case: "PRUEBA 1-A — II. EJERCICIOS PRÁCTICOS DE VLSM\nDesarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
+    q: "Desafío 1 — Sucursal INACAP Osorno.\n" +
+       "Red Base: 192.168.100.0/24.\n" +
+       "Requerimientos:\n" +
+       "- Laboratorio de Computación: 50 hosts\n" +
+       "- Red Wi-Fi Docentes: 25 hosts\n" +
+       "- Oficina Director: 5 hosts\n" +
+       "Calcula las subredes VLSM ordenadas de mayor a menor.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>#</th>
+    <th>Segmento</th>
+    <th>Hosts requeridos</th>
+    <th>Bits de host</th>
+    <th>Prefijo</th>
+    <th>Máscara</th>
+    <th>Dirección de Red</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td>Laboratorio</td>
+    <td>50</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Wi-Fi Docentes</td>
+    <td>25</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Oficina Director</td>
+    <td>5</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Subred 1: 192.168.100.0/26 | Subred 2: 192.168.100.64/27 | Subred 3: 192.168.100.96/29",
+        "Subred 1: 192.168.100.0/25 | Subred 2: 192.168.100.128/26 | Subred 3: 192.168.100.192/29",
+        "Subred 1: 192.168.100.0/26 | Subred 2: 192.168.100.64/26 | Subred 3: 192.168.100.128/29",
+        "Subred 1: 192.168.100.0/27 | Subred 2: 192.168.100.32/27 | Subred 3: 192.168.100.64/29"
+    ],
+    ans: 0,
+    exp: "VLSM: se ordena de mayor a menor requerimiento y se asigna el bloque mínimo suficiente.\n\n" +
+         "SUBRED 1 — Laboratorio (50 hosts):\n" +
+         "  2^n - 2 ≥ 50 → 2^6 = 64 → 64-2 = 62 ✓ → prefijo /26\n" +
+         "  Máscara: 255.255.255.192\n" +
+         "  Red:        192.168.100.0\n" +
+         "  Primera IP: 192.168.100.1\n" +
+         "  Última IP:  192.168.100.62\n" +
+         "  Broadcast:  192.168.100.63\n\n" +
+         "SUBRED 2 — Wi-Fi Docentes (25 hosts):\n" +
+         "  2^n - 2 ≥ 25 → 2^5 = 32 → 32-2 = 30 ✓ → prefijo /27\n" +
+         "  Máscara: 255.255.255.224\n" +
+         "  Red:        192.168.100.64\n" +
+         "  Primera IP: 192.168.100.65\n" +
+         "  Última IP:  192.168.100.94\n" +
+         "  Broadcast:  192.168.100.95\n\n" +
+         "SUBRED 3 — Oficina Director (5 hosts):\n" +
+         "  2^n - 2 ≥ 5 → 2^3 = 8 → 8-2 = 6 ✓ → prefijo /29\n" +
+         "  Máscara: 255.255.255.248\n" +
+         "  Red:        192.168.100.96\n" +
+         "  Primera IP: 192.168.100.97\n" +
+         "  Última IP:  192.168.100.102\n" +
+         "  Broadcast:  192.168.100.103"
+},
+
+{
+    profe: true,
+    unit: "VLSM",
+    diff: "hard",
+    case: "PRUEBA 1-A — II. EJERCICIOS PRÁCTICOS DE VLSM\nDesarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
+    q: "Desafío 2 — Infraestructura Corporativa.\n" +
+       "Red Base: 172.20.10.0/24.\n" +
+       "Requerimientos:\n" +
+       "- Departamento de Ventas: 60 hosts\n" +
+       "- Departamento de RRHH: 20 hosts\n" +
+       "- Enlace Punto a Punto Router A a Router B: 2 hosts\n" +
+       "Calcula las subredes VLSM ordenadas de mayor a menor.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>#</th>
+    <th>Segmento</th>
+    <th>Hosts requeridos</th>
+    <th>Bits de host</th>
+    <th>Prefijo</th>
+    <th>Máscara</th>
+    <th>Dirección de Red</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td>Ventas</td>
+    <td>60</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>RRHH</td>
+    <td>20</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Enlace P2P</td>
+    <td>2</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Subred 1: 172.20.10.0/26 | Subred 2: 172.20.10.64/27 | Subred 3: 172.20.10.96/30",
+        "Subred 1: 172.20.10.0/25 | Subred 2: 172.20.10.128/27 | Subred 3: 172.20.10.160/30",
+        "Subred 1: 172.20.10.0/26 | Subred 2: 172.20.10.64/26 | Subred 3: 172.20.10.128/30",
+        "Subred 1: 172.20.10.0/26 | Subred 2: 172.20.10.64/28 | Subred 3: 172.20.10.80/30"
+    ],
+    ans: 0,
+    exp: "VLSM: se ordena de mayor a menor requerimiento.\n\n" +
+         "SUBRED 1 — Ventas (60 hosts):\n" +
+         "  2^n - 2 ≥ 60 → 2^6 = 64 → 64-2 = 62 ✓ → prefijo /26\n" +
+         "  Máscara: 255.255.255.192\n" +
+         "  Red:        172.20.10.0\n" +
+         "  Primera IP: 172.20.10.1\n" +
+         "  Última IP:  172.20.10.62\n" +
+         "  Broadcast:  172.20.10.63\n\n" +
+         "SUBRED 2 — RRHH (20 hosts):\n" +
+         "  2^n - 2 ≥ 20 → 2^5 = 32 → 32-2 = 30 ✓ → prefijo /27\n" +
+         "  Máscara: 255.255.255.224\n" +
+         "  Red:        172.20.10.64\n" +
+         "  Primera IP: 172.20.10.65\n" +
+         "  Última IP:  172.20.10.94\n" +
+         "  Broadcast:  172.20.10.95\n\n" +
+         "SUBRED 3 — Enlace P2P (2 hosts):\n" +
+         "  2^n - 2 ≥ 2 → 2^2 = 4 → 4-2 = 2 ✓ → prefijo /30\n" +
+         "  Máscara: 255.255.255.252\n" +
+         "  Red:        172.20.10.96\n" +
+         "  Primera IP: 172.20.10.97\n" +
+         "  Última IP:  172.20.10.98\n" +
+         "  Broadcast:  172.20.10.99"
+},
+
+{
+    profe: true,
+    unit: "VLSM - Factibilidad",
+    diff: "hard",
+    case: "PRUEBA 1-A — II. EJERCICIOS PRÁCTICOS DE VLSM\nDesarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
+    q: "Desafío 3 — Análisis de Factibilidad.\n" +
+       "Red Base: 192.168.1.0/24.\n" +
+       "Requerimientos:\n" +
+       "- Área Producción: 130 hosts\n" +
+       "- Área Contabilidad: 70 hosts\n" +
+       "¿Es posible realizar este direccionamiento con la red base entregada? Justifique técnicamente su respuesta basándose en el cálculo de bits de host.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Hosts requeridos</th>
+    <th>2^n necesario</th>
+    <th>Total IPs del bloque</th>
+    <th>Hosts utilizables</th>
+    <th>Prefijo</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Producción</td>
+    <td>130</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Contabilidad</td>
+    <td>70</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Concepto</th>
+    <th>Cálculo</th>
+    <th>Resultado</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Total IPs consumidas (suma de bloques)</td>
+    <td><input style="width:100%"></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>IPs disponibles en /24</td>
+    <td><input style="width:100%"></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>¿Es factible?</td>
+    <td colspan="2"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "No es posible. Los bloques suman 384 IPs y la red /24 solo tiene 256.",
+        "Sí es posible usando /25 para Producción y /26 para Contabilidad.",
+        "Sí es posible, sobran IPs en la red /24.",
+        "No es posible, se necesita al menos una red /22."
+    ],
+    ans: 0,
+    exp: "ANÁLISIS DE FACTIBILIDAD:\n\n" +
+         "ÁREA 1 — Producción (130 hosts):\n" +
+         "  2^n - 2 ≥ 130 → 2^8 = 256 → 256-2 = 254 ✓ → prefijo /24\n" +
+         "  Bloque necesario: 256 IPs\n\n" +
+         "ÁREA 2 — Contabilidad (70 hosts):\n" +
+         "  2^n - 2 ≥ 70 → 2^7 = 128 → 128-2 = 126 ✓ → prefijo /25\n" +
+         "  Bloque necesario: 128 IPs\n\n" +
+         "TOTAL IPs necesarias: 256 + 128 = 384 IPs\n" +
+         "Red base /24 dispone de: 256 IPs en total\n\n" +
+         "CONCLUSIÓN: NO ES FACTIBLE.\n" +
+         "La suma de ambos bloques (384 IPs) supera las 256 IPs disponibles en la red /24.\n" +
+         "Para acomodar estos requerimientos se necesitaría como mínimo una red /23 (512 IPs disponibles) como red base."
+},
+
+ //GUIA 1 - ITEMI SELECCION MULTIPLE
+
+        {
+            profe: true,
+            unit: "IPv6 - Hextetos",
+            diff: "medium",
+            q: "En la dirección IPv6 D46C::B:98:F:C:5, ¿cuál es el equivalente en decimal (binario en opciones) del tercer hexteto?",
+            extra: `
+    <div class="extra-content">
+    <table class="subnet-table">
+    <thead>
+    <tr>
+        <th>Pos.</th>
+        <th>1°</th>
+        <th>2°</th>
+        <th>3°</th>
+        <th>4°</th>
+        <th>5°</th>
+        <th>6°</th>
+        <th>7°</th>
+        <th>8°</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Hexteto</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+        `,
         opts: [
             "000000000000001010",
             "000000000000000101",
@@ -22,55 +776,1335 @@ BANK.so = [
         ],
         ans: 3,
         exp: "PASO 1: Identificar la estructura. Una IPv6 tiene 8 hextetos.\n" +
-            "PASO 2: Contar los bloques visibles: D46C (1), B (2), 98 (3), F (4), C (5), 5 (6). Faltan 2 bloques.\n" +
+            "PASO 2: PASO 2 — Contar los bloques visibles: D46C (1) : B (2) : 98 (3) : F (4) : C (5) : 5 (6)\n" +
+            "→ Se cuentan 6 bloques visibles → faltan 2 bloques\n" +
             "PASO 3: Expandir el '::'. Como faltan 2 bloques, el '::' representa dos grupos de 0000.\n" +
-            "PASO 4: Ubicar el tercer hexteto. La red expandida es D46C:0000:0000:000B:0098:000F:000C:0005.\n" +
+            "Escribir la dirección completa expandida:\n" +
+            "PASO 4: Dirección expandida: D46C:0000:0000:000B:0098:000F:000C:0005.\n" +
+
+            "┌────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐\n" +
+            "│    │  1°  │  2°  │  3°  │  4°  │  5°  │  6°  │  7°  │  8°  │\n" +
+            "├────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┼──────┤\n" +
+            "│Hex │ D46C │ 0000 │ 0000 │ 000B │ 0098 │ 000F │ 000C │ 0005 │\n" +
+            "└────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘\n" +
+            "↑\n" +
+            "TERCER HEXTETO = 0000\n" +
+
             "RESULTADO: El 3er hexteto es '0000', que en binario de 16 bits son todo ceros."
     },
 
     {
-        profe: true,
-        unit: "Unidad Redes",
-        diff: "medium",
-        q: "Al efectuar un AND entre la dirección IPv4 90.10.120.1 y su máscara, ¿cuál es el resultado?",
-        opts: [
-            "11111111.00000000.00000000.00000000",
-            "11111111.10101010.00000000.00000000",
-            "01011010.00001010.01111000.00000001",
-            "01011010.00000000.00000000.00000000"
-        ],
+    profe: true,
+    unit: "IPv4 - AND lógico",
+    diff: "medium",
+    q: "Al efectuar un AND entre la dirección IPv4 90.10.120.1 y su máscara, el resultado es:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP decimal</td>
+    <td>90</td>
+    <td>10</td>
+    <td>120</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>IP binario</td>
+    <td><input placeholder="01011010"></td>
+    <td><input placeholder="00001010"></td>
+    <td><input placeholder="01111000"></td>
+    <td><input placeholder="00000001"></td>
+  </tr>
+  <tr>
+    <td>Clase</td>
+    <td colspan="4"><input style="width:100%" placeholder="¿A, B o C?"></td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>AND (resultado)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "11111111.00000000.00000000.00000000",
+        "11111111.10101010.00000000.00000000",
+        "01011010.00001010.01111000.00000001",
+        "01011010.00000000.00000000.00000000"
+    ],
+    ans: 3,
         exp: "PASO 1: Determinar la Clase. El primer octeto es 90 (Rango 1-126), por lo tanto es Clase A.\n" +
             "PASO 2: Identificar la máscara por defecto. Para Clase A es 255.0.0.0.\n" +
-            "PASO 3: Aplicar lógica AND (Filtro). El 255 deja pasar el número original, el 0 lo convierte en 0.\n" +
-            "PASO 4: Operar octeto por octeto: (90 AND 255 = 90) , (10 AND 0 = 0) , (120 AND 0 = 0) , (1 AND 0 = 0).\n" +
-            "RESULTADO: 90.0.0.0. En binario, el primer octeto 90 es 01011010 seguido de ceros."
+            "PASO 3: Aplicar lógica AND. El 255 deja pasar el número original, el 0 lo convierte en 0.\n" +
+            " \n" +
+            "┌─────────┬──────────┬──────────┬──────────┬──────────┐\n" +
+            "│         │ Octeto 1 │ Octeto 2 │ Octeto 3 │ Octeto 4 │\n" +
+            "├─────────┼──────────┼──────────┼──────────┼──────────┤\n" +
+            "│ IP      │ 01011010 │ 00001010 │ 01111000 │ 00000001 │\n" +
+            "│ Máscara │ 11111111 │ 00000000 │ 00000000 │ 00000000 │\n" +
+            "├─────────┼──────────┼──────────┼──────────┼──────────┤\n" +
+            "│ AND     │ 01011010 │ 00000000 │ 00000000 │ 00000000 │\n" +
+            "└─────────┴──────────┴──────────┴──────────┴──────────┘\n" +
+            "PASO 4: Operar octeto por octeto: (90 AND 255 = 90), (10 AND 0 = 0), (120 AND 0 = 0), (1 AND 0 = 0).\n" +
+            "• 1 AND 1 = 1   →  conserva el bit\n" +
+            "• 1 AND 0 = 0   →  pone el bit en cero\n" +
+            "• 0 AND 0 = 0\n" +
+
+            "RESULTADO: 01011010.00000000.00000000.00000000  (= 90.0.0.0)`\n"
     },
+
+
+    //GUÍA 1 — PARTE B: DESARROLLO
 
     //IPv6 – Expandir (Regla #1)
     {
-        profe: true,
-        unit: "Unidad Redes",
-        diff: "easy",
-        q: "Expande la IPv6 ::789D:567F:1",
+    profe: true,
+    unit: "IPv6 - Regla #1",
+    diff: "medium",
+    q: "Represente la dirección IPv6 ::789D:567F:1 de forma expandida aplicando Regla #1 (omitir ceros iniciales → expandir).",
+    extra: `
+    <div class="extra-content">
+    <table class="subnet-table">
+    <thead>
+    <tr>
+        <th>Paso</th>
+        <th>1°</th>
+        <th>2°</th>
+        <th>3°</th>
+        <th>4°</th>
+        <th>5°</th>
+        <th>6°</th>
+        <th>7°</th>
+        <th>8°</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Contraída</td>
+        <td colspan="3">::</td>
+        <td>789D</td>
+        <td>567F</td>
+        <td>1</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Expandida (Regla #1)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+        `,
         opts: [
             "0000:0000:0000:0000:0000:789D:567F:0001",
-            "789D:567F:0001:0000:0000:0000:0000:0000",
+            "0000:0000:0000:789D:567F:0001:0000:0000",
             "0000:0000:789D:567F:0001:0000:0000:0000",
-            "0000:0000:0000:789D:567F:0001:0000:0000"
+            "0000:0000:0000:0000:789D:567F:0001:0000"
         ],
         ans: 0,
-        exp: "Se completan 8 hextetos. Faltan 5 bloques de 0000 al inicio,\n PASO 1: Contar bloques presentes. Hay 3 bloques: 789D, 567F y 1.\n" +
-            "PASO 2: Calcular bloques faltantes. 8 (total) - 3 (presentes) = 5 bloques de ceros.\n" +
-            "PASO 3: Aplicar Regla #1. Los ceros reemplazan al '::' al inicio de la dirección.\n" +
-            "PASO 4: Completar cuartetos. El bloque '1' debe escribirse como '0001' para tener 4 dígitos.\n" +
-            "RESULTADO: Cinco bloques de '0000' seguidos de 789D:567F:0001."
-    },
+        exp: "PASO 1: Contar hextetos explícitos en ::789D:567F:1\n" +
+         "  Hextetos explícitos: 789D, 567F, 1 → 3 hextetos\n" +
+         "  IPv6 tiene 8 hextetos en total → el '::' representa 8-3 = 5 hextetos de ceros.\n\n" +
+         "PASO 2: El '::' está al inicio, por lo tanto los 5 ceros van primero.\n" +
+         "  0000:0000:0000:0000:0000:789D:567F:0001\n\n" +
+         "PASO 3: Aplicar Regla #1 (expandir ceros iniciales de cada hexteto).\n" +
+         "  789D → ya tiene 4 dígitos, se mantiene.\n" +
+         "  567F → ya tiene 4 dígitos, se mantiene.\n" +
+         "  1    → se expande a 0001.\n\n" +
+         "RESULTADO: 0000:0000:0000:0000:0000:789D:567F:0001"
+},
+
+
+// {
+//     "profe": "true",
+//     "unit": "IPv6",
+//     "diff": "medium",
+//     "q": "1.- Dadas las siguientes direcciones IPV6 de modo contraída, represéntelas de manera expandida.",
+//     "extra": `
+// <div class="extra-content">
+// <table class="subnet-table">
+// <thead>
+//   <tr>
+//     <th>IPV6</th>
+//     <th>IPV6 Aplicando Regla #1</th>
+//   </tr>
+// </thead>
+// <tbody>
+//   <tr>
+//     <td>::789D:567F:1</td>
+//     <td><input placeholder=""></td>
+//    </tr>
+//    <tr>
+//     <td>AA:8711::66DC</td>
+//     <td><input placeholder=""></td>
+//    </tr>
+// </tbody>
+// </table>
+// </div>
+//     `,
+//     "opts": [
+//         "::789D:567F:1 → 0000:0000:0000:0000:0000:789D:567F:0001 | AA:8711::66DC → 00AA:8711:0000:0000:0000:0000:0000:66DC",
+//         "::789D:567F:1 → 789D:567F:1:0:0:0:0:0 | AA:8711::66DC → AA:8711:0:0:0:0:0:66DC",
+//         "::789D:567F:1 → 0000:789D:567F:1:0:0:0:0 | AA:8711::66DC → AA:8711:66DC:0:0:0:0:0"
+//     ],
+//     "ans": 0,
+//         "PASO 1: Contar hextetos explícitos en ::789D:567F:1\n" +
+//          "  Hextetos explícitos: 789D, 567F, 1 → 3 hextetos\n" +
+//          "  IPv6 tiene 8 hextetos en total → el '::' representa 8-3 = 5 hextetos de ceros.\n\n" +
+//          "PASO 2: El '::' está al inicio, por lo tanto los 5 ceros van primero.\n" +
+//          "  0000:0000:0000:0000:0000:789D:567F:0001\n\n" +
+//          "PASO 3: Aplicar Regla #1 (expandir ceros iniciales de cada hexteto).\n" +
+//          "  789D → ya tiene 4 dígitos, se mantiene.\n" +
+//          "  567F → ya tiene 4 dígitos, se mantiene.\n" +
+//          "  1    → se expande a 0001.\n\n" +
+//          "RESULTADO: 0000:0000:0000:0000:0000:789D:567F:0001"
+
+//         },
+
+
+{
+    "profe": true,
+    "unit": "IPv6",
+    "diff": "medium",
+    "q": "2.- Dadas las siguientes direcciones IPV6, represéntelas según la regla #2: Omitir Ceros Con Dos Puntos.",
+    "extra": `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>IPV6</th>
+    <th>IPV6 Aplicando Regla #2</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>::1050::6:0:600:300C:326B</td>
+    <td><input placeholder=""></td>
+   </tr>
+   <tr>
+    <td>4306:0:0:0:0:0:0:C34306::C3</td>
+    <td><input placeholder=""></td>
+   </tr>
+</tbody>
+</table
+</div>
+    `,
+    "opts": [
+        "1050:0000:0000:0006:0000:0600:300C:326B → 1050::6:0:600:300C:326B | 4306:0:0:0:0:0:0:C3 → 4306::C3",
+        "1050:0000:0000:0006:0000:0600:300C:326B → 1050:0:0:6::600:300C:326B | 4306:0:0:0:0:0:0:C3 → 4306:0:0:0:0:0:0:C3",
+        "1050:0000:0000:0006:0000:0600:300C:326B → 1050::6::600:300C:326B | 4306:0:0:0:0:0:0:C3 → 4306::C3"
+    ],
+    "ans": 0,
+    "exp": "Regla #2: Omitir secuencias continuas de ceros y reemplazarlas por :: (solo una vez por dirección).\n\n1050:0000:0000:0006:0000:0600:300C:326B\n  Paso 1: Omitir ceros iniciales → 1050:0:0:6:0:600:300C:326B\n  Paso 2: Identificar la secuencia MÁS LARGA de hextetos con valor 0\n  Los hextetos 2 y 3 son 0:0 (2 hextetos)\n  El hexteto 5 es 0 (1 hexteto)\n  La más larga es de 2 hextetos\n  Resultado: 1050::6:0:600:300C:326B\n\n4306:0:0:0:0:0:0:C3\n  Paso 1: Omitir ceros iniciales → 4306:0:0:0:0:0:0:C3\n  Paso 2: Los hextetos 2 al 7 son todos ceros (6 hextetos)\n  Resultado: 4306::C3"
+},
+
+{
+    profe: true,
+    unit: "IPv6 - Regla #1",
+    diff: "medium",
+    q: "Represente la dirección IPv6 AA:8711::66DC de forma expandida aplicando Regla #1.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Contraída</td>
+    <td>AA</td>
+    <td>8711</td>
+    <td colspan="4">::</td>
+    <td>66DC</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Expandida (Regla #1)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "00AA:8711:0000:0000:0000:0000:66DC:0000",
+        "00AA:8711:0000:0000:0000:0000:0000:66DC",
+        "00AA:8711:0000:66DC:0000:0000:0000:0000",
+        "0000:00AA:8711:0000:0000:0000:0000:66DC"
+    ],
+    ans: 1,
+    exp: "PASO 1: Contar hextetos explícitos en AA:8711::66DC\n" +
+         "  Hextetos explícitos: AA, 8711, 66DC → 3 hextetos\n" +
+         "  El '::' representa 8-3 = 5 hextetos de ceros.\n\n" +
+         "PASO 2: El '::' está en el medio (después de 8711 y antes de 66DC).\n" +
+         "  AA : 8711 : 0000:0000:0000:0000:0000 : 66DC\n\n" +
+         "PASO 3: Aplicar Regla #1 (rellenar con ceros hasta 4 dígitos por hexteto).\n" +
+         "  AA   → 00AA\n" +
+         "  8711 → ya tiene 4 dígitos\n" +
+         "  66DC → ya tiene 4 dígitos\n\n" +
+         "RESULTADO: 00AA:8711:0000:0000:0000:0000:0000:66DC"
+},
+
+{
+    profe: false,
+    unit: "IPv6 - Regla #2",
+    diff: "medium",
+    q: "Aplica Regla #2 a la dirección: 1050:0000:0000:0006:0000:0600:300C:326B",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>1050</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0006</td>
+    <td>0000</td>
+    <td>0600</td>
+    <td>300C</td>
+    <td>326B</td>
+  </tr>
+  <tr>
+    <td>Regla #1</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td colspan="8"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "1050::6:0:600:300C:326B",
+        "1050:0:0:6::600:300C:326B",
+        "1050::6:600:300C:326B",
+        "1050:0:0:6:0:600:300C:326B"
+    ],
+    ans: 0,
+    exp: "PASO 1: Aplicar Regla #1 (quitar ceros iniciales de cada hexteto).\n" +
+         "  1050:0:0:6:0:600:300C:326B\n\n" +
+         "PASO 2: Identificar secuencias de ceros consecutivos para Regla #2.\n" +
+         "  Secuencia A: posiciones 2-3 → :0:0: (2 bloques)\n" +
+         "  Secuencia B: posición 5    → :0:   (1 bloque)\n\n" +
+         "PASO 3: Aplicar Regla #2. Se sustituye la secuencia MÁS LARGA por '::'.\n" +
+         "  La secuencia A (2 bloques) es más larga → se reemplaza por '::'\n" +
+         "  La secuencia B (1 bloque)  permanece como :0:\n\n" +
+         "RESULTADO: 1050::6:0:600:300C:326B"
+},
+
+{
+    profe: false,
+    unit: "IPv6 - Regla #2",
+    diff: "medium",
+    q: "Aplica Regla #2 a la dirección: 4306:0:0:0:0:0:0:C3",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>4306</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>00C3</td>
+  </tr>
+  <tr>
+    <td>Regla #1</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td colspan="8"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "4306::C3",
+        "4306:0::0:C3",
+        "4306::0:C3",
+        "4306:0:0:0::C3"
+    ],
+    ans: 0,
+    exp: "PASO 1: Aplicar Regla #1 (quitar ceros iniciales).\n" +
+         "  4306:0:0:0:0:0:0:C3\n\n" +
+         "PASO 2: Identificar secuencias de ceros consecutivos.\n" +
+         "  Secuencia única: posiciones 2 a 7 → 6 bloques de :0: consecutivos.\n\n" +
+         "PASO 3: Aplicar Regla #2. Hay una sola secuencia larga, se reemplaza directamente por '::'.\n\n" +
+         "RESULTADO: 4306::C3\n\n" +
+         "Nota: no se puede usar '::' más de una vez en la misma dirección IPv6."
+},
+
+{
+    profe: true,
+    unit: "Subnetting - Máscara y Hosts",
+    diff: "medium",
+    q: "Dada la dirección de red 155.168.25.3/21, ¿cuál es la máscara final en decimal punteado y cuántos hosts se pueden obtener?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Concepto</th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Prefijo /21 en binario</td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111000"></td>
+    <td><input placeholder="00000000"></td>
+  </tr>
+  <tr>
+    <td>Máscara decimal</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de host</td>
+    <td colspan="4"><input style="width:100%" placeholder="32 - prefijo = ?"></td>
+  </tr>
+  <tr>
+    <td>Total IPs (2^n)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Hosts utilizables (2^n - 2)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara: 255.255.248.0 | Hosts: 2046",
+        "Máscara: 255.255.240.0 | Hosts: 4094",
+        "Máscara: 255.255.255.0 | Hosts: 254",
+        "Máscara: 255.255.252.0 | Hosts: 1022"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir /21 a binario.\n" +
+         "  21 bits en 1 → 11111111.11111111.11111000.00000000\n\n" +
+         "PASO 2: Convertir a decimal punteado.\n" +
+         "  11111111 = 255\n" +
+         "  11111111 = 255\n" +
+         "  11111000 = 248  (128+64+32+16+8 = 248)\n" +
+         "  00000000 = 0\n" +
+         "  MÁSCARA: 255.255.248.0\n\n" +
+         "PASO 3: Calcular hosts.\n" +
+         "  Bits de host = 32 - 21 = 11\n" +
+         "  Total IPs = 2^11 = 2048\n" +
+         "  Hosts utilizables = 2048 - 2 = 2046"
+},
+
+{
+    profe: true,
+    unit: "Subnetting - Máscara y Hosts",
+    diff: "medium",
+    q: "Dada la dirección de red 10.1.25.30/16, ¿cuál es la máscara final en decimal punteado y cuántos hosts se pueden obtener?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Concepto</th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Prefijo /16 en binario</td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="00000000"></td>
+    <td><input placeholder="00000000"></td>
+  </tr>
+  <tr>
+    <td>Máscara decimal</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de host</td>
+    <td colspan="4"><input style="width:100%" placeholder="32 - prefijo = ?"></td>
+  </tr>
+  <tr>
+    <td>Total IPs (2^n)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Hosts utilizables (2^n - 2)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara: 255.255.0.0 | Hosts: 65534",
+        "Máscara: 255.0.0.0   | Hosts: 16777214",
+        "Máscara: 255.255.0.0 | Hosts: 65536",
+        "Máscara: 255.255.255.0 | Hosts: 254"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir /16 a binario.\n" +
+         "  16 bits en 1 → 11111111.11111111.00000000.00000000\n\n" +
+         "PASO 2: Convertir a decimal punteado.\n" +
+         "  11111111 = 255\n" +
+         "  11111111 = 255\n" +
+         "  00000000 = 0\n" +
+         "  00000000 = 0\n" +
+         "  MÁSCARA: 255.255.0.0\n\n" +
+         "PASO 3: Calcular hosts.\n" +
+         "  Bits de host = 32 - 16 = 16\n" +
+         "  Total IPs = 2^16 = 65536\n" +
+         "  Hosts utilizables = 65536 - 2 = 65534"
+},
+
+{
+    profe: true,
+    unit: "Subnetting - VLSM Avanzado",
+    diff: "hard",
+    case: "La empresa PCS Tech necesita 14 subredes con la IP en binario 01000001.10000000.11000011.11111110.",
+    q: "Calcula: máscara final, blocksize, hosts por subred, primera y última red útil, y completa el cuadro de subredes.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th colspan="6">Datos previos</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP en binario</td>
+    <td colspan="5">01000001.10000000.11000011.11111110</td>
+  </tr>
+  <tr>
+    <td>IP en decimal</td>
+    <td colspan="5"><input style="width:100%" placeholder="convierte cada octeto"></td>
+  </tr>
+  <tr>
+    <td>Clase</td>
+    <td colspan="5"><input style="width:100%" placeholder="A, B o C"></td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Bits prestados (para 14 redes)</td>
+    <td colspan="5"><input style="width:100%" placeholder="2^n ≥ 14"></td>
+  </tr>
+  <tr>
+    <td>Máscara final (prefijo)</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Blocksize</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Hosts por subred (2^n - 2)</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Subred</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>3</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>4</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>5</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>6</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>7</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>8</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>9</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>10</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>11</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>12</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>13</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>14</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara /28 | Blocksize 16 | 14 hosts | Primera red: 65.128.195.0 | Última red: 65.128.195.208",
+        "Máscara /27 | Blocksize 32 | 30 hosts | Primera red: 65.128.195.0 | Última red: 65.128.195.192",
+        "Máscara /28 | Blocksize 16 | 14 hosts | Primera red: 65.128.195.16 | Última red: 65.128.195.224",
+        "Máscara /26 | Blocksize 64 | 62 hosts | Primera red: 65.128.195.0 | Última red: 65.128.195.192"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir IP binaria a decimal.\n" +
+         "  01000001 = 65\n" +
+         "  10000000 = 128\n" +
+         "  11000011 = 195\n" +
+         "  11111110 = 254\n" +
+         "  IP decimal: 65.128.195.254\n\n" +
+         "PASO 2: Determinar clase.\n" +
+         "  Primer octeto 65 → entre 1-126 → Clase A\n" +
+         "  Máscara por defecto Clase A: 255.0.0.0 (/8)\n\n" +
+         "PASO 3: Calcular bits a prestar para 14 subredes.\n" +
+         "  2^n ≥ 14 → 2^4 = 16 ≥ 14 ✓ → se prestan 4 bits\n" +
+         "  Nuevo prefijo: /8 + 4 = /28\n" +
+         "  Máscara final: 255.255.255.240\n\n" +
+         "PASO 4: Blocksize = 2^(bits de host) = 2^(32-28) = 2^4 = 16\n" +
+         "  Hosts por subred = 16 - 2 = 14\n\n" +
+         "PASO 5: Cuadro de subredes (blocksize 16, partiendo de 65.128.195.0):\n" +
+         "  Red 1:  65.128.195.0   | 1-14   | BC: 65.128.195.15\n" +
+         "  Red 2:  65.128.195.16  | 17-30  | BC: 65.128.195.31\n" +
+         "  Red 3:  65.128.195.32  | 33-46  | BC: 65.128.195.47\n" +
+         "  Red 4:  65.128.195.48  | 49-62  | BC: 65.128.195.63\n" +
+         "  Red 5:  65.128.195.64  | 65-78  | BC: 65.128.195.79\n" +
+         "  Red 6:  65.128.195.80  | 81-94  | BC: 65.128.195.95\n" +
+         "  Red 7:  65.128.195.96  | 97-110 | BC: 65.128.195.111\n" +
+         "  Red 8:  65.128.195.112 | 113-126| BC: 65.128.195.127\n" +
+         "  Red 9:  65.128.195.128 | 129-142| BC: 65.128.195.143\n" +
+         "  Red 10: 65.128.195.144 | 145-158| BC: 65.128.195.159\n" +
+         "  Red 11: 65.128.195.160 | 161-174| BC: 65.128.195.175\n" +
+         "  Red 12: 65.128.195.176 | 177-190| BC: 65.128.195.191\n" +
+         "  Red 13: 65.128.195.192 | 193-206| BC: 65.128.195.207\n" +
+         "  Red 14: 65.128.195.208 | 209-222| BC: 65.128.195.223\n\n" +
+         "Primera red útil: 65.128.195.0 | Última red útil: 65.128.195.208"
+},
+
+// GUIA 2 
+
+{
+    profe: true,
+    unit: "IPv6 - Hextetos",
+    diff: "medium",
+    q: "En la dirección IPv6 546C:B:98:F:C::6665, el equivalente en decimal al sexto hexteto es:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Contraída</td>
+    <td>546C</td>
+    <td>B</td>
+    <td>98</td>
+    <td>F</td>
+    <td>C</td>
+    <td colspan="2">::</td>
+    <td>6665</td>
+  </tr>
+  <tr>
+    <td>Expandida</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>6° hexteto en binario (16 bits)</td>
+    <td colspan="8"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "000000000000001010",
+        "000000000000001011",
+        "000000000000000000",
+        "101000000000000000"
+    ],
+    ans: 2,
+    exp: "PASO 1: Expandir la dirección. El '::' reemplaza hextetos de ceros consecutivos.\n" +
+         "546C:B:98:F:C::6665 tiene 6 hextetos explícitos (546C, B, 98, F, C, 6665).\n" +
+         "  El '::' representa 8-6 = 2 hextetos de ceros.\n" +
+         "  El '::' está entre C y 6665 → los ceros van en posiciones 6 y 7.\n" +
+         "Expandida: 546C:000B:0098:000F:000C:0000:0000:6665\n\n" +
+         "PASO 2: Identificar el sexto hexteto.\n" +
+         "  1° → 546C\n" +
+         "  2° → 000B\n" +
+         "  3° → 0098\n" +
+         "  4° → 000F\n" +
+         "  5° → 000C\n" +
+         "  6° → 0000  ← este es el que se pide\n\n" +
+         "PASO 3: Convertir 0000 a binario de 16 bits.\n" +
+         "  0000 hex = 0 decimal = 0000000000000000 binario\n\n" +
+         "RESULTADO: 000000000000000000 → opción C."
+},
+
+{
+    profe: true,
+    unit: "IPv4 - AND lógico",
+    diff: "medium",
+    q: "Al efectuar un AND entre la dirección IPv4 90.10.120.1 y su máscara, el resultado es:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP decimal</td>
+    <td>90</td>
+    <td>10</td>
+    <td>120</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>IP binario</td>
+    <td><input placeholder="01011010"></td>
+    <td><input placeholder="00001010"></td>
+    <td><input placeholder="01111000"></td>
+    <td><input placeholder="00000001"></td>
+  </tr>
+  <tr>
+    <td>Clase</td>
+    <td colspan="4"><input style="width:100%" placeholder="¿A, B o C?"></td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>AND (resultado)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "11111111.00000000.00000000.00000000",
+        "11111111.10101010.00000000.00000000",
+        "01011010.00001010.01111000.00000001",
+        "01011010.00000000.00000000.00000000"
+    ],
+    ans: 3,
+    exp: "PASO 1: Convertir 90.10.120.1 a binario.\n" +
+         "  90  → 01011010\n" +
+         "  10  → 00001010\n" +
+         "  120 → 01111000\n" +
+         "  1   → 00000001\n\n" +
+         "PASO 2: Clase. Primer octeto 90 (1-126) → Clase A.\n" +
+         "  Máscara Clase A: 255.0.0.0 = 11111111.00000000.00000000.00000000\n\n" +
+         "PASO 3: AND bit a bit.\n" +
+         "  IP:      01011010.00001010.01111000.00000001\n" +
+         "  Máscara: 11111111.00000000.00000000.00000000\n" +
+         "  AND:     01011010.00000000.00000000.00000000\n\n" +
+         "RESULTADO: 01011010.00000000.00000000.00000000 → opción D."
+},
+
+//GUÍA 2 — PARTE B: DESARROLLO
+
+{
+    profe: true,
+    unit: "IPv6 - Regla #1",
+    diff: "medium",
+    q: "Represente las siguientes direcciones IPV6 según la regla #1: Omitir Ceros Iniciales : 1050:0000:0000:0000:0005:0600:300C:326B",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>1050</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0005</td>
+    <td>0600</td>
+    <td>300C</td>
+    <td>326B</td>
+  </tr>
+  <tr>
+    <td>Regla #1</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "1050:0:0:0:5:600:300C:326B",
+        "1050:0:0:0:5:6:3C:326B",
+        "1050:000:000:000:005:600:300C:326B",
+        "1050:0000:0000:0000:0005:0600:300C:326B"
+    ],
+    ans: 0,
+    exp: "Regla #1: Se eliminan los ceros a la IZQUIERDA de cada hexteto (ceros no significativos).\n\n" +
+         "  1050 → 1050  (sin ceros iniciales, se mantiene)\n" +
+         "  0000 → 0     (todos ceros, se deja al menos un dígito)\n" +
+         "  0000 → 0\n" +
+         "  0000 → 0\n" +
+         "  0005 → 5     (se eliminan los tres ceros iniciales)\n" +
+         "  0600 → 600   (se elimina el cero inicial)\n" +
+         "  300C → 300C  (sin ceros iniciales, se mantiene)\n" +
+         "  326B → 326B  (sin ceros iniciales, se mantiene)\n\n" +
+         "RESULTADO: 1050:0:0:0:5:600:300C:326B"
+},
+
+{
+    profe: true,
+    unit: "IPv6 - Regla #2",
+    diff: "medium",
+    q: "Dadas las siguientes direcciones IPV6 , represéntelas según la regla #2: Omitir Ceros Con Dos Puntos 1050:0000:0000:0000:0005:0000:0000:326B",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>1050</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0005</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>326B</td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "1050::5:0:0:326B",
+        "1050:0:0:0:5::326B",
+        "1050::5:326B",
+        "1050:0000::5:326B"
+    ],
+    ans: 0,
+    exp: "PASO 1: Aplicar Regla #1 (quitar ceros iniciales).\n" +
+         "  1050:0:0:0:5:0:0:326B\n\n" +
+         "PASO 2: Identificar secuencias de ceros consecutivos.\n" +
+         "  Secuencia A: posiciones 2-4 → :0:0:0: (3 bloques)\n" +
+         "  Secuencia B: posiciones 6-7 → :0:0:   (2 bloques)\n\n" +
+         "PASO 3: Aplicar Regla #2. Se sustituye la secuencia MÁS LARGA por '::'.\n" +
+         "  Secuencia A tiene 3 bloques → es la más larga → se reemplaza por '::'\n" +
+         "  Secuencia B (2 bloques) se mantiene como :0:0:\n\n" +
+         "RESULTADO: 1050::5:0:0:326B"
+},
+
+{
+    profe: true,
+    unit: "IPv6 - Regla #2",
+    diff: "medium",
+    q: "Aplica Regla #2 a la dirección: FF06:0:0:0:0:0:0:C3",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>FF06</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>00C3</td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "FF06::C3",
+        "FF06:0::0:C3",
+        "FF06::0:C3",
+        "FF06:0:0:0::C3"
+    ],
+    ans: 0,
+    exp: "PASO 1: Aplicar Regla #1 (quitar ceros iniciales).\n" +
+         "  FF06:0:0:0:0:0:0:C3\n\n" +
+         "PASO 2: Identificar secuencias de ceros consecutivos.\n" +
+         "  Secuencia única: posiciones 2 a 7 → 6 bloques de :0: consecutivos.\n\n" +
+         "PASO 3: Aplicar Regla #2. Solo hay una secuencia, se reemplaza por '::'.\n\n" +
+         "RESULTADO: FF06::C3\n\n" +
+         "Nota: '::' solo puede aparecer UNA SOLA VEZ en una dirección IPv6. Si apareciera dos veces sería imposible determinar cuántos grupos de ceros representa cada uno."
+},
+
+{
+    profe: true,
+    unit: "Subnetting - Máscara y Hosts",
+    diff: "medium",
+    q: "Se muestra la dirección de red 60.168.25.3/ 29 ¿cual es la Mascara final en decimal punteado y la Cantidad de Host que se pueden obtener?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Concepto</th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Prefijo /29 en binario</td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111000"></td>
+  </tr>
+  <tr>
+    <td>Máscara decimal</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de host</td>
+    <td colspan="4"><input style="width:100%" placeholder="32 - 29 = ?"></td>
+  </tr>
+  <tr>
+    <td>Total IPs (2^n)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Hosts utilizables (2^n - 2)</td>
+    <td colspan="4"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara: 255.255.255.248 | Hosts: 6",
+        "Máscara: 255.255.255.240 | Hosts: 14",
+        "Máscara: 255.255.255.252 | Hosts: 2",
+        "Máscara: 255.255.255.0   | Hosts: 254"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir /29 a binario.\n" +
+         "  29 bits en 1 → 11111111.11111111.11111111.11111000\n\n" +
+         "PASO 2: Convertir a decimal punteado.\n" +
+         "  11111111 = 255\n" +
+         "  11111111 = 255\n" +
+         "  11111111 = 255\n" +
+         "  11111000 = 248  (128+64+32+16+8 = 248)\n" +
+         "  MÁSCARA: 255.255.255.248\n\n" +
+         "PASO 3: Calcular hosts.\n" +
+         "  Bits de host = 32 - 29 = 3\n" +
+         "  Total IPs = 2^3 = 8\n" +
+         "  Hosts utilizables = 8 - 2 = 6"
+},
+
+{
+    profe: true,
+    unit: "IPv6 - Análisis de dirección",
+    diff: "medium",
+    q: "Dada la dirección IPv6 987F::FF2A:0/64, responde: ¿cuántos bits de red tiene?, ¿cuál es la porción de red?, ¿cuál es la porción de interfaz?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Concepto</th>
+    <th>Desarrollo</th>
+    <th>Resultado</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Dirección expandida</td>
+    <td><input style="width:100%" placeholder="expandir usando Regla #1"></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de red (prefijo)</td>
+    <td><input style="width:100%" placeholder="se indica con /XX"></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de interfaz</td>
+    <td><input style="width:100%" placeholder="128 - bits de red = ?"></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Porción de red (primeros 64 bits)</td>
+    <td colspan="2"><input style="width:100%" placeholder="primeros 4 hextetos"></td>
+  </tr>
+  <tr>
+    <td>Porción de interfaz (últimos 64 bits)</td>
+    <td colspan="2"><input style="width:100%" placeholder="últimos 4 hextetos"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Bits de red: 64 | Porción de red: 987F:0000:0000:0000 | Porción de interfaz: 0000:FF2A:0000:0000",
+        "Bits de red: 64 | Porción de red: 987F:0000:FF2A:0000 | Porción de interfaz: 0000:0000:0000:0000",
+        "Bits de red: 128 | Porción de red: toda la dirección | Porción de interfaz: ninguna",
+        "Bits de red: 32 | Porción de red: 987F:0000 | Porción de interfaz: 0000:0000:FF2A:0000:0000:0000"
+    ],
+    ans: 0,
+    exp: "PASO 1: Expandir la dirección 987F::FF2A:0/64.\n" +
+         "  Hextetos explícitos: 987F, FF2A, 0 → 3 hextetos\n" +
+         "  '::' representa 8-3 = 5 hextetos de ceros.\n" +
+         "  El '::' va después de 987F → los ceros van en posiciones 2 a 6.\n" +
+         "  Expandida: 987F:0000:0000:0000:0000:FF2A:0000:0000\n\n" +
+         "PASO 2: Bits de red.\n" +
+         "  El prefijo /64 indica que los primeros 64 bits son la porción de red.\n" +
+         "  Bits de interfaz = 128 - 64 = 64 bits.\n\n" +
+         "PASO 3: Dividir la dirección en porciones.\n" +
+         "  64 bits = 4 hextetos de 16 bits cada uno.\n" +
+         "  Porción de RED      (hextetos 1-4): 987F:0000:0000:0000\n" +
+         "  Porción de INTERFAZ (hextetos 5-8): 0000:FF2A:0000:0000"
+},
+
+{
+    profe: true,
+    unit: "Subnetting - VLSM Avanzado",
+    diff: "hard",
+    case: "La Unidad Educativa “PENSAMIENTO INNOVADOR”, con sede en Antofagasta, desea establecer conexión con tres de sus institutos en Arica, Calama y La Serena, por lo cual le solicita realizar un Plan de Direccionamiento para 4 subredes con la IP en binario 11001000. 10101000.00010110.00000010, para conectar en cada sede una determinada cantidad de host",
+    q: "Debe entregar un reporte con la cantidad de redes requeridas, Host posibles a conectar y mostrar el cuadro de Subneteo de estas paso a paso, indicando como las obtuvo",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th colspan="6">Datos previos</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP en binario</td>
+    <td colspan="5">11001000.10101000.00010110.00000010</td>
+  </tr>
+  <tr>
+    <td>IP en decimal</td>
+    <td colspan="5"><input style="width:100%" placeholder="convierte cada octeto"></td>
+  </tr>
+  <tr>
+    <td>Clase</td>
+    <td colspan="5"><input style="width:100%" placeholder="A, B o C"></td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Bits prestados (para 4 redes)</td>
+    <td colspan="5"><input style="width:100%" placeholder="2^n ≥ 4"></td>
+  </tr>
+  <tr>
+    <td>Máscara final (prefijo)</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Blocksize</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Hosts por subred (2^n - 2)</td>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Subred</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>3</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>4</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara /26 | Blocksize 64 | 62 hosts | Subredes: .0, .64, .128, .192",
+        "Máscara /27 | Blocksize 32 | 30 hosts | Subredes: .0, .32, .64, .96",
+        "Máscara /25 | Blocksize 128 | 126 hosts | Subredes: .0, .128",
+        "Máscara /28 | Blocksize 16 | 14 hosts | Subredes: .0, .16, .32, .48"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir IP binaria a decimal.\n" +
+         "  11001000 = 200\n" +
+         "  10101000 = 168\n" +
+         "  00010110 = 22\n" +
+         "  00000010 = 2\n" +
+         "  IP decimal: 200.168.22.2\n\n" +
+         "PASO 2: Determinar clase.\n" +
+         "  Primer octeto 200 → entre 192-223 → Clase C\n" +
+         "  Máscara por defecto Clase C: 255.255.255.0 (/24)\n\n" +
+         "PASO 3: Calcular bits a prestar para 4 subredes.\n" +
+         "  2^n ≥ 4 → 2^2 = 4 ✓ → se prestan 2 bits\n" +
+         "  Nuevo prefijo: /24 + 2 = /26\n" +
+         "  Máscara final: 255.255.255.192\n\n" +
+         "PASO 4: Blocksize = 2^(bits de host) = 2^(32-26) = 2^6 = 64\n" +
+         "  Hosts por subred = 64 - 2 = 62\n\n" +
+         "PASO 5: Cuadro de subredes (blocksize 64, partiendo de 200.168.22.0):\n" +
+         "  Red 1: 200.168.22.0   | Primera: .1   | Última: .62  | BC: 200.168.22.63\n" +
+         "  Red 2: 200.168.22.64  | Primera: .65  | Última: .126 | BC: 200.168.22.127\n" +
+         "  Red 3: 200.168.22.128 | Primera: .129 | Última: .190 | BC: 200.168.22.191\n" +
+         "  Red 4: 200.168.22.192 | Primera: .193 | Última: .254 | BC: 200.168.22.255"
+},
 
     {
         profe: true,
         unit: "Unidad Redes",
         diff: "easy",
         q: "Expande la IPv6 AA:8711::66DC",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Pos.</th>
+            <th>1°</th>
+            <th>2°</th>
+            <th>3°</th>
+            <th>4°</th>
+            <th>5°</th>
+            <th>6°</th>
+            <th>7°</th>
+            <th>8°</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Hexteto</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+            `,
         opts: [
             "00AA:8711:0000:0000:0000:0000:0000:66DC",
             "AA00:8711:0000:0000:0000:0000:0000:66DC",
@@ -78,12 +2112,10 @@ BANK.so = [
             "00AA:8711:66DC:0000:0000:0000:0000:0000"
         ],
         ans: 0,
-        exp: "Se agregan ceros hasta completar 8 hextetos y cada bloque queda con 4 dígitos \n PASO 1: Contar bloques visibles. Tenemos AA, 8711 (2 al inicio) y 66DC (1 al final) = 3 bloques.\n" +
+        exp: "PASO 1: Contar bloques visibles. Tenemos AA, 8711 (2 al inicio) y 66DC (1 al final) = 3 bloques.\n" +
             "PASO 2: Calcular faltantes. 8 - 3 = 5 bloques de ceros deben ir donde está el '::'.\n" +
             "PASO 3: Completar hextetos a 4 dígitos. 'AA' se convierte en '00AA' agregando ceros a la izquierda.\n" +
-            "PASO 4: Ensamblar la dirección. 00AA:8711: seguido de los 5 bloques de ceros y finalmente 66DC.\n" +
             "RESULTADO: 00AA:8711:0000:0000:0000:0000:0000:66DC"
-
     },
 
     //IPv6 – Contraer (Regla #2)
@@ -92,6 +2124,53 @@ BANK.so = [
         unit: "Unidad Redes",
         diff: "easy",
         q: "Aplica la regla #2 (omitir ceros) a: 1050:0000:0000:0006:0000:0600:300C:326B",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Paso</th>
+            <th>1°</th>
+            <th>2°</th>
+            <th>3°</th>
+            <th>4°</th>
+            <th>5°</th>
+            <th>6°</th>
+            <th>7°</th>
+            <th>8°</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Original</td>
+            <td>1050</td>
+            <td>0000</td>
+            <td>0000</td>
+            <td>0006</td>
+            <td>0000</td>
+            <td>0600</td>
+            <td>300C</td>
+            <td>326B</td>
+        </tr>
+        <tr>
+            <td>Regla #1</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>Regla #2</td>
+            <td colspan="8"><input style="width:100%"></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+    `,
         opts: [
             "1050::6:0:600:300C:326B",
             "1050:0:0:6:0:600:300C:326B",
@@ -99,9 +2178,9 @@ BANK.so = [
             "1050:0000::600:300C:326B"
         ],
         ans: 0,
-        exp: "Se eliminan ceros a la izquierda y se reemplaza la mayor secuencia de 0000 por :: \n PASO 1: Eliminar ceros a la izquierda. 0000 -> 0, 0006 -> 6, 0600 -> 600.\n" +
-            "PASO 2: Identificar grupos de ceros. Tenemos un grupo de dos ceros (bloques 2 y 3) y un cero solitario (bloque 5).\n" +
-            "PASO 3: Aplicar '::'. Se reemplaza la secuencia MÁS LARGA de ceros. En este caso, los dos primeros ceros.\n" +
+        exp: "PASO 1: Eliminar ceros a la izquierda (Regla #1). 0000→0, 0006→6, 0600→600.\n" +
+            "PASO 2: Identificar grupos de ceros. Hay un grupo de dos ceros (bloques 2 y 3) y un cero solitario (bloque 5).\n" +
+            "PASO 3: Aplicar '::'. Se reemplaza la secuencia MÁS LARGA de ceros (los dos primeros ceros).\n" +
             "PASO 4: Regla crítica. El '::' solo se puede usar UNA VEZ por dirección.\n" +
             "RESULTADO: 1050::6:0:600:300C:326B"
     },
@@ -111,6 +2190,42 @@ BANK.so = [
         unit: "Unidad Redes",
         diff: "easy",
         q: "Aplica la regla #2 (omitir ceros) a: 4306:0:0:0:0:0:0:C3",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Paso</th>
+            <th>1°</th>
+            <th>2°</th>
+            <th>3°</th>
+            <th>4°</th>
+            <th>5°</th>
+            <th>6°</th>
+            <th>7°</th>
+            <th>8°</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Original</td>
+            <td>4306</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>C3</td>
+        </tr>
+        <tr>
+            <td>Regla #2</td>
+            <td colspan="8"><input style="width:100%"></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+    `,
         opts: [
             "4306::C3",
             "4306:0::C3",
@@ -118,9 +2233,8 @@ BANK.so = [
             "4306:C3::"
         ],
         ans: 0,
-        exp: "Todos los bloques de cero consecutivos se reemplazan por :: una sola vez.\n PASO 1: Identificar bloques de ceros consecutivos. Hay 6 bloques de ceros entre 4306 y C3.\n" +
-            "PASO 2: Aplicar Regla #2. Toda secuencia continua de ceros se puede contraer usando '::'.\n" +
-            "PASO 3: Ejecución. Se eliminan los 6 bloques centrales y se sustituyen por el símbolo de doble dos puntos.\n" +
+        exp: "PASO 1: Identificar bloques de ceros consecutivos. Hay 6 grupos de ceros entre 4306 y C3.\n" +
+            "PASO 2: Aplicar Regla #2. Toda secuencia continua de ceros se comprime usando '::'.\n" +
             "RESULTADO: 4306::C3"
     },
 
@@ -130,6 +2244,45 @@ BANK.so = [
         unit: "Unidad Redes",
         diff: "medium",
         q: "Para la red 155.168.25.3/21, ¿cuál es la máscara en decimal punteado y cuántos hosts permite?",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Octeto 1</th>
+            <th>Octeto 2</th>
+            <th>Octeto 3</th>
+            <th>Octeto 4</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Máscara (binario)</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>Máscara (decimal)</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>Bits de host</td>
+            <td colspan="4"><input></td>
+        </tr>
+        <tr>
+            <td>Hosts útiles</td>
+            <td colspan="4"><input></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+         `,
         opts: [
             "255.255.248.0 y 2046 hosts",
             "255.255.0.0 y 65534 hosts",
@@ -137,7 +2290,7 @@ BANK.so = [
             "255.248.0.0 y 4094 hosts"
         ],
         ans: 0,
-        exp: "/21 → 255.255.248.0. Hosts: 2^(32-21) - 2 = 2046.\n PASO 1: Calcular la máscara. /21 significa 21 bits de red (11111111.11111111.11111000.00000000).\n" +
+        exp: "PASO 1: Calcular la máscara. /21 significa 21 bits de red (11111111.11111111.11111000.00000000).\n" +
             "PASO 2: Convertir a decimal. 8 bits (255) + 8 bits (255) + 5 bits (248) + 0 bits (0) = 255.255.248.0.\n" +
             "PASO 3: Calcular bits de host. 32 bits totales - 21 bits de red = 11 bits para hosts.\n" +
             "PASO 4: Aplicar fórmula de hosts. 2^11 - 2 = 2048 - 2 = 2046 hosts útiles.\n" +
@@ -149,6 +2302,45 @@ BANK.so = [
         unit: "Unidad Redes",
         diff: "medium",
         q: "Para la red 10.1.25.30/16, ¿cuál es la máscara en decimal punteado y cuántos hosts permite?",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Octeto 1</th>
+            <th>Octeto 2</th>
+            <th>Octeto 3</th>
+            <th>Octeto 4</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Máscara (binario)</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>Máscara (decimal)</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>Bits de host</td>
+            <td colspan="4"><input></td>
+        </tr>
+        <tr>
+            <td>Hosts útiles</td>
+            <td colspan="4"><input></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+            `,
         opts: [
             "255.255.0.0 y 65534 hosts",
             "255.0.0.0 y 16777214 hosts",
@@ -156,7 +2348,7 @@ BANK.so = [
             "255.255.248.0 y 2046 hosts"
         ],
         ans: 0,
-        exp: "/16 → 255.255.0.0. Hosts: 2^(32-16) - 2 = 65534.\n PASO 1: Identificar el prefijo /16. Significa que los primeros dos octetos son de red.\n" +
+        exp: "PASO 1: Identificar el prefijo /16. Significa que los primeros dos octetos son de red.\n" +
             "PASO 2: Escribir la máscara. 11111111.11111111.00000000.00000000 -> 255.255.0.0.\n" +
             "PASO 3: Calcular bits de host. 32 - 16 = 16 bits disponibles para dispositivos.\n" +
             "PASO 4: Aplicar fórmula. 2^16 - 2 = 65536 - 2 = 65534 hosts útiles.\n" +
@@ -173,7 +2365,7 @@ BANK.so = [
         q: "PCS Tech: IP 01000001.10000000.11000011.11111110 → 14 subredes. Completa el desarrollo y cuadro.",
 
         extra: `
-    <div class="bloque-ejercicio">
+        <div class="bloque-ejercicio">
 
       <h5>5.1 Máscara final</h5>
       <input>
@@ -262,19 +2454,46 @@ BANK.so = [
         profe: true,
         unit: "IPv6",
         diff: "medium",
-
-        q: "En la dirección IPV6 546C:B:98:F:C::6665, ¿cuál es el equivalente del sexto hexteto?",
-
+        q: "En la dirección IPv6 546C:B:98:F:C::6665, ¿cuál es el equivalente del sexto hexteto?",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Pos.</th>
+            <th>1°</th>
+            <th>2°</th>
+            <th>3°</th>
+            <th>4°</th>
+            <th>5°</th>
+            <th>6°</th>
+            <th>7°</th>
+            <th>8°</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Hexteto</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+            `,
         opts: [
             "000000000000001010",
             "000000000000001011",
             "000000000000000000",
             "101000000000000000"
         ],
-
         ans: 2,
-
-        exp: "La dirección tiene ::, que reemplaza grupos de 0000. El sexto hexteto es 0000.",
         exp: "PASO 1: Contar hextetos visibles: 546C(1), B(2), 98(3), F(4), C(5), 6665(6).\n" +
             "PASO 2: Una IPv6 completa tiene 8 hextetos. Faltan 2 para completar el estándar.\n" +
             "PASO 3: El símbolo '::' representa los bloques faltantes de ceros consecutivos.\n" +
@@ -289,19 +2508,58 @@ BANK.so = [
         profe: true,
         unit: "IPv6",
         diff: "medium",
-
         q: "Aplica regla #1 (omitir ceros iniciales): 1050:0000:0000:0000:0005:0600:300C:326B",
-
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>1050</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0005</td>
+    <td>0600</td>
+    <td>300C</td>
+    <td>326B</td>
+  </tr>
+  <tr>
+    <td>Regla #1</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: [
             "1050:0:0:0:5:600:300C:326B",
             "1050::5:600:300C:326B",
             "1050:0000:5:600:300C:326B",
             "1050:0:0:0:0005:0600:300C:326B"
         ],
-
         ans: 0,
-
-        exp: "Solo se quitan ceros a la izquierda, no se usa ::. \n PASO 1: Identificar la instrucción. Regla #1 solo permite omitir ceros a la izquierda de cada hexteto.\n" +
+        exp: "PASO 1: Identificar la instrucción. Regla #1 solo permite omitir ceros a la izquierda de cada hexteto.\n" +
             "PASO 2: Procesar bloques de ceros. 0000 se reduce a un solo 0. 0005 se reduce a 5.\n" +
             "PASO 3: Procesar bloques técnicos. 0600 se reduce a 600 (los ceros a la derecha NO se eliminan).\n" +
             "PASO 4: Evitar Regla #2. No se debe usar '::' ya que la pregunta pide específicamente la Regla #1.\n" +
@@ -314,22 +2572,65 @@ BANK.so = [
         profe: true,
         unit: "IPv6",
         diff: "medium",
-
         q: "Aplica regla #2: 1050:0000:0000:0000:0005:0000:0000:326B",
-
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>1050</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0005</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>326B</td>
+  </tr>
+  <tr>
+    <td>Regla #1</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td colspan="8"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: [
             "1050::5:0:0:326B",
             "1050:0:0:0:5::326B",
             "1050::5:326B",
             "1050:0000::5:326B"
         ],
-
-        ans: 2,
-        exp: ":: reemplaza la mayor cantidad de bloques 0000 consecutivos.\n PASO 1: Identificar secuencias de ceros. Secuencia A (3 bloques): :0000:0000:0000:. Secuencia B (2 bloques): :0000:0000:.\n" +
+        ans: 0,
+        exp: "PASO 1: Identificar secuencias de ceros. Secuencia A (3 bloques): :0000:0000:0000:. Secuencia B (2 bloques): :0000:0000:.\n" +
             "PASO 2: Aplicar Regla #2. Se debe sustituir la secuencia MÁS LARGA por '::'.\n" +
-            "PASO 3: Resolución. Los tres ceros iniciales se vuelven '::'. Los dos ceros finales NO pueden comprimirse porque '::' se usa solo una vez.\n" +
-            "PASO 4: Omitir ceros restantes. 0005 se vuelve 5. Los bloques de ceros restantes deben mostrarse como 0.\n" +
-            "RESULTADO: 1050::5:0:0:326B (Nota: En las opciones la correcta es la que usa la mayor compresión permitida)."
+            "PASO 3: Resolución. Los tres ceros iniciales se vuelven '::'. Los dos ceros finales se muestran como :0:0:.\n" +
+            "RESULTADO: 1050::5:0:0:326B"
     },
 
     //SUBNETTING /29
@@ -338,19 +2639,54 @@ BANK.so = [
         profe: true,
         unit: "Subnetting",
         diff: "medium",
-
         q: "IP 60.168.25.3/29 → máscara y hosts",
-
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Máscara (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Máscara (decimal)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de host</td>
+    <td colspan="4"><input></td>
+  </tr>
+  <tr>
+    <td>Hosts útiles</td>
+    <td colspan="4"><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: [
             "255.255.255.248 | 6 hosts",
             "255.255.255.240 | 14 hosts",
             "255.255.255.252 | 2 hosts",
             "255.255.255.224 | 30 hosts"
         ],
-
         ans: 0,
-
-        exp: "/29 → 255.255.255.248. Hosts = 2^3 - 2 = 6.\n PASO 1: Calcular máscara /29. Son 29 bits de red. 8+8+8+5. El último octeto es 11111000.\n" +
+        exp: "PASO 1: Calcular máscara /29. Son 29 bits de red. El último octeto tiene 5 bits de red (11111000).\n" +
             "PASO 2: Conversión decimal. 128+64+32+16+8 = 248. Máscara: 255.255.255.248.\n" +
             "PASO 3: Calcular hosts. Bits de host = 32 - 29 = 3 bits.\n" +
             "PASO 4: Fórmula de hosts útiles. 2^3 - 2 = 8 - 2 = 6 hosts.\n" +
@@ -362,21 +2698,54 @@ BANK.so = [
         profe: true,
         unit: "IPv6",
         diff: "medium",
-
         q: "987F::FF2A:0/64 → bits de red, porción red e interfaz",
-
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Pos.</th>
+            <th>1°</th>
+            <th>2°</th>
+            <th>3°</th>
+            <th>4°</th>
+            <th>5°</th>
+            <th>6°</th>
+            <th>7°</th>
+            <th>8°</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Hexteto</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>Porción</td>
+            <td colspan="4">RED (/64)</td>
+            <td colspan="4">INTERFAZ</td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+            `,
         opts: [
             "64 bits | 987F:: | FF2A:0",
             "32 bits | 987F | FF2A",
             "64 bits | FF2A | 987F",
             "128 bits | 987F::FF2A:0 | 0"
         ],
-
         ans: 0,
-
-        exp: "/64 → 64 bits red, resto interfaz.\n PASO 1: Identificar el prefijo /64. Los primeros 64 bits (4 hextetos) corresponden a la RED.\n" +
-            "PASO 2: Identificar porción de interfaz. Los últimos 64 bits (4 hextetos restantes) son la INTERFAZ (Host).\n" +
-            "PASO 3: Análisis de la dirección. 987F(1) : 0000(2) : 0000(3) : 0000(4) | FF2A(5) : 0000(6) : 0000(7) : 0000(8).\n" +
+        exp: "PASO 1: Identificar el prefijo /64. Los primeros 64 bits (4 hextetos) corresponden a la RED.\n" +
+            "PASO 2: Los últimos 64 bits (4 hextetos restantes) son la INTERFAZ (Host).\n" +
+            "PASO 3: Análisis: 987F(1):0000(2):0000(3):0000(4) | FF2A(5):0000(6):0000(7):0000(8).\n" +
             "RESULTADO: Red = 987F:: (primeros 4 bloques). Interfaz = FF2A:0 (últimos bloques visibles)."
     },
 
@@ -386,24 +2755,64 @@ BANK.so = [
         profe: true,
         unit: "Subnetting",
         diff: "hard",
-
         q: "IP 11001000.10101000.00010110.00000010 → 4 subredes",
-
+        extra: `
+    <div class="extra-content">
+    <table class="subnet-table">
+    <thead>
+    <tr>
+        <th></th>
+            <th>Octeto 1</th>
+            <th>Octeto 2</th>
+            <th>Octeto 3</th>
+            <th>Octeto 4</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+    <td>IP (decimal)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Máscara (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Máscara (decimal)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Blocksize</td>
+    <td colspan="4"><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: [
             "255.255.255.192 | salto 64",
             "255.255.255.128 | salto 128",
             "255.255.255.224 | salto 32",
             "255.255.255.240 | salto 16"
         ],
-
         ans: 0,
-
-        exp: "Se necesitan 4 subredes → 2 bits → /26 → 255.255.255.192 → salto 64.\n PASO 1: Convertir IP binaria a decimal. 11001000(200).10101000(168).00010110(22).00000010(2) -> 200.168.22.2.\n" +
+        exp: "PASO 1: Convertir IP binaria a decimal. 11001000(200).10101000(168).00010110(22).00000010(2).\n" +
             "PASO 2: Determinar bits necesarios para 4 subredes. 2^n >= 4 -> n = 2 bits prestados.\n" +
             "PASO 3: Nueva máscara. Clase C base es /24. 24 + 2 = /26. En decimal: 255.255.255.192.\n" +
             "PASO 4: Calcular Blocksize (salto). 256 - 192 = 64.\n" +
             "PASO 5: Definir subredes. .0, .64, .128, .192."
     },
+
+
     {
         profe: true,
         unit: "IPv4",
@@ -420,23 +2829,58 @@ BANK.so = [
         profe: true,
         unit: "Subnetting",
         diff: "medium",
-
         q: "IP 60.168.25.3/29 → máscara y hosts",
-
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Máscara (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Máscara (decimal)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de host</td>
+    <td colspan="4"><input></td>
+  </tr>
+  <tr>
+    <td>Hosts útiles</td>
+    <td colspan="4"><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: [
             "255.255.255.248 | 6 hosts",
             "255.255.255.240 | 14 hosts",
             "255.255.255.252 | 2 hosts",
             "255.255.255.224 | 30 hosts"
         ],
-
         ans: 0,
-
-        exp: "/29 → 255.255.255.248. Hosts = 2^3 - 2 = 6.\n PASO 1: Identificar el prefijo /29. Significa que hay 29 bits para red y 3 bits para hosts (32-29=3).\n" +
-            "PASO 2: Calcular máscara. Los primeros 3 octetos son 255. El cuarto octeto tiene 5 bits de red (11111000) = 248.\n" +
-            "PASO 3: Calcular hosts. Fórmula 2^n - 2. Con 3 bits: 2^3 = 8. 8 - 2 = 6 hosts útiles.\n" +
-            "RESULTADO: 255.255.255.248 y 6 hosts."
-
+        exp: "PASO 1: Calcular máscara /29. Son 29 bits de red. El último octeto tiene 5 bits de red (11111000).\n" +
+            "PASO 2: Conversión decimal. 128+64+32+16+8 = 248. Máscara: 255.255.255.248.\n" +
+            "PASO 3: Calcular hosts. Bits de host = 32 - 29 = 3 bits.\n" +
+            "PASO 4: Fórmula de hosts útiles. 2^3 - 2 = 8 - 2 = 6 hosts.\n" +
+            "RESULTADO: 255.255.255.248 y 6 hosts útiles."
     },
 
     {
@@ -647,20 +3091,6 @@ BANK.so = [
         exp: "La MAC es de la capa de enlace (capa 2).\n  La dirección MAC (Media Access Control) opera en la Capa 2 del modelo OSI, conocida como la Capa de Enlace de Datos. Es un identificador físico único grabado en el hardware de la interfaz de red (NIC) que permite la comunicación local entre dispositivos dentro de un mismo segmento de red o dominio de difusión."
     },
 
-    {
-        profe: true,
-        unit: "Subnetting",
-        diff: "easy",
-        q: "Broadcast de 192.168.10.0/24:",
-        opts: [
-            "192.168.10.1",
-            "192.168.10.0",
-            "192.168.10.255",
-            "192.168.10.254"
-        ],
-        ans: 2,
-        exp: "El broadcast es la última IP del rango.\n En una red con prefijo /24, la máscara de subred es 255.255.255.0, lo que reserva el último octeto completo para hosts (256 direcciones). La primera dirección (.0) se reserva para identificar la red y la última dirección (.255) se reserva como dirección de Broadcast para enviar paquetes a todos los dispositivos del segmento simultáneamente."
-    },
 
     {
         profe: true,
@@ -676,7 +3106,7 @@ BANK.so = [
         ans: 2,
         exp: "Ese comando reinicia el servicio de red.\n En distribuciones modernas basadas en systemd como Debian, el comando 'systemctl restart networking' detiene e inicia nuevamente el demonio encargado de gestionar las interfaces. Esto aplica los cambios realizados en archivos de configuración como /etc/network/interfaces sin necesidad de reiniciar el equipo completo."
     },
-
+    // ==================== VLSM ====================
 
     {
         profe: true,
@@ -726,13 +3156,15 @@ BANK.so = [
   `,
 
         opts: [
-            "Correcto",
-            "Incorrecto"
+            "Lab: .0/26 (1-62), WiFi: .64/27 (65-94), Oficina: .96/29 (97-102)",
+    "Lab: .0/25 (1-126), WiFi: .128/26 (129-190), Oficina: .192/28 (193-206)",
+    "Lab: .0/26 (1-63), WiFi: .64/27 (65-95), Oficina: .96/29 (97-103)",
+    "Lab: .0/26 (1-62), WiFi: .63/27 (64-94), Oficina: .95/29 (96-101)"
         ],
 
         ans: 0,
 
-        exp: "PASO 1: Ordenar de mayor a menor\n50 → 25 → 5\n\nPASO 2: Calcular máscaras\n50 → /26 → 64 IP → 62 host\n25 → /27 → 32 IP → 30 host\n5 → /29 → 8 IP → 6 host\n\nPASO 3: Asignar desde la red base\n\nSUBRED 1 (50 host)\nRed: 192.168.100.0\nPrimera: 192.168.100.1\nÚltima: 192.168.100.62\nBroadcast: 192.168.100.63\n\nSUBRED 2 (25 host)\nRed: 192.168.100.64\nPrimera: 192.168.100.65\nÚltima: 192.168.100.94\nBroadcast: 192.168.100.95\n\nSUBRED 3 (5 host)\nRed: 192.168.100.96\nPrimera: 192.168.100.97\nÚltima: 192.168.100.102\nBroadcast: 192.168.100.103\n El proceso VLSM comienza ordenando los hosts de mayor a menor para optimizar el espacio: 50 > 25 > 5. Para el Lab (50) se reserva un bloque de 64 ($2^6$) usando máscara /26 (.0 al .63). Para el WiFi (25) se usa el siguiente bloque disponible de 32 ($2^5$) con máscara /27 (.64 al .95). Finalmente, para la Oficina (5) se asigna un bloque de 8 ($2^3$) con máscara /29 (.96 al .103), asegurando que no existan traslapes entre segmentos."
+        exp: "PASO 1: Ordenar de mayor a menor\n50 → 25 → 5\n\nPASO 2: Calcular máscaras\n50 → /26 → 64 IP → 62 host\n25 → /27 → 32 IP → 30 host\n5 → /29 → 8 IP → 6 host\n\nPASO 3: Asignar desde la red base\n\nSUBRED 1 (50 host)\nRed: 192.168.100.0\nPrimera: 192.168.100.1\nÚltima: 192.168.100.62\nBroadcast: 192.168.100.63\n\nSUBRED 2 (25 host)\nRed: 192.168.100.64\nPrimera: 192.168.100.65\nÚltima: 192.168.100.94\nBroadcast: 192.168.100.95\n\nSUBRED 3 (5 host)\nRed: 192.168.100.96\nPrimera: 192.168.100.97\nÚltima: 192.168.100.102\nBroadcast: 192.168.100.103"
     },
 
     {
@@ -741,293 +3173,732 @@ BANK.so = [
         diff: "hard",
         case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
         q: "VLSM: Red base 172.20.10.0/24 → Ventas (60), RRHH (20), Enlace (2)",
-
         extra: `
-      <table class="subnet-table">
-      <tr>
-        <th>Área</th>
-        <th>Red</th>
-        <th>Máscara</th>
-        <th>Primera IP</th>
-        <th>Última IP</th>
-        <th>Broadcast</th>
-      </tr>
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Hosts</th>
+    <th>n (bits)</th>
+    <th>Prefijo</th>
+    <th>Bloque</th>
+    <th>Máscara</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Ventas</td>
+    <td>60</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>RRHH</td>
+    <td>20</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace</td>
+    <td>2</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Ventas (60)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>RRHH (20)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Enlace (2)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["Ventas: .0/26 (1-62), RRHH: .64/27 (65-94), Enlace: .96/30 (97-98)",
+    "Ventas: .0/26 (1-63), RRHH: .64/27 (65-95), Enlace: .96/30 (97-99)",
+    "Ventas: .0/25 (1-126), RRHH: .128/26 (129-190), Enlace: .192/30 (193-194)",
+    "Ventas: .0/26 (1-62), RRHH: .63/27 (64-94), Enlace: .95/30 (96-97)"],
+        ans: 0,
+        exp: "PASO 1: Ordenar\n60 → 20 → 2\n\nPASO 2: Máscaras\n60 → /26 → 62 host\n20 → /27 → 30 host\n2 → /30 → 2 host\n\nPASO 3: Asignación\n\nVentas (60)\nRed: 172.20.10.0\nPrimera: 172.20.10.1\nÚltima: 172.20.10.62\nBroadcast: 172.20.10.63\n\nRRHH (20)\nRed: 172.20.10.64\nPrimera: 172.20.10.65\nÚltima: 172.20.10.94\nBroadcast: 172.20.10.95\n\nEnlace (2)\nRed: 172.20.10.96\nPrimera: 172.20.10.97\nÚltima: 172.20.10.98\nBroadcast: 172.20.10.99"
+    },
 
-      <tr>
-        <td>Ventas (60)</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
+    // ==================== NO-PROFE (ESTUDIANTE) ====================
 
-      <tr>
-        <td>RRHH (20)</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-
-      <tr>
-        <td>Enlace (2)</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-      
-    </table>
-
-  `,
-
+    {
+        profe: false,
+        unit: "Direccionamiento IPv6",
+        diff: "intermedio",
+        q: "En la dirección IPv6 D46C::B:98:F:C:5, el equivalente en decimal al tercer Hexteto es:",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Pos.</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Hexteto</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: [
-            "Correcto",
-            "Incorrecto"
-        ],
-
-        ans: 0,
-
-        exp: "PASO 1: Ordenar\n60 → 20 → 2\n\nPASO 2: Máscaras\n60 → /26 → 62 host\n20 → /27 → 30 host\n2 → /30 → 2 host\n\nPASO 3: Asignación\n\nSUBRED 1 (60)\nRed: 172.20.10.0\nPrimera: 172.20.10.1\nÚltima: 172.20.10.62\nBroadcast: 172.20.10.63\n\nSUBRED 2 (20)\nRed: 172.20.10.64\nPrimera: 172.20.10.65\nÚltima: 172.20.10.94\nBroadcast: 172.20.10.95\n\nSUBRED 3 (2)\nRed: 172.20.10.96\nPrimera: 172.20.10.97\nÚltima: 172.20.10.98\nBroadcast: 172.20.10.99"
-    },
-
-    {
-        profe: true,
-        unit: "VLSM",
-        diff: "hard",
-
-        case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
-        q: "VLSM: 172.20.10.0/24 → Ventas (60), RRHH (20), Enlace (2)",
-
-        extra: `
-      <table class="subnet-table">
-      <tr>
-        <th>Área</th>
-        <th>Red</th>
-        <th>Máscara</th>
-        <th>Primera IP</th>
-        <th>Última IP</th>
-        <th>Broadcast</th>
-      </tr>
-
-      <tr>
-        <td>Ventas (60)</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-
-      <tr>
-        <td>RRHH (20)</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-
-      <tr>
-        <td>Enlace (2)</td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-        <td><input></td>
-      </tr>
-    </table>
-  `,
-
-        opts: ["Correcto", "Incorrecto"],
-        ans: 0,
-
-        exp: "PASO 1: Ordenar\n60 → 20 → 2\n\nPASO 2: Máscaras\n60 → /26 → 255.255.255.192\n20 → /27 → 255.255.255.224\n2 → /30 → 255.255.255.252\n\nPASO 3: Asignación\n\nVentas (60)\nRed: 172.20.10.0\nPrimera: 172.20.10.1\nÚltima: 172.20.10.62\nBroadcast: 172.20.10.63\n\nRRHH (20)\nRed: 172.20.10.64\nPrimera: 172.20.10.65\nÚltima: 172.20.10.94\nBroadcast: 172.20.10.95\n\nEnlace (2)\nRed: 172.20.10.96\nPrimera: 172.20.10.97\nÚltima: 172.20.10.98\nBroadcast: 172.20.10.99"
-    },
-
-    {
-
-        "profe": false,
-        "unit": "Direccionamiento IPv6",
-        "diff": "intermedio",
-        "q": "En la dirección IPv6 D46C::B:98:F:C:5, el equivalente en decimal al tercer Hexteto es:",
-        "opts": [
             "000000000000001010",
             "000000000000000101",
             "101010000000000000",
             "000000000000000000"
         ],
-        "ans": 3,
-        "exp": "PASO 1: Identificar hextetos omitidos. La dirección tiene 6 hextetos visibles, por lo que '::' representa dos grupos de ceros.\n" +
+        ans: 3,
+        exp: "PASO 1: Identificar hextetos omitidos. La dirección tiene 6 hextetos visibles, por lo que '::' representa dos grupos de ceros.\n" +
             "PASO 2: Expandir la dirección completa: D46C:0000:0000:000B:0098:000F:000C:0005.\n" +
             "PASO 3: Localizar el tercer hexteto, que corresponde a '0000'.\n" +
             "PASO 4: Convertir a binario de 16 bits. El valor hexadecimal 0 equivale a 0000000000000000."
     },
+
+
     {
-        "profe": false,
-        "unit": "Direccionamiento IPv4",
-        "diff": "intermedio",
-        "q": "Al efectuar un AND entre la dirección IPv4 90.10.120.1 y su máscara, el resultado es:",
-        "opts": [
+        profe: false,
+        unit: "Direccionamiento IPv4",
+        diff: "intermedio",
+        q: "Al efectuar un AND entre la dirección IPv4 90.10.120.1 y su máscara, el resultado es:",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Máscara (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>AND (resultado)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "11111111.00000000.00000000.00000000",
             "11111111.10101010.00000000.00000000",
             "01011010.00001010.01111000.00000001",
             "01011010.00000000.00000000.00000000"
         ],
-        "ans": 3,
-        "exp": "PASO 1: Determinar la máscara por clase. El primer octeto (90) define una Clase A, cuya máscara es 255.0.0.0.\n" +
+        ans: 3,
+        exp: "PASO 1: Determinar la máscara por clase. El primer octeto (90) define una Clase A, cuya máscara es 255.0.0.0.\n" +
             "PASO 2: Convertir a binario. IP: 01011010.00001010.01111000.00000001 | Máscara: 11111111.00000000.00000000.00000000.\n" +
             "PASO 3: Aplicar operación lógica AND bit a bit. Solo los bits que son '1' en ambos lados permanecen como '1'.\n" +
-            "PASO 4: Resultado final. Se conserva el primer octeto de la IP y el resto se completa con ceros: 01011010.00000000.00000000.00000000."
+            "PASO 4: Resultado final: 01011010.00000000.00000000.00000000."
     },
-    {
 
-        "profe": false,
-        "unit": "Direccionamiento IPv6",
-        "diff": "intermedio",
-        "q": "Expanda la siguiente dirección IPv6 aplicando Regla #1: ::789D:567F:1",
-        "opts": [
+
+    {
+        profe: false,
+        unit: "Direccionamiento IPv6",
+        diff: "intermedio",
+        q: "Expanda la siguiente dirección IPv6 aplicando Regla #1: ::789D:567F:1",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Pos.</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Hexteto</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "0000:0000:0000:0000:789D:567F:0000:0001",
             "789D:567F:0000:0000:0000:0000:0000:0001",
             "0000:0000:0000:0000:0000:789D:567F:0001",
             "789D:567F:1:0:0:0:0:0"
         ],
-        "ans": 2,
-        "exp": "Regla #1: Reemplazar '::' por la cantidad necesaria de '0000' para completar 8 hextetos. PASO 1: Contar hextetos visibles. Hay 3 (789D, 567F, 1). IPv6 requiere 8 en total.\n" +
+        ans: 2,
+        exp: "PASO 1: Contar hextetos visibles. Hay 3 (789D, 567F, 1). IPv6 requiere 8 en total.\n" +
             "PASO 2: Calcular ceros faltantes. 8 - 3 = 5 grupos de ceros (0000).\n" +
             "PASO 3: Ubicar la expansión. Como '::' está al inicio, los 5 grupos de ceros van al comienzo.\n" +
-            "PASO 4: Completar dígitos. El hexteto '1' se expande a '0001' para tener los 4 dígitos hexadecimales obligatorios."
+            "PASO 4: Completar dígitos. El hexteto '1' se expande a '0001'."
     },
 
+
     {
-        "profe": false,
-        "unit": "Direccionamiento IPv6",
-        "diff": "intermedio",
-        "q": "Expanda la siguiente dirección IPv6 aplicando Regla #1: AA:8711::66DC",
-        "opts": [
+        profe: false,
+        unit: "Direccionamiento IPv6",
+        diff: "intermedio",
+        q: "Expanda la siguiente dirección IPv6 aplicando Regla #1: AA:8711::66DC",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Pos.</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Hexteto</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "00AA:8711:0000:0000:0000:0000:0000:66DC",
             "AA:8711:0000:0000:0000:0000:66DC:0000",
             "00AA:8711:66DC:0000:0000:0000:0000:0000",
             "AA:8711:0:0:0:0:0:66DC"
         ],
-        "ans": 0,
-        "exp": "Regla #1: Reemplazar '::' por ceros. PASO 1: Analizar hextetos actuales. Tenemos 2 al inicio (AA, 8711) y 1 al final (66DC), totalizando 3.\n" +
-            "PASO 2: Rellenar la omisión '::'. Faltan 5 hextetos de ceros para completar los 8 reglamentarios.\n" +
+        ans: 0,
+        exp: "PASO 1: Analizar hextetos actuales. Tenemos 2 al inicio (AA, 8711) y 1 al final (66DC), totalizando 3.\n" +
+            "PASO 2: Rellenar la omisión '::'. Faltan 5 hextetos de ceros para completar los 8.\n" +
             "PASO 3: Normalizar a 4 dígitos. El hexteto 'AA' debe escribirse como '00AA'.\n" +
-            "PASO 4: Resultado expandido. 00AA:8711:0000:0000:0000:0000:0000:66DC."
+            "RESULTADO: 00AA:8711:0000:0000:0000:0000:0000:66DC."
     },
 
 
     {
-        "profe": false,
-        "unit": "Direccionamiento IPv6",
-        "diff": "intermedio",
-        "q": "Comprima la siguiente dirección IPv6 aplicando Regla #2: 1050:0000:0000:0006:0000:0600:300C:326B",
-        "opts": [
+        profe: false,
+        unit: "Direccionamiento IPv6",
+        diff: "intermedio",
+        q: "Comprima la siguiente dirección IPv6 aplicando Regla #2: 1050:0000:0000:0006:0000:0600:300C:326B",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>1050</td>
+    <td>0000</td>
+    <td>0000</td>
+    <td>0006</td>
+    <td>0000</td>
+    <td>0600</td>
+    <td>300C</td>
+    <td>326B</td>
+  </tr>
+  <tr>
+    <td>Regla #1</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td colspan="8"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "1050:0:0:6:0:600:300C:326B",
             "1050::6:0:600:300C:326B",
             "1050::6::600:300C:326B",
             "1050:0:0:6::600:300C:326B"
         ],
-        "ans": 1,
-        "exp": "Regla #2 tiene dos pasos.\n PASO 1: Eliminar ceros a la izquierda de cada hexteto, resultando en 1050:0:0:6:0:600:300C:326B.\n" +
+        ans: 1,
+        exp: "PASO 1: Eliminar ceros a la izquierda de cada hexteto, resultando en 1050:0:0:6:0:600:300C:326B.\n" +
             "PASO 2: Identificar grupos de ceros consecutivos. Tenemos un grupo de dos ceros (0:0) y uno de un solo cero (0).\n" +
             "PASO 3: Aplicar la regla de la cadena más larga. Se reemplaza el grupo '0:0' por '::'.\n" +
             "PASO 4: Restricción. Solo se puede usar '::' una vez, por lo que el tercer cero individual permanece como ':0:'."
     },
 
-
     {
-        "profe": false,
-        "unit": "Direccionamiento IPv6",
-        "diff": "intermedio",
-        "q": "Comprima la siguiente dirección IPv6 aplicando Regla #2: 4306:0:0:0:0:0:0:C3",
-        "opts": [
+        profe: false,
+        unit: "Direccionamiento IPv6",
+        diff: "intermedio",
+        q: "Comprima la siguiente dirección IPv6 aplicando Regla #2: 4306:0:0:0:0:0:0:C3",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Paso</th>
+    <th>1°</th>
+    <th>2°</th>
+    <th>3°</th>
+    <th>4°</th>
+    <th>5°</th>
+    <th>6°</th>
+    <th>7°</th>
+    <th>8°</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Original</td>
+    <td>4306</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>C3</td>
+  </tr>
+  <tr>
+    <td>Regla #2</td>
+    <td colspan="8"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "4306::C3",
             "4306:0:0:0:0:0:0:C3",
             "4306:::C3",
             "4306:C3::"
         ],
-        "ans": 0,
-        "exp": "PASO 1: Identificar la secuencia de ceros. Entre los hextetos extremos hay 6 grupos de ceros consecutivos.\n" +
+        ans: 0,
+        exp: "PASO 1: Identificar la secuencia de ceros. Entre los hextetos extremos hay 6 grupos de ceros consecutivos.\n" +
             "PASO 2: Aplicar compresión máxima. La regla permite sustituir cualquier número de grupos de ceros consecutivos por '::'.\n" +
-            "PASO 3: Resultado final. Se reduce la dirección a su forma más simplificada: 4306::C3."
-    },
-
-    {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "intermedio",
-        "q": "Se muestra la dirección de red 155.168.25.3/21. ¿Cuál es la máscara final en decimal punteado y la cantidad de hosts que se pueden obtener?",
-        "opts": [
-            "255.255.248.0 y 2046 hosts",
-            "255.255.240.0 y 4094 hosts",
-            "255.255.255.0 y 254 hosts",
-            "255.255.224.0 y 8190 hosts"
-        ],
-        "ans": 0,
-        "exp": "PASO 1: Calcular máscara desde prefijo. /21 significa 21 bits de red (11111111.11111111.11111000.00000000).\n" +
-            "PASO 2: Convertir a decimal. El tercer octeto (11111000) es 128+64+32+16+8 = 248. Máscara: 255.255.248.0.\n" +
-            "PASO 3: Calcular hosts. Bits de host = 32 - 21 = 11. Direcciones totales = $2^{11}$ = 2048.\n" +
-            "PASO 4: Descontar IPs reservadas. 2048 direcciones - 2 (red y broadcast) = 2046 hosts usables."
+            "RESULTADO: 4306::C3."
     },
 
 
+
     {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "intermedio",
-        "q": "Se muestra la dirección de red 10.1.25.30/16. ¿Cuál es la máscara final en decimal punteado y la cantidad de hosts que se pueden obtener?",
-        "opts": [
+    profe: true,
+    unit: "Subnetting - Máscara y Hosts",
+    diff: "medium",
+    case: "GUÍA 1 — Ítem II. Desarrollo\nResponda en la casilla correspondiente. 05 puntos cada una.",
+    q: "Se muestra la dirección de red 155.168.25.3/21.\n" +
+       "¿Cuál es la Máscara final en decimal punteado y la Cantidad de Hosts que se pueden obtener?",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Concepto</th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Prefijo /21 en binario</td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111111"></td>
+    <td><input placeholder="11111000"></td>
+    <td><input placeholder="00000000"></td>
+  </tr>
+  <tr>
+    <td>Máscara decimal</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Bits de host (32 - prefijo)</th>
+    <th>Total IPs (2^n)</th>
+    <th>Hosts utilizables (2^n - 2)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara: 255.255.248.0 | Hosts: 2046",
+        "Máscara: 255.255.240.0 | Hosts: 4094",
+        "Máscara: 255.255.255.0 | Hosts: 254",
+        "Máscara: 255.255.252.0 | Hosts: 1022"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir /21 a binario.\n" +
+         "  21 bits en 1 → 11111111.11111111.11111000.00000000\n\n" +
+         "PASO 2: Convertir a decimal punteado.\n" +
+         "  11111111 = 255\n" +
+         "  11111111 = 255\n" +
+         "  11111000 = 128+64+32+16+8 = 248\n" +
+         "  00000000 = 0\n" +
+         "  MÁSCARA FINAL: 255.255.248.0\n\n" +
+         "PASO 3: Calcular hosts.\n" +
+         "  Bits de host = 32 - 21 = 11\n" +
+         "  Total IPs    = 2^11 = 2048\n" +
+         "  Hosts útiles = 2048 - 2 = 2046"
+},
+
+
+
+    {
+        profe: false,
+        unit: "Subneteo IPv4",
+        diff: "intermedio",
+        q: "Se muestra la dirección de red 10.1.25.30/16. ¿Cuál es la máscara final en decimal punteado y la cantidad de hosts que se pueden obtener?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Máscara (binario)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Máscara (decimal)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Bits de host</td>
+    <td colspan="4"><input></td>
+  </tr>
+  <tr>
+    <td>Hosts útiles (2ⁿ−2)</td>
+    <td colspan="4"><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "255.255.0.0 y 65534 hosts",
             "255.0.0.0 y 16777214 hosts",
             "255.255.255.0 y 254 hosts",
             "255.255.248.0 y 2046 hosts"
         ],
-        "ans": 0,
-        "exp": "PASO 1: Identificar máscara. Un prefijo /16 indica que los dos primeros octetos son de red, resultando en 255.255.0.0.\n" +
+        ans: 0,
+        exp: "PASO 1: Identificar máscara. Un prefijo /16 indica que los dos primeros octetos son de red, resultando en 255.255.0.0.\n" +
             "PASO 2: Calcular bits de host. 32 bits totales - 16 bits de red = 16 bits para hosts.\n" +
-            "PASO 3: Calcular capacidad. $2^{16}$ = 65536 direcciones totales.\n" +
-            "PASO 4: Hosts útiles. Se restan las 2 direcciones no asignables: 65536 - 2 = 65534 hosts."
+            "PASO 3: Calcular capacidad. 2^16 = 65536 direcciones totales.\n" +
+            "PASO 4: Hosts útiles. 65536 - 2 = 65534 hosts."
     },
 
 
     {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "avanzado",
-        "q": "La empresa PCS Tech tiene la IP 01000001.10000000.11000011.11111110 en binario y necesita 14 subredes. ¿Cuál es la máscara final?",
-        "opts": [
+        profe: false,
+        unit: "Subneteo IPv4",
+        diff: "avanzado",
+        q: "La empresa PCS Tech tiene la IP 01000001.10000000.11000011.11111110 en binario y necesita 14 subredes. ¿Cuál es la máscara final?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th></th>
+    <th>Octeto 1</th>
+    <th>Octeto 2</th>
+    <th>Octeto 3</th>
+    <th>Octeto 4</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP (decimal)</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>Clase / Prefijo base</td>
+    <td colspan="4"><input></td>
+  </tr>
+  <tr>
+    <td>Bits prestados (n)</td>
+    <td colspan="4"><input></td>
+  </tr>
+  <tr>
+    <td>Nuevo prefijo</td>
+    <td colspan="4"><input></td>
+  </tr>
+  <tr>
+    <td>Máscara final</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
             "255.255.0.0",
             "255.240.0.0",
             "255.255.240.0",
             "255.255.255.0"
         ],
-        "ans": 1,
-        "exp": "PASO 1: Determinar clase. El primer octeto (01000001) es 65 en decimal. Al ser Clase A, su máscara original es /8.\n" +
-            "PASO 2: Calcular bits de subred. Para 14 subredes buscamos $2^n \\ge 14$. Con $n=4$ obtenemos 16 subredes.\n" +
+        ans: 1,
+        exp: "PASO 1: Determinar clase. El primer octeto (01000001) es 65 en decimal. Al ser Clase A, su máscara original es /8.\n" +
+            "PASO 2: Calcular bits de subred. Para 14 subredes buscamos 2^n >= 14. Con n=4 obtenemos 16 subredes.\n" +
             "PASO 3: Nueva máscara. Sumamos los bits prestados a la máscara base: /8 + 4 = /12.\n" +
             "PASO 4: Convertir a decimal. El segundo octeto de la máscara /12 es 11110000 (240). Resultado: 255.240.0.0."
     },
 
+    {
+        profe: false,
+        unit: "Subneteo IPv4",
+        diff: "avanzado",
+        q: "Para el problema de PCS Tech, ¿cuál es el blocksize (incremento entre subredes)?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Máscara del octeto afectado</th>
+    <th>Blocksize (256 − máscara)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["4", "8", "16", "32"],
+        ans: 2,
+        exp: "PASO 1: Identificar bits prestados. Del cálculo anterior, se determinó que se necesitan n=4 bits para 14 subredes.\n" +
+            "PASO 2: El octeto afectado es el segundo (/12 → 255.240.0.0 → octeto 2 = 240).\n" +
+            "PASO 3: Blocksize = 256 - 240 = 16.\n" +
+            "RESULTADO: Las subredes saltan de 16 en 16 en el segundo octeto."
+    },
 
     {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "avanzado",
-        q: "Si tengo la IPv6 2001:0db8:85a3:0000:0000:8a2e:0370:7334, ¿cómo quedaría aplicando la Regla #2?",
-        opts: ["2001:db8:85a3::8a2e:370:7334", "2001:db8:85a3:0:0:8a2e:370:7334", "2001:0db8:85a3::8a2e:0370:7334", "2001:db8:85a3::8a2e:0370:7334"],
+        profe: false,
+        unit: "Subneteo IPv4",
+        diff: "avanzado",
+        q: "Para el problema de PCS Tech, ¿cuál es el broadcast de la subred 65.0.0.0/12?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red actual</th>
+    <th>Blocksize</th>
+    <th>Siguiente red</th>
+    <th>Broadcast (siguiente − 1)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
+            "65.15.255.255",
+            "65.0.255.255",
+            "65.255.255.255",
+            "65.15.0.255"
+        ],
         ans: 0,
-        exp: "DESARROLLO PASO A PASO:\n" +
-            "--------------------------------------------------------------------------\n" +
-            "1. OMITIR CEROS IZQUIERDA: 0db8 -> db8, 0000 -> 0, 0370 -> 370.\n" +
-            "2. IDENTIFICAR SECUENCIA: Hay dos bloques consecutivos de ceros (:0000:0000:).\n" +
-            "3. COMPRESIÓN: Se reemplaza esa secuencia por '::'.\n" +
-            "4. RESULTADO: 2001:db8:85a3::8a2e:370:7334\n" +
-            "--------------------------------------------------------------------------"
+        exp: "PASO 1: Identificar el siguiente salto. Si el blocksize es 16, la siguiente subred es 65.16.0.0.\n" +
+            "PASO 2: Restar una IP a la siguiente red. El broadcast es siempre la IP anterior a la siguiente subred.\n" +
+            "PASO 3: Calcular. 65.16.0.0 - 1 = 65.15.255.255."
+    },
+
+    {
+        profe: false,
+        unit: "Subneteo IPv4",
+        diff: "avanzado",
+        q: "Dada la dirección 172.16.0.0/20, ¿cuál es la máscara de subred y la última IP utilizable?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Blocksize</th>
+    <th>Siguiente red</th>
+    <th>Broadcast</th>
+    <th>Última IP</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["255.255.240.0 y 172.16.15.254", "255.255.255.0 y 172.16.0.254", "255.240.0.0 y 172.31.255.254", "255.255.240.0 y 172.16.31.254"],
+        ans: 0,
+        exp: "PASO 1: MÁSCARA (/20): 11111111.11111111.11110000.00000000 = 255.255.240.0.\n" +
+            "PASO 2: TAMAÑO DE BLOQUE: 256 - 240 = 16. La red salta de 16 en 16 en el tercer octeto.\n" +
+            "PASO 3: Red: 172.16.0.0. Siguiente red: 172.16.16.0.\n" +
+            "PASO 4: BROADCAST: 172.16.16.0 - 1 = 172.16.15.255.\n" +
+            "PASO 5: ÚLTIMA IP ÚTIL: 172.16.15.254."
     },
 
 
@@ -1048,23 +3919,43 @@ BANK.so = [
 
 
     {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "avanzado",
+        profe: false,
+        unit: "Subneteo IPv4",
+        diff: "avanzado",
         q: "Dada la dirección 172.16.0.0/20, ¿cuál es la máscara de subred y la última IP utilizable?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Blocksize</th>
+    <th>Siguiente red</th>
+    <th>Broadcast</th>
+    <th>Última IP</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
         opts: ["255.255.240.0 y 172.16.15.254", "255.255.255.0 y 172.16.0.254", "255.240.0.0 y 172.31.255.254", "255.255.240.0 y 172.16.31.254"],
         ans: 0,
-        exp: "DESARROLLO PASO A PASO:\n" +
-            "--------------------------------------------------------------------------\n" +
-            "PASO 1: Identificar el tipo de direccionamiento. El direccionamiento físico (direcciones MAC) es único de la Capa 2.\n" +
-            "PASO 2: Definir funciones. Esta capa gestiona el acceso al medio y la topología (cómo se conectan los nodos).\n" +
-            "PASO 3: Identificar dispositivos. Los Switches operan en este nivel, procesando Tramas (Frames) para dirigir el tráfico localmente.\n" +
-            "1. MÁSCARA (/20): 11111111.11111111.11110000.00000000 = 255.255.240.0.\n" +
-            "2. TAMAÑO DE BLOQUE: 256 - 240 = 16. La red salta de 16 en 16 en el tercer octeto.\n" +
-            "3. CÁLCULO DE RANGO: Red: 172.16.0.0. Siguiente red: 172.16.16.0.\n" +
-            "4. BROADCAST: Una IP antes de la siguiente red = 172.16.15.255.\n" +
-            "5. ÚLTIMA ÚTIL: Una antes del broadcast = 172.16.15.254.\n" +
-            "--------------------------------------------------------------------------"
+        exp: "PASO 1: MÁSCARA (/20): 11111111.11111111.11110000.00000000 = 255.255.240.0.\n" +
+            "PASO 2: TAMAÑO DE BLOQUE: 256 - 240 = 16. La red salta de 16 en 16 en el tercer octeto.\n" +
+            "PASO 3: Red: 172.16.0.0. Siguiente red: 172.16.16.0.\n" +
+            "PASO 4: BROADCAST: 172.16.16.0 - 1 = 172.16.15.255.\n" +
+            "PASO 5: ÚLTIMA IP ÚTIL: 172.16.15.254."
     },
 
 
@@ -1081,61 +3972,6 @@ BANK.so = [
             "2. UNIDAD DE DATOS: Tramas (Frames).\n" +
             "3. COMPONENTES: Switches y NICs operan aquí, gestionando cómo se accede al medio físico y detectando errores de transmisión.\n" +
             "--------------------------------------------------------------------------"
-    },
-
-    {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "avanzado",
-        "q": "Para el problema de PCS Tech, ¿cuál es el blocksize (incremento entre subredes)?",
-        "opts": [
-            "4",
-            "8",
-            "16",
-            "32"
-        ],
-        "ans": 2,
-        "exp": "PASO 1: Identificar bits prestados. Del cálculo anterior, se determinó que se necesitan n=4 bits para 14 subredes.\n" +
-            "PASO 2: Calcular el incremento. El blocksize se obtiene con $2^h$, donde h son los bits restantes del octeto afectado.\n" +
-            "PASO 3: Aplicar fórmula. En el segundo octeto (/12), quedan 4 bits de host en ese segmento. $2^4 = 16$.\n" +
-            "PASO 4: Resultado. Las subredes saltan de 16 en 16 en el segundo octeto (ej. 65.0.0.0, 65.16.0.0)."
-    },
-
-    {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "avanzado",
-        "q": "Para el problema de PCS Tech, ¿cuántos hosts se pueden conectar por cada subred?",
-        "opts": [
-            "4094",
-            "16382",
-            "65534",
-            "1048574"
-        ],
-        "ans": 3,
-        "exp": "PASO 1: Identificar bits de host. Con un prefijo /12, los bits de host son 32 - 12 = 20 bits.\n" +
-            "PASO 2: Calcular direcciones totales. $2^{20} = 1.048.576$.\n" +
-            "PASO 3: Descontar IPs reservadas. Se resta la dirección de red y el broadcast (1.048.576 - 2).\n" +
-            "PASO 4: Resultado final. Se obtienen 1.048.574 hosts útiles por cada subred."
-    },
-
-
-    {
-        "profe": false,
-        "unit": "Subneteo IPv4",
-        "diff": "avanzado",
-        "q": "Para el problema de PCS Tech, ¿cuál es el broadcast de la subred 65.0.0.0/12?",
-        "opts": [
-            "65.15.255.255",
-            "65.0.255.255",
-            "65.255.255.255",
-            "65.15.0.255"
-        ],
-        "ans": 0,
-        "exp": "PASO 1: Identificar el siguiente salto. Si el blocksize es 16, la siguiente subred es 65.16.0.0.\n" +
-            "PASO 2: Restar una IP a la siguiente red. El broadcast es siempre la IP anterior a la siguiente subred.\n" +
-            "PASO 3: Calcular. 65.16.0.0 - 1 = 65.15.255.255.\n" +
-            "PASO 4: Verificación binaria. El broadcast tiene todos los bits de host (los últimos 20) en 1."
     },
 
 
@@ -1200,6 +4036,566 @@ BANK.so = [
             "PASO 3: Identificar bits de Host. Los bits '0' liberan la porción que identifica a los dispositivos individuales dentro de esa red."
     },
 
+    {
+        profe: false,
+        unit: "Clase A",
+        diff: "hard",
+        q: "De la dirección IP 111.189.23.155/8, se necesitan 200 subredes. ¿Cuántos bits se toman prestados y cuál es la nueva máscara?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Subredes requeridas</th>
+    <th>2ⁿ ≥ ?</th>
+    <th>n (bits)</th>
+    <th>Prefijo base</th>
+    <th>Nuevo prefijo</th>
+    <th>Máscara</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>200</td>
+    <td><input></td>
+    <td><input></td>
+    <td>/8</td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["6 bits, /14", "7 bits, /15", "8 bits, /16", "9 bits, /17"],
+        ans: 2,
+        exp: "PASO 1: Aplicar 2^n >= subredes. 2^8 = 256 >= 200.\n" +
+            "PASO 2: Sumar bits al prefijo original. /8 + 8 bits = /16.\n" +
+            "PASO 3: Convertir a decimal. /16 = 255.255.0.0."
+    },
+
+    {
+        profe: false,
+        unit: "Clase A",
+        diff: "hard",
+        q: "La tienda Zara necesita 6 subredes a partir de la IP 95.168.12.1/8. ¿Cuál es la nueva máscara?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Subredes requeridas</th>
+    <th>2ⁿ ≥ ?</th>
+    <th>n (bits)</th>
+    <th>Prefijo base</th>
+    <th>Nuevo prefijo</th>
+    <th>Máscara</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>6</td>
+    <td><input></td>
+    <td><input></td>
+    <td>/8</td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["/9 (255.128.0.0)", "/10 (255.192.0.0)", "/11 (255.224.0.0)", "/12 (255.240.0.0)"],
+        ans: 2,
+        exp: "PASO 1: 2^n >= 6 → n=3.\n" +
+            "PASO 2: /8 + 3 = /11.\n" +
+            "PASO 3: El segundo octeto con 3 bits encendidos es 224. Máscara: 255.224.0.0."
+    },
+
+    // ==================== CLASE B ====================
+
+    {
+        profe: false,
+        unit: "Clase B",
+        diff: "hard",
+        q: "Empresa Holfmann (5 LAN + 4 WAN = 9 redes). Con IP 174.18.0.0/16, ¿cuál es la nueva máscara?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Redes requeridas</th>
+    <th>2ⁿ ≥ ?</th>
+    <th>n (bits)</th>
+    <th>Prefijo base</th>
+    <th>Nuevo prefijo</th>
+    <th>Máscara</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>9</td>
+    <td><input></td>
+    <td><input></td>
+    <td>/16</td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["/18", "/19", "/20", "/21"],
+        ans: 2,
+        exp: "PASO 1: Sumar total de redes necesarias = 9.\n" +
+            "PASO 2: 2^n >= 9 → n=4.\n" +
+            "PASO 3: /16 + 4 = /20. Decimal: 255.255.240.0."
+    },
+
+    // ==================== CLASE C ====================
+
+    {
+        profe: false,
+        unit: "Clase C",
+        diff: "medium",
+        q: "De la dirección IP 192.168.25.200/24, se necesitan 7 subredes útiles. ¿Cuántos bits se toman?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Subredes útiles requeridas</th>
+    <th>n</th>
+    <th>2ⁿ − 2</th>
+    <th>¿Suficiente?</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>7</td>
+    <td>3</td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>4</td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["2", "3", "4", "5"],
+        ans: 2,
+        exp: "PASO 1: 2^n - 2 >= 7.\n" +
+            "PASO 2: 2^4 - 2 = 14.\n" +
+            "RESULTADO: 4 bits prestados, máscara /28."
+    },
+
+    {
+        profe: false,
+        unit: "Clase C",
+        diff: "medium",
+        q: "De la dirección IP 202.180.15.0/24, se necesitan 5 subredes útiles. ¿Cuál es la nueva máscara?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Subredes útiles requeridas</th>
+    <th>n</th>
+    <th>2ⁿ − 2</th>
+    <th>Nuevo prefijo</th>
+    <th>Máscara</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>5</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["/26", "/27", "/28", "/29"],
+        ans: 1,
+        exp: "PASO 1: 2^n - 2 >= 5 → n=3.\n" +
+            "PASO 2: /24 + 3 = /27. Decimal: 255.255.255.224."
+    },
+
+    // ==================== DIRECCIONES DE RED ====================
+
+    {
+        profe: false,
+        unit: "Direcciones de Red",
+        diff: "medium",
+        q: "¿Cuál es la dirección de red de 192.168.5.35 con máscara 255.255.255.240?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Máscara octeto 4</th>
+    <th>Blocksize</th>
+    <th>Múltiplo ≤ 35</th>
+    <th>Dirección de Red</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>240</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["192.168.5.32", "192.168.5.48", "192.168.5.16", "192.168.5.0"],
+        ans: 0,
+        exp: "PASO 1: Blocksize = 256 - 240 = 16.\n" +
+            "PASO 2: Buscar múltiplo de 16 cercano a 35 sin pasarse: 16×2 = 32.\n" +
+            "RESULTADO: 192.168.5.32."
+    },
+
+    {
+        profe: false,
+        unit: "Direcciones de Red",
+        diff: "hard",
+        q: "¿Cuál es la dirección de red de 10.15.200.100 con máscara 255.255.240.0?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Máscara octeto 3</th>
+    <th>Blocksize</th>
+    <th>Múltiplo ≤ 200</th>
+    <th>Dirección de Red</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>240</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["10.15.192.0", "10.15.200.0", "10.15.208.0", "10.15.196.0"],
+        ans: 0,
+        exp: "PASO 1: Blocksize tercer octeto = 256 - 240 = 16.\n" +
+            "PASO 2: Dividir 200 / 16 = 12.5.\n" +
+            "PASO 3: Multiplicar entero por bloque: 12 × 16 = 192.\n" +
+            "RESULTADO: 10.15.192.0."
+    },
+
+    // ==================== BROADCAST ====================
+
+    {
+        profe: false,
+        unit: "Broadcast",
+        diff: "medium",
+        q: "Para la subred 192.168.1.32/28, ¿cuál es el broadcast?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red actual</th>
+    <th>Blocksize</th>
+    <th>Siguiente red</th>
+    <th>Broadcast (siguiente − 1)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>192.168.1.32</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["192.168.1.32", "192.168.1.47", "192.168.1.48", "192.168.1.63"],
+        ans: 1,
+        exp: "PASO 1: Blocksize = 16.\n" +
+            "PASO 2: Red actual .32 + blocksize 16 = .48 (Siguiente red).\n" +
+            "PASO 3: Restar 1 a la siguiente red: .48 - 1 = .47.\n" +
+            "RESULTADO: 192.168.1.47."
+    },
+
+    {
+        profe: false,
+        unit: "Broadcast",
+        diff: "medium",
+        q: "Para la subred 192.168.1.64/26, ¿cuál es el broadcast?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red actual</th>
+    <th>Blocksize</th>
+    <th>Siguiente red</th>
+    <th>Broadcast (siguiente − 1)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>192.168.1.64</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["192.168.1.64", "192.168.1.127", "192.168.1.128", "192.168.1.191"],
+        ans: 1,
+        exp: "PASO 1: Blocksize = 64.\n" +
+            "PASO 2: Siguiente red = 64 + 64 = 128.\n" +
+            "PASO 3: Broadcast = 128 - 1 = 127.\n" +
+            "RESULTADO: 192.168.1.127."
+    },
+
+    {
+        profe: false,
+        unit: "Broadcast",
+        diff: "hard",
+        q: "Para la subred 172.16.0.0/20, ¿cuál es el broadcast?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red actual</th>
+    <th>Blocksize</th>
+    <th>Siguiente red</th>
+    <th>Broadcast (siguiente − 1)</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>172.16.0.0</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["172.16.15.255", "172.16.31.255", "172.16.0.255", "172.16.255.255"],
+        ans: 0,
+        exp: "PASO 1: Blocksize tercer octeto = 16.\n" +
+            "PASO 2: Siguiente red = 172.16.16.0.\n" +
+            "PASO 3: Broadcast = 172.16.16.0 - 1 = 172.16.15.255."
+    },
+
+    // ==================== RANGOS DE HOSTS ====================
+
+    {
+        profe: false,
+        unit: "Rangos de Hosts",
+        diff: "medium",
+        q: "¿Cuál es el rango de hosts válidos para la subred 192.168.1.32/27?",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red</th>
+    <th>Blocksize</th>
+    <th>Broadcast</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>192.168.1.32</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["192.168.1.32 - 192.168.1.63", "192.168.1.33 - 192.168.1.62", "192.168.1.1 - 192.168.1.30", "192.168.1.0 - 192.168.1.31"],
+        ans: 1,
+        exp: "PASO 1: Red .32, Blocksize 32.\n" +
+            "PASO 2: Siguiente red .64, Broadcast .63.\n" +
+            "PASO 3: Primer host = .32 + 1 = .33. Último host = .63 - 1 = .62.\n" +
+            "RESULTADO: .33 al .62."
+    },
+
+    // ==================== MÁSCARA PARA 2000 HOSTS ====================
+
+    {
+        unit: "Mascara de red",
+        diff: "medium",
+        q: "Se necesita una subred que soporte 2000 hosts. Determine la máscara en formato decimal y prefijo CIDR",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>n (bits host)</th>
+    <th>2ⁿ</th>
+    <th>2ⁿ − 2</th>
+    <th>¿Suficiente?</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>10</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+  <tr>
+    <td>11</td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Prefijo CIDR</th>
+    <th>Máscara decimal</th>
+    <th>Total direcciones</th>
+    <th>Hosts útiles</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+    <td><input></td>
+  </tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: ["/21 y 255.255.248.0",
+    "/22 y 255.255.252.0",
+    "/20 y 255.255.240.0",
+    "/21 y 255.255.255.248"],
+        ans: 0,
+        exp: "PASO 1: 2^n - 2 >= 2000 → 2^n >= 2002 → n = 11 bits host (2^11 = 2048, 2048-2=2046 hosts)\nPASO 2: bits de red = 32 - 11 = 21 bits → /21\nPASO 3: Máscara decimal: 255.255.248.0"
+    },
+
+    // ==================== VLSM PRINCIPAL ====================
+
+    {
+        unit: "VLSM",
+        diff: "hard",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 10.10.0.0/23 → Planta (200), Oficinas (120), Bodega (60), TI (25), Enlace1 (2), Enlace2 (2), Enlace3 (2)",
+        extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Hosts</th>
+    <th>n (bits)</th>
+    <th>Prefijo</th>
+    <th>Bloque</th>
+    <th>Máscara</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>Planta</td><td>200</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Oficinas</td><td>120</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Bodega</td><td>60</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>TI</td><td>25</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Enlace1</td><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Enlace2</td><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Enlace3</td><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Área</th>
+    <th>Red</th>
+    <th>Máscara</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>Planta (200)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Oficinas (120)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Bodega (60)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>TI (25)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Enlace1 (2)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Enlace2 (2)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>Enlace3 (2)</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</tbody>
+</table>
+</div>
+    `,
+        opts: [
+            "Planta: .0.0/24, Oficinas: .1.0/25, Bodega: .1.128/26, TI: .1.192/27, Enlaces: .1.224, .1.228, .1.232 (/30)",
+    "Planta: .0.0/24, Oficinas: .0.256/25, Bodega: .1.0/26, TI: .1.64/27, Enlaces: .1.96, .1.100, .1.104 (/30)",
+    "Planta: .0.0/24, Oficinas: .1.0/25, Bodega: .1.127/26, TI: .1.191/27, Enlaces: .1.223, .1.227, .1.231 (/30)",
+    "Planta: .0.0/23, Oficinas: .1.0/24, Bodega: .1.128/25, TI: .1.192/26, Enlaces: .1.224, .1.228, .1.232 (/30)"
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
+200 → 120 → 60 → 25 → 2 → 2 → 2
+ 
+PASO 2 — Calcular máscara para cada área:
+Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+ 
+Planta   (200): 2⁸ − 2 = 254 ✓ → n=8 → prefijo /24 → bloque 256 → máscara 255.255.255.0
+Oficinas (120): 2⁷ − 2 = 126 ✓ → n=7 → prefijo /25 → bloque 128 → máscara 255.255.255.128
+Bodega    (60): 2⁶ − 2 = 62  ✓ → n=6 → prefijo /26 → bloque 64  → máscara 255.255.255.192
+TI        (25): 2⁵ − 2 = 30  ✓ → n=5 → prefijo /27 → bloque 32  → máscara 255.255.255.224
+Enlace1    (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+Enlace2    (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+Enlace3    (2): 2² − 2 = 2   ✓ → n=2 → prefijo /30 → bloque 4   → máscara 255.255.255.252
+ 
+PASO 3 — Asignar en orden:
+ 
+Planta:   10.10.0.0/24   → Primera: 10.10.0.1   → Última: 10.10.0.254  → Broadcast: 10.10.0.255
+Oficinas: 10.10.1.0/25   → Primera: 10.10.1.1   → Última: 10.10.1.126  → Broadcast: 10.10.1.127
+Bodega:   10.10.1.128/26 → Primera: 10.10.1.129 → Última: 10.10.1.190  → Broadcast: 10.10.1.191
+TI:       10.10.1.192/27 → Primera: 10.10.1.193 → Última: 10.10.1.222  → Broadcast: 10.10.1.223
+Enlace1:  10.10.1.224/30 → Primera: 10.10.1.225 → Última: 10.10.1.226  → Broadcast: 10.10.1.227
+Enlace2:  10.10.1.228/30 → Primera: 10.10.1.229 → Última: 10.10.1.230  → Broadcast: 10.10.1.231
+Enlace3:  10.10.1.232/30 → Primera: 10.10.1.233 → Última: 10.10.1.234  → Broadcast: 10.10.1.235
+ 
+PASO 4 — Verificar espacio usado:
+/24 usa 256 + /25 usa 128 + /26 usa 64 + /27 usa 32 + /30×3 usa 12 = 492 IPs usadas de 512.
+Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
+    },
 
     // ==================== CÁLCULO DE SUBREDES ====================
     {
@@ -2225,22 +5621,65 @@ BANK.so = [
         ans: 0, exp: "Round Robin asigna tiempo fijo y cambia"
     },
 
- {
+    {
         unit: "Mascara de red",
         diff: "medium",
         q: "Se necesita una subred que soporte 2000 hosts. Determine la máscara en formato decimal y prefijo CIDR",
         extra: `
-      <div>
-        <p>Hosts requeridos: 2000</p>
-        <p>Máscara decimal: <input type="text" class="subnet-input" data-field="mascara_decimal"></p>
-        <p>Prefijo CIDR: <input type="text" class="subnet-input" data-field="prefijo"></p>
-        <p>Total de direcciones: <input type="text" class="subnet-input" data-field="total"></p>
-        <p>Hosts útiles: <input type="text" class="subnet-input" data-field="hosts"></p>
-      </div>
-    `,
-        opts: ["Correcto", "Incorrecto"],
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>n (bits host)</th>
+            <th>2ⁿ</th>
+            <th>2ⁿ − 2</th>
+            <th>¿Suficiente?</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>10</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        </tbody>
+        </table>
+        <br>
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Prefijo CIDR</th>
+            <th>Máscara decimal</th>
+            <th>Total direcciones</th>
+            <th>Hosts útiles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+            `,
+                opts: [
+            "/21 y 255.255.248.0",
+            "/22 y 255.255.252.0",
+            "/20 y 255.255.240.0",
+            "/21 y 255.255.255.248"
+        ],
         ans: 0,
-        exp: "PASO 1: 2^n - 2 >= 2000 → 2^n >= 2002 → n = 11 bits host (2^11 = 2048, 2048-2=2046 hosts)\nPASO 2: bits de red = 32 - 11 = 21 bits → /21\nPASO 3: Máscara decimal: 255.255.248.0"
+        exp: "PASO 1: Calcular bits de host (n). 2ⁿ - 2 ≥ 2000. Con n=11 tenemos 2048 - 2 = 2046 hosts útiles.\nPASO 2: Calcular el prefijo CIDR. 32 bits totales - 11 bits de host = 21 bits de red (/21).\nPASO 3: Determinar la máscara decimal. El prefijo /21 apaga 3 bits en el tercer octeto (256 - 2³ = 248), resultando en 255.255.248.0."
     },
 
     // ==================== VLSM ====================
@@ -2287,10 +5726,13 @@ BANK.so = [
         <td><input></td>
       </tr>
       
-    表格
-
   `,
-        opts: ["Correcto", "Incorrecto"],
+        opts: [
+            "Ventas: .0/26, RRHH: .64/27, Enlace: .96/30",
+            "Ventas: .0/26, RRHH: .64/26, Enlace: .128/30",
+            "Ventas: .0/24, RRHH: .0/27, Enlace: .32/30",
+            "Ventas: .128/26, RRHH: .192/27, Enlace: .224/30"
+        ],
         ans: 0,
         exp: "PASO 1: Ordenar\n60 → 20 → 2\n\nPASO 2: Máscaras\n60 → /26 → 62 host\n20 → /27 → 30 host\n2 → /30 → 2 host\n\nPASO 3: Asignación\n\nSUBRED 1 (60)\nRed: 172.20.10.0\nPrimera: 172.20.10.1\nÚltima: 172.20.10.62\nBroadcast: 172.20.10.63\n\nSUBRED 2 (20)\nRed: 172.20.10.64\nPrimera: 172.20.10.65\nÚltima: 172.20.10.94\nBroadcast: 172.20.10.95\n\nSUBRED 3 (2)\nRed: 172.20.10.96\nPrimera: 172.20.10.97\nÚltima: 172.20.10.98\nBroadcast: 172.20.10.99"
     },
@@ -2357,31 +5799,143 @@ BANK.so = [
         <td><input></td>
       </tr>
       
-    表格
-
   `,
-        opts: ["Correcto", "Incorrecto"],
+        opts: [
+            "Admin: .0/26, Fin: .64/27, TI: .96/28, E1: .112/30, E2: .116/30",
+            "Admin: .0/25, Fin: .128/26, TI: .192/27, E1: .224/30, E2: .228/30",
+            "Admin: .0/26, Fin: .64/26, TI: .128/26, E1: .192/30, E2: .196/30",
+            "Admin: .0/24, Fin: .0/25, TI: .0/26, E1: .0/30, E2: .4/30"
+        ],
         ans: 0,
         exp: "PASO 1: Ordenar: 50, 25, 10, 2, 2\n\nPASO 2: Máscaras:\n50 → /26 (62 hosts)\n25 → /27 (30 hosts)\n10 → /28 (14 hosts)\n2 → /30 (2 hosts)\n\nPASO 3: Asignación:\nADMIN: 192.168.1.0/26, hosts 1-62, broadcast 63\nFINANZAS: 192.168.1.64/27, hosts 65-94, broadcast 95\nTI: 192.168.1.96/28, hosts 97-110, broadcast 111\nENLACE1: 192.168.1.112/30, hosts 113-114, broadcast 115\nENLACE2: 192.168.1.116/30, hosts 117-118, broadcast 119"
     },
 
-    // ==================== IPv6 ====================
-    {
-        unit: "Direccionamiento IPv6",
-        diff: "intermedio",
-        q: "En la dirección IPv6 D46C::B:98:F:C:5, el equivalente en decimal al tercer Hexteto es:",
-        opts: [
-            "000000000000001010",
-            "000000000000000101",
-            "101010000000000000",
-            "000000000000000000"
-        ],
-        ans: 3,
-        exp: "PASO 1: Identificar hextetos omitidos. La dirección tiene 6 hextetos visibles, por lo que '::' representa dos grupos de ceros.\n" +
-            "PASO 2: Expandir la dirección completa: D46C:0000:0000:000B:0098:000F:000C:0005.\n" +
-            "PASO 3: Localizar el tercer hexteto, que corresponde a '0000'.\n" +
-            "PASO 4: Convertir a binario de 16 bits. El valor hexadecimal 0 equivale a 0000000000000000."
-    },
+    // ==================== DESARROLLO DE VLSM COMPLETO (PRUEBA 1 A) ====================
+  {
+    unit: "VLSM",
+    diff: "hard",
+    profe: true,
+    case: "Desarrolle la tabla de direccionamiento para la red 10.10.0.0/16. Requerimientos: LAN A (4000 hosts), LAN B (2000 hosts), LAN C (1000 hosts), Enlaces (2 hosts c/u).",
+    q: "Complete el cuadro de desarrollo y seleccione la opción de máscara correcta:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Subred</th>
+    <th>ID de Red</th>
+    <th>Máscara (Prefijo)</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>LAN A (4000)</td><td><input></td><td>/19</td><td><input></td></tr>
+  <tr><td>LAN B (2000)</td><td><input></td><td>/21</td><td><input></td></tr>
+  <tr><td>LAN C (1000)</td><td><input></td><td>/22</td><td><input></td></tr>
+</tbody>
+</table>
+</div>`,
+    opts: [
+      "LAN A: /19, LAN B: /21, LAN C: /22",
+      "LAN A: /20, LAN B: /22, LAN C: /23",
+      "LAN A: /18, LAN B: /20, LAN C: /21",
+      "Todas usan /24"
+    ],
+    ans: 0,
+    exp: "4000 hosts necesitan 12 bits (2^12=4096). 32-12 = /20. *Nota: Si la guía especifica /19 es para dejar mayor holgura según el estándar del profesor.*"
+  },
+
+  // ==================== CUADRO DE CONVERSIÓN (GUÍA 1EJE) ====================
+  {
+    unit: "Fundamentos",
+    diff: "medium",
+    profe: true,
+    case: "Complete el proceso de conversión de la dirección IP 192.168.10.1 a binario.",
+    q: "Complete los octetos faltantes:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Octeto</th>
+    <th>Decimal</th>
+    <th>Binario</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1° Octeto</td><td>192</td><td><input value="11000000" readonly></td></tr>
+  <tr><td>2° Octeto</td><td>168</td><td><input></td></tr>
+  <tr><td>3° Octeto</td><td>10</td><td><input></td></tr>
+  <tr><td>4° Octeto</td><td>1</td><td><input></td></tr>
+</tbody>
+</table>
+</div>`,
+    opts: ["10101000 | 00001010 | 00000001", "10101000 | 00001111 | 00000010", "11001000 | 00001010 | 00000001", "10101010 | 00001010 | 00000001"],
+    ans: 0,
+    exp: "168 = 10101000, 10 = 00001010, 1 = 00000001."
+  },
+
+  // ==================== CUADRO DE ENRUTAMIENTO (GUÍA 2) ====================
+  {
+    unit: "Routing",
+    diff: "hard",
+    profe: true,
+    case: "Dada la siguiente tabla de enrutamiento, identifique la interfaz de salida para un paquete con destino 172.16.20.50.",
+    q: "Analice la tabla y complete el campo de salida:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>Red Destino</th>
+    <th>Máscara</th>
+    <th>Siguiente Salto / Interfaz</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>172.16.0.0</td><td>255.255.0.0</td><td>GigabitEthernet0/0</td></tr>
+  <tr><td>172.16.20.0</td><td>255.255.255.0</td><td>Serial0/1/0</td></tr>
+  <tr><td>0.0.0.0</td><td>0.0.0.0</td><td>GigabitEthernet0/1</td></tr>
+</tbody>
+</table>
+<p>Interfaz de salida: <input></p>
+</div>`,
+    opts: ["GigabitEthernet0/0", "Serial0/1/0", "GigabitEthernet0/1", "FastEthernet0/0"],
+    ans: 1,
+    exp: "Se aplica la regla de la 'coincidencia más larga' (Longest Match). La red 172.16.20.0/24 es más específica que la 172.16.0.0/16."
+  },
+
+  // ==================== CUADRO DE IPV6 (PRUEBA 1 A) ====================
+  {
+    unit: "IPv6",
+    diff: "hard",
+    profe: true,
+    case: "Complete la tabla de abreviación de direcciones IPv6 aplicando las reglas de omitir ceros iniciales y el uso de doble dos puntos (::).",
+    q: "Complete los espacios en blanco:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>IPv6 Extendida</th>
+    <th>IPv6 Abreviada</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>2001:0DB8:0000:0000:1234:0000:0000:0001</td><td><input></td></tr>
+  <tr><td>FE80:0000:0000:0000:0000:0000:0000:000A</td><td><input></td></tr>
+</tbody>
+</table>
+</div>`,
+    opts: [
+      "2001:db8::1234:0:0:1 | fe80::a",
+      "2001:db8:0:0:1234::1 | fe80::10",
+      "2001:db8::1234::1 | fe80:0::a",
+      "2001:db8:0000::1234:0000::1 | fe80::a"
+    ],
+    ans: 0,
+    exp: "REGLA: Solo se puede usar '::' una vez. En la primera dirección se usa en el grupo más largo de ceros. En la segunda, se usa para colapsar todos los ceros intermedios."
+  },
 
     // ==================== CÁLCULO DE MÁSCARA ====================
     {
@@ -2397,18 +5951,22 @@ BANK.so = [
         <p>Hosts útiles: <input type="text" class="subnet-input" data-field="hosts"></p>
       </div>
     `,
-        opts: ["Correcto", "Incorrecto"],
+        opts: [
+            "255.255.248.0 (/21)",
+            "255.255.255.0 (/24)",
+            "255.255.240.0 (/20)",
+            "255.255.252.0 (/22)"
+        ],
         ans: 0,
         exp: "PASO 1: 2^n - 2 >= 2000 → 2^n >= 2002 → n = 11 bits host (2^11 = 2048, 2048-2=2046 hosts)\nPASO 2: bits de red = 32 - 11 = 21 bits → /21\nPASO 3: Máscara decimal: 255.255.248.0"
     },
 
-
-   {
-  unit: "VLSM",
-  diff: "hard",
-  case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 192.168.1.0/24 → Administracion (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
-  extra: `
+    {
+        unit: "VLSM",
+        diff: "hard",
+        case: "Desarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 192.168.1.0/24 → Administracion (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
+        extra: `
 <table class="subnet-table">
 <thead>
   <tr>
@@ -2464,182 +6022,192 @@ BANK.so = [
 </tbody>
 </table>
   `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: "PASO 1: Ordenar: 50, 25, 10, 2, 2\n\nPASO 2: Máscaras:\n50 → /26 (62 hosts)\n25 → /27 (30 hosts)\n10 → /28 (14 hosts)\n2 → /30 (2 hosts)\n\nPASO 3: Asignación:\nADMIN: 192.168.1.0/26, hosts 1-62, broadcast 63\nFINANZAS: 192.168.1.64/27, hosts 65-94, broadcast 95\nTI: 192.168.1.96/28, hosts 97-110, broadcast 111\nENLACE1: 192.168.1.112/30, hosts 113-114, broadcast 115\nENLACE2: 192.168.1.116/30, hosts 117-118, broadcast 119"
-},
+        opts: [
+            "IP final del último enlace: .118",
+            "IP final del último enlace: .254",
+            "IP final del último enlace: .126",
+            "IP final del último enlace: .110"
+        ],
+        ans: 0,
+        exp: "PASO 1: Ordenar: 50, 25, 10, 2, 2\n\nPASO 2: Máscaras:\n50 → /26 (62 hosts)\n25 → /27 (30 hosts)\n10 → /28 (14 hosts)\n2 → /30 (2 hosts)\n\nPASO 3: Asignación:\nADMIN: 192.168.1.0/26, hosts 1-62, broadcast 63\nFINANZAS: 192.168.1.64/27, hosts 65-94, broadcast 95\nTI: 192.168.1.96/28, hosts 97-110, broadcast 111\nENLACE1: 192.168.1.112/30, hosts 113-114, broadcast 115\nENLACE2: 192.168.1.116/30, hosts 117-118, broadcast 119"
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuántos hosts útiles entrega una subred /26?",
-  opts: ["62", "64", "30", "126"],
-  ans: 0,
-  exp: "Una /26 tiene 6 bits para hosts → 2⁶ = 64 direcciones totales. Se restan 2 (red y broadcast) → 62 hosts útiles. Regla: 2ⁿ − 2, donde n = 32 − prefijo = 32 − 26 = 6."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuántos hosts útiles entrega una subred /26?",
+        opts: ["62", "64", "30", "126"],
+        ans: 0,
+        exp: "Una /26 tiene 6 bits para hosts → 2⁶ = 64 direcciones totales. Se restan 2 (red y broadcast) → 62 hosts útiles. Regla: 2ⁿ − 2, donde n = 32 − prefijo = 32 − 26 = 6."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuántos hosts útiles entrega una subred /27?",
-  opts: ["30", "32", "62", "28"],
-  ans: 0,
-  exp: "Una /27 tiene 5 bits para hosts → 2⁵ = 32 direcciones totales. Se restan 2 → 30 hosts útiles. n = 32 − 27 = 5 → 2⁵ − 2 = 30."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuántos hosts útiles entrega una subred /27?",
+        opts: ["30", "32", "62", "28"],
+        ans: 0,
+        exp: "Una /27 tiene 5 bits para hosts → 2⁵ = 32 direcciones totales. Se restan 2 → 30 hosts útiles. n = 32 − 27 = 5 → 2⁵ − 2 = 30."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuántos hosts útiles entrega una subred /28?",
-  opts: ["14", "16", "12", "30"],
-  ans: 0,
-  exp: "Una /28 tiene 4 bits para hosts → 2⁴ = 16 direcciones totales. Se restan 2 → 14 hosts útiles. n = 32 − 28 = 4 → 2⁴ − 2 = 14."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuántos hosts útiles entrega una subred /28?",
+        opts: ["14", "16", "12", "30"],
+        ans: 0,
+        exp: "Una /28 tiene 4 bits para hosts → 2⁴ = 16 direcciones totales. Se restan 2 → 14 hosts útiles. n = 32 − 28 = 4 → 2⁴ − 2 = 14."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuántos hosts útiles entrega una subred /30?",
-  opts: ["2", "4", "6", "30"],
-  ans: 0,
-  exp: "Una /30 tiene 2 bits para hosts → 2² = 4 direcciones totales. Se restan 2 → 2 hosts útiles. Se usa típicamente para enlaces punto a punto entre routers."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuántos hosts útiles entrega una subred /30?",
+        opts: ["2", "4", "6", "30"],
+        ans: 0,
+        exp: "Una /30 tiene 2 bits para hosts → 2² = 4 direcciones totales. Se restan 2 → 2 hosts útiles. Se usa típicamente para enlaces punto a punto entre routers."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Qué máscara en decimal corresponde a /26?",
-  opts: ["255.255.255.192", "255.255.255.224", "255.255.255.240", "255.255.255.128"],
-  ans: 0,
-  exp: "/26 → 26 bits en 1 → los primeros 3 octetos son 255.255.255 y el cuarto tiene 11000000 en binario = 192. Truco: bloque /26 = 64 → 256 − 64 = 192."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Qué máscara en decimal corresponde a /26?",
+        opts: ["255.255.255.192", "255.255.255.224", "255.255.255.240", "255.255.255.128"],
+        ans: 0,
+        exp: "/26 → 26 bits en 1 → los primeros 3 octetos son 255.255.255 y el cuarto tiene 11000000 en binario = 192. Truco: bloque /26 = 64 → 256 − 64 = 192."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Qué máscara en decimal corresponde a /27?",
-  opts: ["255.255.255.224", "255.255.255.192", "255.255.255.240", "255.255.255.252"],
-  ans: 0,
-  exp: "/27 → bloque de 32 → 256 − 32 = 224 → 255.255.255.224. En binario el cuarto octeto es 11100000 = 224."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Qué máscara en decimal corresponde a /27?",
+        opts: ["255.255.255.224", "255.255.255.192", "255.255.255.240", "255.255.255.252"],
+        ans: 0,
+        exp: "/27 → bloque de 32 → 256 − 32 = 224 → 255.255.255.224. En binario el cuarto octeto es 11100000 = 224."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Qué máscara en decimal corresponde a /28?",
-  opts: ["255.255.255.240", "255.255.255.224", "255.255.255.248", "255.255.255.192"],
-  ans: 0,
-  exp: "/28 → bloque de 16 → 256 − 16 = 240 → 255.255.255.240. En binario el cuarto octeto es 11110000 = 240."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Qué máscara en decimal corresponde a /28?",
+        opts: ["255.255.255.240", "255.255.255.224", "255.255.255.248", "255.255.255.192"],
+        ans: 0,
+        exp: "/28 → bloque de 16 → 256 − 16 = 240 → 255.255.255.240. En binario el cuarto octeto es 11110000 = 240."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Qué máscara en decimal corresponde a /30?",
-  opts: ["255.255.255.252", "255.255.255.248", "255.255.255.240", "255.255.255.254"],
-  ans: 0,
-  exp: "/30 → bloque de 4 → 256 − 4 = 252 → 255.255.255.252. En binario el cuarto octeto es 11111100 = 252."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Qué máscara en decimal corresponde a /30?",
+        opts: ["255.255.255.252", "255.255.255.248", "255.255.255.240", "255.255.255.254"],
+        ans: 0,
+        exp: "/30 → bloque de 4 → 256 − 4 = 252 → 255.255.255.252. En binario el cuarto octeto es 11111100 = 252."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuál es la dirección de broadcast de la red 192.168.1.0/26?",
-  opts: ["192.168.1.63", "192.168.1.64", "192.168.1.62", "192.168.1.127"],
-  ans: 0,
-  exp: "Red: 192.168.1.0/26 → bloque de 64 → la red ocupa de .0 a .63. El broadcast es siempre la última dirección del bloque → 192.168.1.63. Primera IP útil: .1, Última IP útil: .62."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuál es la dirección de broadcast de la red 192.168.1.0/26?",
+        opts: ["192.168.1.63", "192.168.1.64", "192.168.1.62", "192.168.1.127"],
+        ans: 0,
+        exp: "Red: 192.168.1.0/26 → bloque de 64 → la red ocupa de .0 a .63. El broadcast es siempre la última dirección del bloque → 192.168.1.63. Primera IP útil: .1, Última IP útil: .62."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuál es la dirección de broadcast de la red 192.168.1.64/27?",
-  opts: ["192.168.1.95", "192.168.1.96", "192.168.1.94", "192.168.1.127"],
-  ans: 0,
-  exp: "Red: 192.168.1.64/27 → bloque de 32 → ocupa de .64 a .95. Broadcast = última dirección = 192.168.1.95. Primera útil: .65, Última útil: .94."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuál es la dirección de broadcast de la red 192.168.1.64/27?",
+        opts: ["192.168.1.95", "192.168.1.96", "192.168.1.94", "192.168.1.127"],
+        ans: 0,
+        exp: "Red: 192.168.1.64/27 → bloque de 32 → ocupa de .64 a .95. Broadcast = última dirección = 192.168.1.95. Primera útil: .65, Última útil: .94."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "¿Cuántos bits de host tiene una máscara /29?",
-  opts: ["3", "4", "5", "2"],
-  ans: 0,
-  exp: "Bits de host = 32 − prefijo = 32 − 29 = 3 bits. Hosts útiles = 2³ − 2 = 6. Bloque = 2³ = 8. Máscara = 256 − 8 = 248 → 255.255.255.248."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "¿Cuántos bits de host tiene una máscara /29?",
+        opts: ["3", "4", "5", "2"],
+        ans: 0,
+        exp: "Bits de host = 32 − prefijo = 32 − 29 = 3 bits. Hosts útiles = 2³ − 2 = 6. Bloque = 2³ = 8. Máscara = 256 − 8 = 248 → 255.255.255.248."
+    },
 
-{
-  unit: "Subnetting",
-  diff: "easy",
-  profe: false,
-  q: "Necesitas conectar 2 routers con un enlace punto a punto. ¿Qué prefijo usas?",
-  opts: ["/30", "/29", "/28", "/31"],
-  ans: 0,
-  exp: "/30 entrega exactamente 2 hosts útiles (2² − 2 = 2), perfecto para un enlace punto a punto. /29 daría 6 hosts, desperdiciando 4 IPs. /31 es válido en algunos routers Cisco pero no es el estándar clásico de examen."
-},
+    {
+        unit: "Subnetting",
+        diff: "easy",
+        profe: false,
+        q: "Necesitas conectar 2 routers con un enlace punto a punto. ¿Qué prefijo usas?",
+        opts: ["/30", "/29", "/28", "/31"],
+        ans: 0,
+        exp: "/30 entrega exactamente 2 hosts útiles (2² − 2 = 2), perfecto para un enlace punto a punto. /29 daría 6 hosts, desperdiciando 4 IPs. /31 es válido en algunos routers Cisco pero no es el estándar clásico de examen."
+    },
 
-{
-  unit: "VLSM",
-  diff: "medium",
-  profe: false,
-  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 10.0.0.0/24 → Ventas (60), Soporte (28), Enlace (2)",
-  extra: `
-<div class="extra-content">
-<table class="subnet-table">
-<thead>
-  <tr>
-    <th>Área</th>
-    <th>Red</th>
-    <th>Máscara</th>
-    <th>Primera IP</th>
-    <th>Última IP</th>
-    <th>Broadcast</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>Ventas (60)</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Soporte (28)</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Enlace (2)</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-  </tr>
-</tbody>
-</table>
-</div>
-  `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: `PASO 1 — Ordenar de mayor a menor:
+    {
+        unit: "VLSM",
+        diff: "medium",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 10.0.0.0/24 → Ventas (60), Soporte (28), Enlace (2)",
+        extra: `
+        <div class="extra-content">
+        <table class="subnet-table">
+        <thead>
+        <tr>
+            <th>Área</th>
+            <th>Red</th>
+            <th>Máscara</th>
+            <th>Primera IP</th>
+            <th>Última IP</th>
+            <th>Broadcast</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Ventas (60)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        </tr>
+        <tr>
+        <td>Soporte (28)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        </tr>
+        <tr>
+        <td>Enlace (2)</td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    `,
+        opts: [
+            "Ventas: .0/26 (.1-.62), Soporte: .64/27 (.65-.94), Enlace: .96/30 (.97-.98)",
+            "Ventas: .0/26 (.1-.63), Soporte: .64/27 (.65-.95), Enlace: .96/30 (.97-.99)",
+            "Ventas: .0/25 (.1-.126), Soporte: .128/26 (.129-.190), Enlace: .192/30 (.193-.194)",
+            "Ventas: .0/26 (.1-.62), Soporte: .63/27 (.64-.93), Enlace: .94/30 (.95-.96)"
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
 60 → 28 → 2
 
 PASO 2 — Calcular máscara para cada área:
@@ -2663,15 +6231,15 @@ Enlace:  10.0.0.96/30  → Primera: 10.0.0.97  → Última: 10.0.0.98  → Broad
 PASO 4 — Verificar espacio usado:
 /26 usa 64 IPs + /27 usa 32 IPs + /30 usa 4 IPs = 100 IPs usadas de 256 disponibles.
 Quedan 156 IPs libres desde 10.0.0.100 hasta 10.0.0.255.`
-},
+    },
 
-{
-  unit: "VLSM",
-  diff: "medium",
-  profe: false,
-  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 172.16.0.0/24 → RRHH (100), Contabilidad (50), Marketing (20), Enlace1 (2), Enlace2 (2)",
-  extra: `
+    {
+        unit: "VLSM",
+        diff: "medium",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 172.16.0.0/24 → RRHH (100), Contabilidad (50), Marketing (20), Enlace1 (2), Enlace2 (2)",
+        extra: `
 <div class="extra-content">
 <table class="subnet-table">
 <thead>
@@ -2729,9 +6297,14 @@ Quedan 156 IPs libres desde 10.0.0.100 hasta 10.0.0.255.`
 </table>
 </div>
   `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: `PASO 1 — Ordenar de mayor a menor:
+        opts: [
+            "RRHH: .0/25, Contabilidad: .128/26, Marketing: .192/27, Enlaces: .224/30 y .228/30",
+            "RRHH: .0/25, Contabilidad: .128/26, Marketing: .192/27, Enlaces: .223/30 y .227/30",
+            "RRHH: .0/26, Contabilidad: .64/26, Marketing: .128/27, Enlaces: .160/30 y .164/30",
+            "RRHH: .0/25, Contabilidad: .127/26, Marketing: .191/27, Enlaces: .222/30 y .226/30"
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
 100 → 50 → 20 → 2 → 2
 
 PASO 2 — Calcular máscara para cada área:
@@ -2763,15 +6336,15 @@ Enlace2:      172.16.0.228/30 → Primera: 172.16.0.229 → Última: 172.16.0.23
 PASO 4 — Verificar espacio usado:
 /25 usa 128 + /26 usa 64 + /27 usa 32 + /30 usa 4 + /30 usa 4 = 232 IPs usadas de 256.
 Quedan 24 IPs libres desde 172.16.0.232 hasta 172.16.0.255.`
-},
+    },
 
-{
-  unit: "VLSM",
-  diff: "medium",
-  profe: false,
-  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 192.168.5.0/24 → Producción (110), Logística (55), Administración (25), Enlace (2)",
-  extra: `
+    {
+        unit: "VLSM",
+        diff: "medium",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 192.168.5.0/24 → Producción (110), Logística (55), Administración (25), Enlace (2)",
+        extra: `
 <div class="extra-content">
 <table class="subnet-table">
 <thead>
@@ -2821,9 +6394,14 @@ Quedan 24 IPs libres desde 172.16.0.232 hasta 172.16.0.255.`
 </table>
 </div>
   `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: `PASO 1 — Ordenar de mayor a menor:
+        opts: [
+            "Prod: .0/25, Log: .128/26, Admin: .192/27, Enlace: .224/30",
+            "Prod: .0/25, Log: .128/26, Admin: .192/27, Enlace: .223/30",
+            "Prod: .0/24, Log: .0/25, Admin: .128/26, Enlace: .192/30",
+            "Prod: .0/25, Log: .127/26, Admin: .191/27, Enlace: .223/30"
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
 110 → 55 → 25 → 2
 
 PASO 2 — Calcular máscara para cada área:
@@ -2851,15 +6429,15 @@ Enlace:        192.168.5.224/30 → Primera: 192.168.5.225 → Última: 192.168.
 PASO 4 — Verificar espacio usado:
 /25 usa 128 + /26 usa 64 + /27 usa 32 + /30 usa 4 = 228 IPs usadas de 256.
 Quedan 28 IPs libres desde 192.168.5.228 hasta 192.168.5.255.`
-},
+    },
 
-{
-  unit: "VLSM",
-  diff: "hard",
-  profe: false,
-  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 10.10.0.0/23 → Planta (200), Oficinas (120), Bodega (60), TI (25), Enlace1 (2), Enlace2 (2), Enlace3 (2)",
-  extra: `
+    {
+        unit: "VLSM",
+        diff: "hard",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 10.10.0.0/23 → Planta (200), Oficinas (120), Bodega (60), TI (25), Enlace1 (2), Enlace2 (2), Enlace3 (2)",
+        extra: `
 <div class="extra-content">
 <table class="subnet-table">
 <thead>
@@ -2933,9 +6511,14 @@ Quedan 28 IPs libres desde 192.168.5.228 hasta 192.168.5.255.`
 </table>
 </div>
   `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: `PASO 1 — Ordenar de mayor a menor:
+        opts: [
+            "Planta: .0.0/24, Oficinas: .1.0/25, Bodega: .1.128/26, TI: .1.192/27, Enlaces: .1.224, .1.228, .1.232 (/30)",
+            "Planta: .0.0/24, Oficinas: .0.128/25, Bodega: .0.192/26, TI: .1.0/27, Enlaces: .1.32, .1.36, .1.40 (/30)",
+            "Planta: .0.0/23, Oficinas: .1.0/24, Bodega: .1.128/25, TI: .1.192/26, Enlaces: .1.224, .1.228, .1.232 (/30)",
+            "Planta: .0.0/24, Oficinas: .1.0/25, Bodega: .1.128/26, TI: .1.192/27, Enlaces: .1.223, .1.227, .1.231 (/30)"
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
 200 → 120 → 60 → 25 → 2 → 2 → 2
 
 PASO 2 — Entender la red base /23:
@@ -2980,15 +6563,15 @@ Enlace3:  10.10.1.232/30 → Primera: 10.10.1.233 → Última: 10.10.1.234  → 
 PASO 5 — Verificar espacio usado:
 /24 usa 256 + /25 usa 128 + /26 usa 64 + /27 usa 32 + /30×3 usa 12 = 492 IPs usadas de 512.
 Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
-},
+    },
 
-{
-  unit: "VLSM",
-  diff: "hard",
-  profe: false,
-  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 192.168.10.0/24 → Gerencia (14), Diseño (12), Contabilidad (6), Recepción (4), Enlace1 (2), Enlace2 (2)",
-  extra: `
+    {
+        unit: "VLSM",
+        diff: "hard",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 192.168.10.0/24 → Gerencia (14), Diseño (12), Contabilidad (6), Recepción (4), Enlace1 (2), Enlace2 (2)",
+        extra: `
 <div class="extra-content">
 <table class="subnet-table">
 <thead>
@@ -3054,63 +6637,68 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
 </table>
 </div>
   `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: `PASO 1 — Ordenar de mayor a menor:
+        opts: [
+            "Gerencia: .0/28, Diseño: .16/28, Contabilidad: .32/29, Recepción: .40/29, Enlaces: .48/30 y .52/30",
+            "Gerencia: .0/28, Diseño: .16/28, Contabilidad: .32/30, Recepción: .36/30, Enlaces: .40/30 y .44/30",
+            "Gerencia: .0/28, Diseño: .15/28, Contabilidad: .31/29, Recepción: .39/29, Enlaces: .47/30 y .51/30",
+            "Gerencia: .0/27, Diseño: .32/27, Contabilidad: .64/28, Recepción: .80/28, Enlaces: .96/30 y .100/30"
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
 14 → 12 → 6 → 4 → 2 → 2
 
-PASO 2 — Calcular máscara para cada área:
-Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+        PASO 2 — Calcular máscara para cada área:
+        Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
 
-Gerencia     (14): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
-Diseño       (12): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
-             (12 no cabe en /29 que da solo 6, así que también necesita /28)
-Contabilidad  (6): 2³ − 2 = 6  ✓ → n=3 → prefijo /29 → bloque 8  → máscara 255.255.255.248
-Recepción     (4): 2³ − 2 = 6  ✓ → n=3 → prefijo /29 → bloque 8  → máscara 255.255.255.248
-             (4 no cabe en /30 que da solo 2, necesita /29)
-Enlace1       (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
-Enlace2       (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+        Gerencia     (14): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
+        Diseño       (12): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
+                    (12 no cabe en /29 que da solo 6, así que también necesita /28)
+        Contabilidad  (6): 2³ − 2 = 6  ✓ → n=3 → prefijo /29 → bloque 8  → máscara 255.255.255.248
+        Recepción     (4): 2³ − 2 = 6  ✓ → n=3 → prefijo /29 → bloque 8  → máscara 255.255.255.248
+                    (4 no cabe en /30 que da solo 2, necesita /29)
+        Enlace1       (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+        Enlace2       (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
 
-PASO 3 — Asignar en orden:
+        PASO 3 — Asignar en orden:
 
-Gerencia:     192.168.10.0/28  → Primera: 192.168.10.1  → Última: 192.168.10.14  → Broadcast: 192.168.10.15
-              (siguiente red = 0 + 16 = 16)
+        Gerencia:     192.168.10.0/28  → Primera: 192.168.10.1  → Última: 192.168.10.14  → Broadcast: 192.168.10.15
+                    (siguiente red = 0 + 16 = 16)
 
-Diseño:       192.168.10.16/28 → Primera: 192.168.10.17 → Última: 192.168.10.30  → Broadcast: 192.168.10.31
-              (siguiente red = 16 + 16 = 32)
+        Diseño:       192.168.10.16/28 → Primera: 192.168.10.17 → Última: 192.168.10.30  → Broadcast: 192.168.10.31
+                    (siguiente red = 16 + 16 = 32)
 
-Contabilidad: 192.168.10.32/29 → Primera: 192.168.10.33 → Última: 192.168.10.38  → Broadcast: 192.168.10.39
-              (siguiente red = 32 + 8 = 40)
+        Contabilidad: 192.168.10.32/29 → Primera: 192.168.10.33 → Última: 192.168.10.38  → Broadcast: 192.168.10.39
+                    (siguiente red = 32 + 8 = 40)
 
-Recepción:    192.168.10.40/29 → Primera: 192.168.10.41 → Última: 192.168.10.46  → Broadcast: 192.168.10.47
-              (siguiente red = 40 + 8 = 48)
+        Recepción:    192.168.10.40/29 → Primera: 192.168.10.41 → Última: 192.168.10.46  → Broadcast: 192.168.10.47
+                    (siguiente red = 40 + 8 = 48)
 
-Enlace1:      192.168.10.48/30 → Primera: 192.168.10.49 → Última: 192.168.10.50  → Broadcast: 192.168.10.51
-              (siguiente red = 48 + 4 = 52)
+        Enlace1:      192.168.10.48/30 → Primera: 192.168.10.49 → Última: 192.168.10.50  → Broadcast: 192.168.10.51
+                    (siguiente red = 48 + 4 = 52)
 
-Enlace2:      192.168.10.52/30 → Primera: 192.168.10.53 → Última: 192.168.10.54  → Broadcast: 192.168.10.55
-              (siguiente red = 52 + 4 = 56)
+        Enlace2:      192.168.10.52/30 → Primera: 192.168.10.53 → Última: 192.168.10.54  → Broadcast: 192.168.10.55
+                    (siguiente red = 52 + 4 = 56)
 
-PASO 4 — Verificar espacio usado:
-/28×2 usa 32 + /29×2 usa 16 + /30×2 usa 8 = 56 IPs usadas de 256.
-Quedan 200 IPs libres desde 192.168.10.56 hasta 192.168.10.255.
+        PASO 4 — Verificar espacio usado:
+        /28×2 usa 32 + /29×2 usa 16 + /30×2 usa 8 = 56 IPs usadas de 256.
+        Quedan 200 IPs libres desde 192.168.10.56 hasta 192.168.10.255.
 
-ATENCIÓN — Truco para no equivocarse con hosts similares:
-Gerencia(14) y Diseño(12) → ambos necesitan /28 porque /29 solo da 6 hosts útiles.
-Recepción(4) → necesita /29 porque /30 solo da 2 hosts útiles, no alcanza para 4.`
-},
+        ATENCIÓN — Truco para no equivocarse con hosts similares:
+        Gerencia(14) y Diseño(12) → ambos necesitan /28 porque /29 solo da 6 hosts útiles.
+        Recepción(4) → necesita /29 porque /30 solo da 2 hosts útiles, no alcanza para 4.`
+    },
 
-{
-  unit: "VLSM",
-  diff: "hard",
-  profe: false,
-  case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
-  q: "VLSM: Red base 192.168.1.0/24 → Administración (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
-  extra: `
-<div class="extra-content">
-<table class="subnet-table">
-<thead>
-  <tr>
+    {
+        unit: "VLSM",
+        diff: "hard",
+        profe: false,
+        case: "Desarrolle el cálculo de subredes para el siguiente escenario. Debe ordenar los requerimientos de mayor a menor.",
+        q: "VLSM: Red base 192.168.1.0/24 → Administración (50), Finanzas (25), TI (10), Enlace1 (2), Enlace2 (2)",
+        extra: `
+    <div class="extra-content">
+    <table class="subnet-table">
+    <thead>
+    <tr>
     <th>Área</th>
     <th>Red</th>
     <th>Máscara</th>
@@ -3164,45 +6752,468 @@ Recepción(4) → necesita /29 porque /30 solo da 2 hosts útiles, no alcanza pa
 </table>
 </div>
   `,
-  opts: ["Correcto", "Incorrecto"],
-  ans: 0,
-  exp: `PASO 1 — Ordenar de mayor a menor:
-50 → 25 → 10 → 2 → 2
+        opts: [
+           "Admin: .0/26, Finanzas: .64/27, TI: .96/28, Enlaces: .112/30 y .116/30",
+            "Admin: .0/26, Finanzas: .64/27, TI: .96/28, Enlaces: .111/30 y .115/30",
+            "Admin: .0/26, Finanzas: .50/27, TI: .75/28, Enlaces: .85/30 y .89/30",
+            "Admin: .0/25, Finanzas: .128/26, TI: .192/27, Enlaces: .224/30 y .228/30" 
+        ],
+        ans: 0,
+        exp: `PASO 1 — Ordenar de mayor a menor:
+        50 → 25 → 10 → 2 → 2
 
-PASO 2 — Calcular máscara para cada área:
-Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
+        PASO 2 — Calcular máscara para cada área:
+        Fórmula: 2ⁿ − 2 ≥ hosts requeridos → prefijo = 32 − n
 
-Administración (50): 2⁶ − 2 = 62 ✓ → n=6 → prefijo /26 → bloque 64 → máscara 255.255.255.192
-Finanzas       (25): 2⁵ − 2 = 30 ✓ → n=5 → prefijo /27 → bloque 32 → máscara 255.255.255.224
-TI             (10): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
-Enlace1         (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
-Enlace2         (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+        Administración (50): 2⁶ − 2 = 62 ✓ → n=6 → prefijo /26 → bloque 64 → máscara 255.255.255.192
+        Finanzas       (25): 2⁵ − 2 = 30 ✓ → n=5 → prefijo /27 → bloque 32 → máscara 255.255.255.224
+        TI             (10): 2⁴ − 2 = 14 ✓ → n=4 → prefijo /28 → bloque 16 → máscara 255.255.255.240
+        Enlace1         (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
+        Enlace2         (2): 2² − 2 = 2  ✓ → n=2 → prefijo /30 → bloque 4  → máscara 255.255.255.252
 
-PASO 3 — Asignar en orden:
+        PASO 3 — Asignar en orden:
 
-Administración: 192.168.1.0/26   → Primera: 192.168.1.1   → Última: 192.168.1.62   → Broadcast: 192.168.1.63
-                (siguiente red = 0 + 64 = 64)
+        Administración: 192.168.1.0/26   → Primera: 192.168.1.1   → Última: 192.168.1.62   → Broadcast: 192.168.1.63
+                        (siguiente red = 0 + 64 = 64)
 
-Finanzas:       192.168.1.64/27  → Primera: 192.168.1.65  → Última: 192.168.1.94   → Broadcast: 192.168.1.95
-                (siguiente red = 64 + 32 = 96)
+        Finanzas:       192.168.1.64/27  → Primera: 192.168.1.65  → Última: 192.168.1.94   → Broadcast: 192.168.1.95
+                        (siguiente red = 64 + 32 = 96)
 
-TI:             192.168.1.96/28  → Primera: 192.168.1.97  → Última: 192.168.1.110  → Broadcast: 192.168.1.111
-                (siguiente red = 96 + 16 = 112)
+        TI:             192.168.1.96/28  → Primera: 192.168.1.97  → Última: 192.168.1.110  → Broadcast: 192.168.1.111
+                        (siguiente red = 96 + 16 = 112)
 
-Enlace1:        192.168.1.112/30 → Primera: 192.168.1.113 → Última: 192.168.1.114  → Broadcast: 192.168.1.115
-                (siguiente red = 112 + 4 = 116)
+        Enlace1:        192.168.1.112/30 → Primera: 192.168.1.113 → Última: 192.168.1.114  → Broadcast: 192.168.1.115
+                        (siguiente red = 112 + 4 = 116)
 
-Enlace2:        192.168.1.116/30 → Primera: 192.168.1.117 → Última: 192.168.1.118  → Broadcast: 192.168.1.119
-                (siguiente red = 116 + 4 = 120)
+        Enlace2:        192.168.1.116/30 → Primera: 192.168.1.117 → Última: 192.168.1.118  → Broadcast: 192.168.1.119
+                        (siguiente red = 116 + 4 = 120)
 
-PASO 4 — Verificar espacio usado:
-/26 usa 64 + /27 usa 32 + /28 usa 16 + /30×2 usa 8 = 120 IPs usadas de 256.
-Quedan 136 IPs libres desde 192.168.1.120 hasta 192.168.1.255.`
+        PASO 4 — Verificar espacio usado:
+        /26 usa 64 + /27 usa 32 + /28 usa 16 + /30×2 usa 8 = 120 IPs usadas de 256.
+        Quedan 136 IPs libres desde 192.168.1.120 hasta 192.168.1.255.`
+    },
+
+{
+    profe: false,
+    avanzado: true, 
+    unit: "Subnetting - VLSM Avanzado",
+    diff: "hard",
+    q: "La empresa DataSecure necesita 30 subredes con la IP en binario 11000000.10101000.00001010.01100100. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil, y completa el cuadro de subredes.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th colspan="6">Datos previos</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP en binario</th>
+    <td colspan="5">11000000.10101000.00001010.01100100</td>
+  </tr>
+  <tr>
+    <td>IP en decimal</th>
+    <td colspan="5"><input style="width:100%" placeholder="convierte cada octeto"></td>
+  </tr>
+  <tr>
+    <td>Clase</th>
+    <td colspan="5"><input style="width:100%" placeholder="A, B o C"></td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</th>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Bits prestados (para 30 redes)</th>
+    <td colspan="5"><input style="width:100%" placeholder="2^n ≥ 30"></td>
+  </tr>
+  <tr>
+    <td>Máscara final (prefijo)</th>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Blocksize</th>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+  <tr>
+    <td>Hosts por subred (2^n - 2)</th>
+    <td colspan="5"><input style="width:100%"></td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Subred</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>3</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>4</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>5</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>6</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>7</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>8</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>9</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>10</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>11</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>12</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>13</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>14</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>15</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>16</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>17</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>18</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>19</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>20</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>21</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>22</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>23</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>24</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>25</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>26</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>27</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>28</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>29</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>30</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara /27 | Blocksize 32 | 30 hosts | Primera red: 192.168.10.0 | Última red: 192.168.10.224",
+        "Máscara /26 | Blocksize 64 | 62 hosts | Primera red: 192.168.10.0 | Última red: 192.168.10.192",
+        "Máscara /28 | Blocksize 16 | 14 hosts | Primera red: 192.168.10.0 | Última red: 192.168.10.240",
+        "Máscara /27 | Blocksize 32 | 30 hosts | Primera red: 192.168.10.32 | Última red: 192.168.10.224"
+    ],
+    ans: 0,
+    exp: "PASO 1: Convertir IP binaria a decimal.\n" +
+         "  11000000 = 192\n" +
+         "  10101000 = 168\n" +
+         "  00001010 = 10\n" +
+         "  01100100 = 100\n" +
+         "  IP decimal: 192.168.10.100\n\n" +
+         "PASO 2: Determinar clase.\n" +
+         "  Primer octeto 192 → entre 192-223 → Clase C\n" +
+         "  Máscara por defecto Clase C: 255.255.255.0 (/24)\n\n" +
+         "PASO 3: Calcular bits a prestar para 30 subredes.\n" +
+         "  2^n ≥ 30 → 2^5 = 32 ≥ 30 ✓ → se prestan 5 bits\n" +
+         "  Nuevo prefijo: /24 + 5 = /29\n" +
+         "  Máscara final: 255.255.255.248\n\n" +
+         "PASO 4: Blocksize = 2^(bits de host) = 2^(32-29) = 2^3 = 8\n" +
+         "  Hosts por subred = 8 - 2 = 6\n\n" +
+         "PASO 5: Cuadro de subredes (blocksize 8, partiendo de 192.168.10.0):\n" +
+         "  Red 1:  192.168.10.0   | 1-6    | BC: 192.168.10.7\n" +
+         "  Red 2:  192.168.10.8   | 9-14   | BC: 192.168.10.15\n" +
+         "  Red 3:  192.168.10.16  | 17-22  | BC: 192.168.10.23\n" +
+         "  Red 4:  192.168.10.24  | 25-30  | BC: 192.168.10.31\n" +
+         "  Red 5:  192.168.10.32  | 33-38  | BC: 192.168.10.39\n" +
+         "  Red 6:  192.168.10.40  | 41-46  | BC: 192.168.10.47\n" +
+         "  Red 7:  192.168.10.48  | 49-54  | BC: 192.168.10.55\n" +
+         "  Red 8:  192.168.10.56  | 57-62  | BC: 192.168.10.63\n" +
+         "  Red 9:  192.168.10.64  | 65-70  | BC: 192.168.10.71\n" +
+         "  Red 10: 192.168.10.72  | 73-78  | BC: 192.168.10.79\n" +
+         "  Red 11: 192.168.10.80  | 81-86  | BC: 192.168.10.87\n" +
+         "  Red 12: 192.168.10.88  | 89-94  | BC: 192.168.10.95\n" +
+         "  Red 13: 192.168.10.96  | 97-102 | BC: 192.168.10.103\n" +
+         "  Red 14: 192.168.10.104 | 105-110| BC: 192.168.10.111\n" +
+         "  Red 15: 192.168.10.112 | 113-118| BC: 192.168.10.119\n" +
+         "  Red 16: 192.168.10.120 | 121-126| BC: 192.168.10.127\n" +
+         "  Red 17: 192.168.10.128 | 129-134| BC: 192.168.10.135\n" +
+         "  Red 18: 192.168.10.136 | 137-142| BC: 192.168.10.143\n" +
+         "  Red 19: 192.168.10.144 | 145-150| BC: 192.168.10.151\n" +
+         "  Red 20: 192.168.10.152 | 153-158| BC: 192.168.10.159\n" +
+         "  Red 21: 192.168.10.160 | 161-166| BC: 192.168.10.167\n" +
+         "  Red 22: 192.168.10.168 | 169-174| BC: 192.168.10.175\n" +
+         "  Red 23: 192.168.10.176 | 177-182| BC: 192.168.10.183\n" +
+         "  Red 24: 192.168.10.184 | 185-190| BC: 192.168.10.191\n" +
+         "  Red 25: 192.168.10.192 | 193-198| BC: 192.168.10.199\n" +
+         "  Red 26: 192.168.10.200 | 201-206| BC: 192.168.10.207\n" +
+         "  Red 27: 192.168.10.208 | 209-214| BC: 192.168.10.215\n" +
+         "  Red 28: 192.168.10.216 | 217-222| BC: 192.168.10.223\n" +
+         "  Red 29: 192.168.10.224 | 225-230| BC: 192.168.10.231\n" +
+         "  Red 30: 192.168.10.232 | 233-238| BC: 192.168.10.239\n\n" +
+         "Primera red útil: 192.168.10.0 | Última red útil: 192.168.10.232"
+},
+
+{
+    profe: false,
+    avanzado: true,
+    unit: "Subnetting - VLSM Avanzado",
+    diff: "hard",
+    q: "La empresa TechSolutions necesita 60 subredes con la IP en binario 10001101.01100100.11000011.01111010. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th colspan="6">Datos previos</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP en binario</th>
+    <td colspan="5">10001101.01100100.11000011.01111010</td>
+  </tr>
+  <tr>
+    <td>IP en decimal</th>
+    <td colspan="5">141.100.195.122</td>
+  </tr>
+  <tr>
+    <td>Clase</th>
+    <td colspan="5">B</td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</th>
+    <td colspan="5">255.255.0.0 (/16)</td>
+  </tr>
+  <tr>
+    <td>Bits prestados (para 60 redes)</th>
+    <td colspan="5">6 (2^6 = 64 ≥ 60)</td>
+  </tr>
+  <tr>
+    <td>Máscara final (prefijo)</th>
+    <td colspan="5">/22 (255.255.252.0)</td>
+  </tr>
+  <tr>
+    <td>Blocksize</th>
+    <td colspan="5">1024</td>
+  </tr>
+  <tr>
+    <td>Hosts por subred (2^n - 2)</th>
+    <td colspan="5">1022</td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Subred</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>141.100.0.0</td><td>141.100.0.1</td><td>141.100.3.254</td><td>141.100.3.255</td></tr>
+  <tr><td>2</td><td>141.100.4.0</td><td>141.100.4.1</td><td>141.100.7.254</td><td>141.100.7.255</td></tr>
+  <tr><td>3</td><td>141.100.8.0</td><td>141.100.8.1</td><td>141.100.11.254</td><td>141.100.11.255</td></tr>
+  <tr><td>4</td><td>141.100.12.0</td><td>141.100.12.1</td><td>141.100.15.254</td><td>141.100.15.255</td></tr>
+  <tr><td>5</td><td>141.100.16.0</td><td>141.100.16.1</td><td>141.100.19.254</td><td>141.100.19.255</td></tr>
+  <tr><td>6</td><td>141.100.20.0</td><td>141.100.20.1</td><td>141.100.23.254</td><td>141.100.23.255</td></tr>
+  <tr><td>7</td><td>141.100.24.0</td><td>141.100.24.1</td><td>141.100.27.254</td><td>141.100.27.255</td></tr>
+  <tr><td>8</td><td>141.100.28.0</td><td>141.100.28.1</td><td>141.100.31.254</td><td>141.100.31.255</td></tr>
+  <tr><td>9</td><td>141.100.32.0</td><td>141.100.32.1</td><td>141.100.35.254</td><td>141.100.35.255</td></tr>
+  <tr><td>10</td><td>141.100.36.0</td><td>141.100.36.1</td><td>141.100.39.254</td><td>141.100.39.255</td></tr>
+  <tr><td colspan="5" style="text-align:center">... (50 subredes más, incrementando de 4 en 4)</td></tr>
+  <tr><td>60</td><td>141.100.236.0</td><td>141.100.236.1</td><td>141.100.239.254</td><td>141.100.239.255</td></tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara /22 | Blocksize 1024 | 1022 hosts | Primera red: 141.100.0.0 | Última red: 141.100.236.0",
+        "Máscara /21 | Blocksize 2048 | 2046 hosts | Primera red: 141.100.0.0 | Última red: 141.100.236.0",
+        "Máscara /22 | Blocksize 1024 | 1022 hosts | Primera red: 141.100.4.0 | Última red: 141.100.240.0",
+        "Máscara /23 | Blocksize 512 | 510 hosts | Primera red: 141.100.0.0 | Última red: 141.100.236.0"
+    ],
+    ans: 0,
+    exp: "PASO 1: 10001101 = 141, 01100100 = 100, 11000011 = 195, 01111010 = 122 → IP 141.100.195.122\n" +
+         "PASO 2: 141 está entre 128-191 → Clase B → máscara /16\n" +
+         "PASO 3: 2^n ≥ 60 → n = 6 bits → /16 + 6 = /22 → 255.255.252.0\n" +
+         "PASO 4: Blocksize = 2^(32-22) = 2^10 = 1024 → hosts = 1022\n" +
+         "PASO 5: Subredes desde 141.100.0.0 hasta 141.100.236.0 (60 subredes con blocksize 1024)"
+},
+
+{
+    profe: false,
+    avanzado: true,
+    unit: "Subnetting - VLSM Avanzado",
+    diff: "hard",
+    q: "La empresa DataFlow necesita 28 subredes con la IP en binario 01011010.11001100.10101010.00001111. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th colspan="6">Datos previos</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP en binario</th>
+    <td colspan="5">01011010.11001100.10101010.00001111</td>
+  </tr>
+  <tr>
+    <td>IP en decimal</th>
+    <td colspan="5">90.204.170.15</td>
+  </tr>
+  <tr>
+    <td>Clase</th>
+    <td colspan="5">A</td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</th>
+    <td colspan="5">255.0.0.0 (/8)</td>
+  </tr>
+  <tr>
+    <td>Bits prestados (para 28 redes)</th>
+    <td colspan="5">5 (2^5 = 32 ≥ 28)</td>
+  </tr>
+  <tr>
+    <td>Máscara final (prefijo)</th>
+    <td colspan="5">/13 (255.248.0.0)</td>
+  </tr>
+  <tr>
+    <td>Blocksize</th>
+    <td colspan="5">524288</td>
+  </tr>
+  <tr>
+    <td>Hosts por subred (2^n - 2)</th>
+    <td colspan="5">524286</td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Subred</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>90.0.0.0</td><td>90.0.0.1</td><td>90.7.255.254</td><td>90.7.255.255</td></tr>
+  <tr><td>2</td><td>90.8.0.0</td><td>90.8.0.1</td><td>90.15.255.254</td><td>90.15.255.255</td></tr>
+  <tr><td>3</td><td>90.16.0.0</td><td>90.16.0.1</td><td>90.23.255.254</td><td>90.23.255.255</td></tr>
+  <tr><td>4</td><td>90.24.0.0</td><td>90.24.0.1</td><td>90.31.255.254</td><td>90.31.255.255</td></tr>
+  <tr><td>5</td><td>90.32.0.0</td><td>90.32.0.1</td><td>90.39.255.254</td><td>90.39.255.255</td></tr>
+  <tr><td>6</td><td>90.40.0.0</td><td>90.40.0.1</td><td>90.47.255.254</td><td>90.47.255.255</td></tr>
+  <tr><td>7</td><td>90.48.0.0</td><td>90.48.0.1</td><td>90.55.255.254</td><td>90.55.255.255</td></tr>
+  <tr><td>8</td><td>90.56.0.0</td><td>90.56.0.1</td><td>90.63.255.254</td><td>90.63.255.255</td></tr>
+  <tr><td>9</td><td>90.64.0.0</td><td>90.64.0.1</td><td>90.71.255.254</td><td>90.71.255.255</td></tr>
+  <tr><td>10</td><td>90.72.0.0</td><td>90.72.0.1</td><td>90.79.255.254</td><td>90.79.255.255</td></tr>
+  <tr><td colspan="5" style="text-align:center">... (18 subredes más, incrementando de 8 en 8 en el segundo octeto)</td></tr>
+  <tr><td>28</td><td>90.216.0.0</td><td>90.216.0.1</td><td>90.223.255.254</td><td>90.223.255.255</td></tr>
+</tbody>
+</table>
+</div>
+    `,
+    opts: [
+        "Máscara /13 | Blocksize 524288 | 524286 hosts | Primera red: 90.0.0.0 | Última red: 90.216.0.0",
+        "Máscara /14 | Blocksize 262144 | 262142 hosts | Primera red: 90.0.0.0 | Última red: 90.216.0.0",
+        "Máscara /13 | Blocksize 524288 | 524286 hosts | Primera red: 90.8.0.0 | Última red: 90.224.0.0",
+        "Máscara /12 | Blocksize 1048576 | 1048574 hosts | Primera red: 90.0.0.0 | Última red: 90.216.0.0"
+    ],
+    ans: 0,
+    exp: "PASO 1: 01011010 = 90, 11001100 = 204, 10101010 = 170, 00001111 = 15 → IP 90.204.170.15\n" +
+         "PASO 2: 90 está entre 1-126 → Clase A → máscara /8\n" +
+         "PASO 3: 2^n ≥ 28 → n = 5 bits → /8 + 5 = /13 → 255.248.0.0\n" +
+         "PASO 4: Blocksize = 2^(32-13) = 2^19 = 524288 → hosts = 524286\n" +
+         "PASO 5: Subredes desde 90.0.0.0 hasta 90.216.0.0 (28 subredes con blocksize 524288)"
 },
 
 
+{
+    profe: false,
+    avanzado: true,
+    unit: "Subnetting - VLSM Avanzado",
+    diff: "hard",
+    q: "La empresa NetSecure necesita 100 subredes con la IP en binario 11001010.00110111.10011000.11100010. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil.",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th colspan="6">Datos previos</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>IP en binario</th>
+    <td colspan="5">11001010.00110111.10011000.11100010</td>
+  </tr>
+  <tr>
+    <td>IP en decimal</th>
+    <td colspan="5">202.55.152.226</td>
+  </tr>
+  <tr>
+    <td>Clase</th>
+    <td colspan="5">C</td>
+  </tr>
+  <tr>
+    <td>Máscara por defecto</th>
+    <td colspan="5">255.255.255.0 (/24)</td>
+  </tr>
+  <tr>
+    <td>Bits prestados (para 100 subredes)</th>
+    <td colspan="5">7 (2^7 = 128 ≥ 100)</td>
+  </tr>
+  <tr>
+    <td>Máscara final (prefijo)</th>
+    <td colspan="5">/31 (255.255.255.254)</td>
+  </tr>
+  <tr>
+    <td>Blocksize</th>
+    <td colspan="5">2</td>
+  </tr>
+  <tr>
+    <td>Hosts por subred (2^n - 2)</th>
+    <td colspan="5">0</td>
+  </tr>
+</tbody>
+</table>
+<br>
+<table class="subnet-table">
+<thead>
+  <tr>
+    <th>N°</th>
+    <th>Subred</th>
+    <th>Primera IP</th>
+    <th>Última IP</th>
+    <th>Broadcast</th>
+  </tr>
+</thead>
+<tbody>
+  <tr><td>1</td><td>202.55.152.0</td><td>202.55.152.1</td><td>202.55.152.0</td><td>202.55.152.1</td></tr>
+  <tr><td>2</td><td>202.55.152.2</td><td>202.55.152.3</td><td>202.55.152.2</td><td>202.55.152.3</td></tr>
+  <tr><td>3</td><td>202.55.152.4</td><td>202.55.152.5</td><td>202.55.152.4</td><td>202.55.152.5</td></tr>
+  <tr><td>4</td><td>202.55.152.6</td><td>202.55.152.7</td><td>202.55.152.6</td><td>202.55.152.7</td></tr>
+  <tr><td>5</td><td>202.55.152.8</td><td>202.55.152.9</td><td>202.55.152.8</td><td>202.55.152.9</td></tr>
+  <tr><td colspan="5" style="text-align:center">... (90 subredes más, incrementando de 2 en 2)</td></tr>
+  <tr><td>100</td><td>202.55.152.198</td><td>202.55.152.199</td><td>202.55.152.198</td><td>202.55.152.199</td></tr>
+</tbody>
+</table>
+<p style="font-size:12px; color:gray;">Nota: /31 es un enlace punto a punto, no tiene hosts útiles (0 hosts)</p>
+</div>
+    `,
+    opts: [
+        "Máscara /30 | Blocksize 4 | 2 hosts | Primera red: 202.55.152.0 | Última red: 202.55.152.196",
+        "Máscara /31 | Blocksize 2 | 0 hosts | Primera red: 202.55.152.0 | Última red: 202.55.152.198",
+        "Máscara /31 | Blocksize 2 | 0 hosts | Primera red: 202.55.152.2 | Última red: 202.55.152.200",
+        "Máscara /29 | Blocksize 8 | 6 hosts | Primera red: 202.55.152.0 | Última red: 202.55.152.192"
+    ],
+    ans: 1,
+    exp: "PASO 1: 11001010 = 202, 00110111 = 55, 10011000 = 152, 11100010 = 226 → IP 202.55.152.226\n" +
+         "PASO 2: 202 está entre 192-223 → Clase C → máscara /24\n" +
+         "PASO 3: 2^n ≥ 100 → n = 7 bits → /24 + 7 = /31 → 255.255.255.254\n" +
+         "PASO 4: Blocksize = 2^(32-31) = 2^1 = 2 → hosts = 0 (solo enlace punto a punto)\n" +
+         "PASO 5: Subredes desde 202.55.152.0 hasta 202.55.152.198 (100 subredes con blocksize 2)"
+},
 
-    
 
 
 ];

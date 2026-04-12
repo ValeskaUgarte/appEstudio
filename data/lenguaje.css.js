@@ -1044,6 +1044,120 @@ ans: 2,
 exp: "background-attachment:fixed es clásico, transform 3D es método moderno"
 },
 
+ // ==================== CSS - SELECTORES ====================
+    {
+        unit: "CSS",
+        diff: "easy",
+        case: "Tienes UN SOLO boton de enviar en tu pagina y quieres darle un estilo especifico.",
+        q: "¿Qué selector CSS se usa para un elemento con ID unico?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="6" placeholder="???">enviar { background: green; }</td><td>#</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["#", ".", "*", "@"],
+        ans: 0,
+        exp: "# se usa para seleccionar por ID (unico)"
+    },
+
+    // ==================== CSS - SELECTORES DE CLASE ====================
+    {
+        unit: "CSS",
+        diff: "easy",
+        case: "Tienes varios botones en tu pagina que deben tener el mismo estilo.",
+        q: "¿Qué selector CSS se usa para elementos con la misma clase?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="6" placeholder="???">boton { background: blue; }</td><td>.</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: [".", "#", "*", "@"],
+        ans: 0,
+        exp: ". se usa para seleccionar por clase"
+    },
+
+    // ==================== CSS - MARGEN vs PADDING ====================
+    {
+        unit: "CSS",
+        diff: "medium",
+        case: "Quieres separar dos cajas entre si, SIN afectar el contenido interno.",
+        q: "¿Qué propiedad crea espacio FUERA del borde de un elemento?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Propiedad</th><th>Ubicacion</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="8" placeholder="???"></td><td>Fuera del borde</td><td>margin</td></tr>
+        <tr><td>padding</td><td>Dentro del borde</td><td><input type="text" size="8" placeholder="???"></td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["margin", "margin", "border", "spacing"],
+        ans: 0,
+        exp: "margin es el espacio FUERA del borde, padding es DENTRO"
+    },
+
+    // ==================== CSS - DISPLAY ====================
+    {
+        unit: "CSS",
+        diff: "medium",
+        case: "Tienes varios enlaces que quieres que se vean UNO AL LADO DEL OTRO en la misma linea.",
+        q: "¿Qué valor de display hace que los elementos se comporten como inline pero permitiendo width y height?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Comportamiento</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>display: <input type="text" size="10" placeholder="???"></td><td>Mismo ancho que su contenido, permite width/height</td><td>inline-block</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["inline-block", "block", "inline", "flex"],
+        ans: 0,
+        exp: "inline-block permite width/height pero se comporta como inline"
+    },
+
+    // ==================== CSS - POSITION ====================
+    {
+        unit: "CSS",
+        diff: "hard",
+        case: "Quieres que una barra de navegacion se quede FIJA en la parte superior al hacer scroll.",
+        q: "¿Qué valor de position fija un elemento en la pantalla aunque se haga scroll?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Comportamiento</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>position: <input type="text" size="6" placeholder="???"></td><td>Fijo en pantalla, no se mueve con scroll</td><td>fixed</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["fixed", "absolute", "relative", "sticky"],
+        ans: 0,
+        exp: "fixed fija el elemento en la pantalla aunque se haga scroll"
+    },
+
+    // ==================== CSS - Z-INDEX ====================
+    {
+        unit: "CSS",
+        diff: "hard",
+        case: "Dos elementos se superponen. Quieres que el menu quede POR ENCIMA de todo.",
+        q: "¿Qué propiedad controla el orden de superposicion de elementos?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Que hace</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="8" placeholder="???">: 100;</td><td>Numero mas alto = mas arriba</td><td>z-index</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["z-index", "layer", "stack", "order"],
+        ans: 0,
+        exp: "z-index controla la superposicion (mayor numero = mas arriba)"
+    }
 
 
 ];

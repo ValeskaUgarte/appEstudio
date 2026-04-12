@@ -3163,8 +3163,220 @@ BANK.lenguaje_python = [
         q: "Depura este codigo con recursion:\n\ndef factorial(n):\n    return n * factorial(n-1)\n\nprint(factorial(5))\n\nError:\nTraceback (most recent call last):\n  File stdin, line 4, in module\n    print(factorial(5))\n  File stdin, line 2, in factorial\n    return n * factorial(n-1)\n  [Previous line repeated 995 more times]\nRecursionError: maximum recursion depth exceeded\n\nCual es el error?",
         opts: ["Falta caso base (n <= 1)", "Demasiadas recursion", "Variable mal nombrada", "Print incorrecto"],
         ans: 0, exp: "Falta el caso base que detenga la recursion, ej: if n <= 1: return 1"
-    }
+    },
+
+    // ==================== PYTHON - SINTAXIS BASICA ====================
+    {
+        unit: "Python",
+        diff: "easy",
+        case: "Escribiste un condicional y el codigo no funciona. Revisas y falta algo al final de la linea if.",
+        q: "¿Qué caracter es OBLIGATORIO al final de if, for, while, def, class?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código incorrecto</th><th>Código correcto</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>if edad > 18<br>    print("Mayor")</td><td>if edad > 18<input type="text" size="4" placeholder="???"><br>    print("Mayor")</td><td>:</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: [":", ";", "->", "=>"],
+        ans: 0,
+        exp: "Los dos puntos (:) son obligatorios al final de if, for, while, def, class"
+    },
+
+    // ==================== PYTHON - LISTAS ====================
+    {
+        unit: "Python",
+        diff: "easy",
+        case: "Tienes una lista de numeros y quieres agregar un elemento al final.",
+        q: "¿Qué metodo de lista agrega un elemento al final?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Resultado</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>lista = [1,2,3]<br>lista.<input type="text" size="8" placeholder="???">(4)<br>print(lista)</td><td>[1,2,3,4]</td><td>append</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["append", "add", "push", "insert"],
+        ans: 0,
+        exp: "append() agrega un elemento al final de la lista"
+    },
+
+    // ==================== PYTHON - DICCIONARIOS ====================
+    {
+        unit: "Python",
+        diff: "medium",
+        case: "Tienes un diccionario y quieres obtener un valor, pero si la clave no existe, quieres que devuelva 0 en lugar de error.",
+        q: "¿Qué metodo de diccionario devuelve un valor por defecto si la clave no existe?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Resultado si no existe</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>d = {'a':1}<br>d.<input type="text" size="6" placeholder="???">('b', 0)</td><td>0</td><td>get</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["get", "pop", "setdefault", "fetch"],
+        ans: 0,
+        exp: "get(clave, default) devuelve default si la clave no existe"
+    },
+
+    // ==================== PYTHON - COMPRENSION DE LISTAS ====================
+    {
+        unit: "Python",
+        diff: "medium",
+        case: "Tienes una lista de numeros y quieres crear una NUEVA lista con los cuadrados de cada numero.",
+        q: "¿Qué sintaxis de Python crea una nueva lista transformando cada elemento?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Resultado</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>[x**2 for x in [1,2,3]]</td><td>[1,4,9]</td><td><input type="text" size="14" placeholder="???"></td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["List comprehension", "Map", "Filter", "Generator"],
+        ans: 0,
+        exp: "List comprehension [expr for item in iterable] crea listas de forma concisa"
+    },
+
+    // ==================== PYTHON - LAMBDA ====================
+    {
+        unit: "Python",
+        diff: "medium",
+        case: "Tienes una funcion simple que solo multiplica por 2. No quieres escribir def completa.",
+        q: "¿Qué palabra clave crea funciones anonimas de una sola linea?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Equivalente</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="6" placeholder="???"> x: x * 2</td><td>def duplicar(x): return x * 2</td><td>lambda</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["lambda", "def", "function", "anon"],
+        ans: 0,
+        exp: "lambda crea funciones anonimas de una sola linea"
+    },
+
+    // ==================== PYTHON - MANEJO DE EXCEPCIONES ====================
+    {
+        unit: "Python",
+        diff: "medium",
+        case: "Tu codigo puede dividir por cero. Quieres capturar ese error sin que el programa se detenga.",
+        q: "¿Qué bloque captura una excepcion en Python?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Que hace</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>try:<br>    x = 1/0<br><input type="text" size="6" placeholder="???"> ZeroDivisionError:<br>    print("Error")</td><td>Captura division por cero</td><td>except</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["except", "catch", "finally", "else"],
+        ans: 0,
+        exp: "except captura excepciones especificas"
+    },
+
+    // ==================== PYTHON - DECORADORES ====================
+    {
+        unit: "Python",
+        diff: "hard",
+        case: "Quieres que cada vez que se ejecute una funcion, se imprima 'Ejecutando funcion' antes.",
+        q: "¿Qué simbolo se usa para aplicar un decorador a una funcion?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Que hace</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="4" placeholder="???">mi_decorador<br>def hola():<br>    print("Hola")</td><td>Aplica el decorador a la funcion</td><td>@</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["@", "#", "$", "&"],
+        ans: 0,
+        exp: "@nombre_decorador se pone encima de la funcion a decorar"
+    },
+
+    // ==================== PYTHON - GENERADORES ====================
+    {
+        unit: "Python",
+        diff: "hard",
+        case: "Necesitas una funcion que produzca numeros pares uno por uno sin almacenar todos en memoria.",
+        q: "¿Qué palabra clave convierte una funcion en un generador?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Que hace</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>def pares():<br>    n = 0<br>    while True:<br>        <input type="text" size="6" placeholder="???"> n<br>        n += 2</td><td>Genera numeros pares uno por uno</td><td>yield</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["yield", "return", "print", "next"],
+        ans: 0,
+        exp: "yield convierte la funcion en generador (evaluacion perezosa)"
+    },
+    {
+        unit: "Python",
+        diff: "medium",
+        case: "Necesitas crear una lista de los cuadrados de los números pares del 1 al 10 en una sola línea de código.",
+        q: "¿Cómo se llama esta técnica en Python y cuál es su sintaxis?",
+        extra: `
+        <table class="subnet-table">
+        <thead>
+        <tr><th>Componente</th><th>Sintaxis</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>Técnica</td><td>List <input type="text" size="12" placeholder="???"></td></tr>
+        <tr><td>Lógica</td><td>[x**2 for x in range(11) if x%2 == 0]</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["Comprehension", "Slicing", "Lambda", "Mapping"],
+        ans: 0,
+        exp: "Las List Comprehensions son más rápidas y legibles que los bucles 'for' tradicionales para crear listas basadas en iterables existentes."
+    },
     
+// ==================== PYTHON - MANEJO DE EXCEPCIONES ====================
+    {
+        unit: "Python",
+        diff: "medium",
+        case: "Tu programa lee archivos externos. Si el archivo no existe, el programa se cae. Quieres capturar el error y mostrar un mensaje amigable sin detener la ejecución.",
+        q: "¿Cuál es la estructura correcta para manejar errores inesperados?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Bloque</th><th>Función</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="8" placeholder="???">:</td><td>Intenta ejecutar el código</td></tr>
+        <tr><td>except FileNotFoundError:</td><td>Se ejecuta si hay error</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["try", "if", "error", "catch"],
+        ans: 0,
+        exp: "El bloque 'try...except' permite gestionar excepciones, evitando que errores de entrada/salida (I/O) detengan el flujo del software."
+    },
+
+    // ==================== PYTHON - DECORADORES ====================
+    {
+        unit: "Python",
+        diff: "hard",
+        case: "Necesitas medir cuánto tiempo tarda en ejecutarse una función de cálculo sin modificar el código interno de esa función.",
+        q: "¿Qué herramienta de Python permite 'envolver' una función para añadirle funcionalidad extra?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Sintaxis</th><th>Nombre del concepto</th></tr></thead>
+        <tbody>
+        <tr><td>@<input type="text" size="12" placeholder="???"></td><td>Modificador de comportamiento</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["Decorador", "Generador", "Iterador", "Comprensión"],
+        ans: 0,
+        exp: "Los decoradores permiten ejecutar código antes y después de la función envuelta, siendo ideales para logging, seguridad o cronometraje."
+    }
+
+
 
 ];
 

@@ -3648,7 +3648,265 @@ profe: false, intermedio: false, avanzado: true, experto: false, unit: "Analizar
 q: "Que imprime?\nfunction test(a, b) {\n    arguments[0] = 99;\n    console.log(a);\n    a = 100;\n    console.log(arguments[0]);\n}\ntest(1, 2);",
 opts: ["99, 100", "1, 2", "99, 99", "100, 100"],
 ans: 0, exp: "arguments refleja cambios en parametros (en modo no estricto)"
-}
+},
+
+
+
+
+// ==================== JS - VARIABLES ====================
+    {
+        unit: "JavaScript",
+        diff: "easy",
+        case: "Necesitas declarar una variable que NO va a cambiar su valor en todo el programa.",
+        q: "¿Qué palabra clave se usa para declarar una constante en JavaScript?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Significado</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td><input type="text" size="6" placeholder="???"> PI = 3.1416;</td><td>No se puede reasignar</td><td>const</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["const", "let", "var", "final"],
+        ans: 0,
+        exp: "const declara constantes que no pueden reasignarse"
+    },
+
+    // ==================== JS - TIPOS DE DATOS ====================
+    {
+        unit: "JavaScript",
+        diff: "easy",
+        case: "Tienes una variable que no tiene valor asignado aun.",
+        q: "¿Qué valor tiene una variable declarada con let sin inicializar?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Valor</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>let x;<br>console.log(x);</td><td><input type="text" size="6" placeholder="???"></td><td>undefined</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["undefined", "null", "NaN", "0"],
+        ans: 0,
+        exp: "Las variables declaradas sin valor son undefined"
+    },
+
+    // ==================== JS - FUNCIONES ====================
+    {
+        unit: "JavaScript",
+        diff: "medium",
+        case: "Tienes una funcion simple que solo devuelve el doble de un numero.",
+        q: "¿Qué sintaxis de funcion es mas concisa para funciones simples de una linea?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Que es</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>const duplicar = (x) => x * 2;</td><td><input type="text" size="12" placeholder="???"></td><td>Arrow function</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["Arrow function", "Function expression", "Function declaration", "Anonymous function"],
+        ans: 0,
+        exp: "Arrow function (=>) es concisa para funciones simples"
+    },
+
+    // ==================== JS - ARRAYS ====================
+    {
+        unit: "JavaScript",
+        diff: "medium",
+        case: "Tienes un array de numeros y quieres crear un NUEVO array con el doble de cada numero.",
+        q: "¿Qué metodo de array crea un nuevo array transformando cada elemento?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Resultado</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>[1,2,3].<input type="text" size="8" placeholder="???">(x => x * 2)</td><td>[2,4,6]</td><td>map</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["map", "filter", "reduce", "forEach"],
+        ans: 0,
+        exp: "map() crea un nuevo array transformando cada elemento"
+    },
+
+    // ==================== JS - FILTER ====================
+    {
+        unit: "JavaScript",
+        diff: "medium",
+        case: "Tienes un array de numeros y quieres obtener SOLO los numeros pares.",
+        q: "¿Qué metodo de array filtra elementos segun una condicion?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Resultado</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>[1,2,3,4].<input type="text" size="8" placeholder="???">(x => x % 2 === 0)</td><td>[2,4]</td><td>filter</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["filter", "map", "reduce", "find"],
+        ans: 0,
+        exp: "filter() devuelve un array con los elementos que cumplen la condicion"
+    },
+
+    // ==================== JS - TEMPLATE STRINGS ====================
+    // {
+    //     unit: "JavaScript",
+    //     diff: "medium",
+    //     case: "Tienes variables nombre y edad. Quieres crear un string 'Hola me llamo Juan y tengo 25 años'.",
+    //     q: "¿Qué caracter se usa para template strings que permite interpolar variables?",
+    //     extra: `
+    //     <table class="subnet-table">
+    //     <thead><tr><th>Código</th><th>Que hace</th><th>¿Qué falta?</th></tr></thead>
+    //     <tbody>
+    //     <tr><td>`Hola me llamo ${nombre} y tengo ${edad} años`</td><td>Las comillas son <input type="text" size="4" placeholder="???"></td><td>``</td></tr>
+    //     </tbody>
+    //     </table>
+    //     `,
+    //     opts: ["`", "'", '"', "´"],
+    //     ans: 0,
+    //     exp: "Template strings usan backticks (`) y ${} para variables"
+    // },
+
+    // ==================== JS - DESESTRUCTURACION ====================
+    {
+        unit: "JavaScript",
+        diff: "hard",
+        case: "Tienes un objeto persona = { nombre: 'Ana', edad: 25, ciudad: 'Madrid' }. Quieres extraer nombre y edad en variables separadas.",
+        q: "¿Qué sintaxis de JavaScript extrae propiedades de un objeto en variables?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Que es</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>const { nombre, edad } = persona;</td><td><input type="text" size="14" placeholder="???"></td><td>Destructuring</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["Destructuring", "Spread", "Rest", "Assignment"],
+        ans: 0,
+        exp: "Destructuring extrae propiedades de objetos o arrays"
+    },
+
+    // ==================== JS - SPREAD OPERATOR ====================
+    {
+        unit: "JavaScript",
+        diff: "hard",
+        case: "Tienes un array original [1,2,3] y quieres crear una copia para no modificar el original.",
+        q: "¿Qué operador copia un array o objeto correctamente?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Código</th><th>Resultado</th><th>¿Qué falta?</th></tr></thead>
+        <tbody>
+        <tr><td>const copia = [<input type="text" size="4" placeholder="???">original];</td><td>Copia independiente</td><td>...</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["...", "..", "***", "&&&"],
+        ans: 0,
+        exp: "Spread operator (...) copia arrays y objetos"
+    },
+    {
+        unit: "JavaScript",
+        diff: "hard",
+        case: "Tienes un array de objetos 'productos' con precio y stock. Necesitas obtener un nuevo array que SOLO contenga los nombres de los productos que cuestan más de $500.",
+        q: "¿Qué combinación de métodos de orden superior (Higher-Order Functions) es la más eficiente?",
+        extra: `
+        <table class="subnet-table">
+        <thead>
+        <tr><th>Paso</th><th>Método a usar</th><th>Propósito</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>1. Filtrar precio</td><td>.<input type="text" size="10" placeholder="???">(p => p.precio > 500)</td><td>Descarta productos baratos</td></tr>
+        <tr><td>2. Extraer nombre</td><td>.<input type="text" size="10" placeholder="???">(p => p.nombre)</td><td>Crea array de strings</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["filter() y luego map()", "map() y luego filter()", "forEach() y push()", "find() y map()"],
+        ans: 0,
+        exp: "El orden importa: .filter() reduce el tamaño del array original y .map() transforma los elementos restantes. Hacerlo al revés procesaría datos que luego vas a descartar."
+    },
+
+    // ==================== JAVASCRIPT - ASINCRONÍA (PROMISES) ====================
+    {
+        unit: "JavaScript",
+        diff: "hard",
+        case: "Estás consumiendo una API de clima. Quieres pausar la ejecución del código hasta que los datos lleguen para evitar que la variable sea 'undefined'.",
+        q: "¿Qué palabras clave se utilizan para manejar promesas de forma síncrona visualmente?",
+        extra: `
+        <table class="subnet-table">
+        <thead>
+        <tr><th>Ubicación</th><th>Palabra Clave</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>Prefijo de la función</td><td><input type="text" size="8" placeholder="???"> function getData()</td></tr>
+        <tr><td>Antes de la llamada fetch</td><td>const res = <input type="text" size="8" placeholder="???"> fetch(url)</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["async / await", "try / catch", "then / catch", "promise / resolve"],
+        ans: 0,
+        exp: "Async/Await es 'azúcar sintáctica' sobre las Promesas. Permite leer código asíncrono como si fuera secuencial, facilitando el mantenimiento."
+    },
+    // ==================== JAVASCRIPT - DESESTRUCTURACIÓN ====================
+    {
+        unit: "JavaScript",
+        diff: "medium",
+        case: "Recibes un objeto 'config' con 20 propiedades. Solo necesitas usar 'apiKey' y 'endpoint' dentro de tu función.",
+        q: "¿Cuál es la forma más limpia de extraer estas variables en ES6?",
+        extra: `
+        <table class="subnet-table">
+        <thead>
+        <tr><th>Técnica</th><th>Sintaxis</th></tr>
+        </thead>
+        <tbody>
+        <tr><td>Destructuring</td><td>const { <input type="text" size="15" placeholder="???"> } = config;</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["{ apiKey, endpoint }", "[ apiKey, endpoint ]", "( apiKey, endpoint )", "extract(apiKey, endpoint)"],
+        ans: 0,
+        exp: "La desestructuración de objetos permite crear variables locales con el mismo nombre que las propiedades del objeto, evitando escribir 'config.propiedad' repetidamente."
+    },
+    {
+        unit: "JavaScript",
+        diff: "hard",
+        case: "Tienes un bucle que debe realizar 5 llamadas a una base de datos. Si usas 'forEach', las llamadas se disparan en paralelo y no esperas a que terminen. Necesitas que se ejecuten una tras otra (secuencial).",
+        q: "¿Qué estructura de control permite usar 'await' correctamente para pausar cada iteración?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Estructura</th><th>¿Permite await secuencial?</th></tr></thead>
+        <tbody>
+        <tr><td>array.forEach(async () => ...)</td><td>No (dispara y olvida)</td></tr>
+        <tr><td>for (<input type="text" size="10" placeholder="???"> item of array)</td><td>Sí (pausa el bucle)</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["for...of", "forEach", "map", "while(true)"],
+        ans: 0,
+        exp: "El bucle 'for...of' respeta el contexto asíncrono, permitiendo que cada iteración espere a que la promesa se resuelva antes de pasar a la siguiente."
+    },
+
+    // ==================== JS - DESTRUCTURING Y SPREAD ====================
+    {
+        unit: "JavaScript",
+        diff: "medium",
+        case: "Quieres clonar un objeto 'usuario' y cambiarle solo la propiedad 'edad', sin modificar el objeto original (inmutabilidad).",
+        q: "¿Cuál es la sintaxis más eficiente usando el operador Spread (...) ?",
+        extra: `
+        <table class="subnet-table">
+        <thead><tr><th>Acción</th><th>Código</th></tr></thead>
+        <tbody>
+        <tr><td>Clonar y actualizar</td><td>const nuevo = { <input type="text" size="12" placeholder="???">, edad: 30 };</td></tr>
+        </tbody>
+        </table>
+        `,
+        opts: ["...usuario", "usuario", "Object.assign(usuario)", "copy(usuario)"],
+        ans: 0,
+        exp: "El operador Spread '...' expande las propiedades del objeto original en uno nuevo. Al poner 'edad: 30' después, sobrescribimos solo esa propiedad."
+    }
+    
+
+
+
 
 
 ];
