@@ -7313,7 +7313,8 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
     avanzado: true,
     unit: "Subnetting - VLSM Avanzado",
     diff: "hard",
-    q: "La empresa DataFlow necesita 28 subredes con la IP en binario 01011010.11001100.10101010.00001111. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil.",
+    case: "La empresa DataFlow necesita 28 subredes con la IP en binario 01011010.11001100.10101010.00001111.",
+    q: "Calcula: máscara final, blocksize, hosts por subred, primera y última red útil.",
     extra: `
 <div class="extra-content">
 <table class="subnet-table">
