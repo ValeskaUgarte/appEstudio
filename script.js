@@ -319,7 +319,7 @@ if (pregunta.extra) {
 
         <div class="q-text">${pregunta.texto}</div>
 
-        ${extraHTML}  <!-- 👈 ESTO ES LO QUE FALTABA -->
+        ${extraHTML}  
 
         <div class="options">
             ${opcionesHTML}
@@ -391,10 +391,10 @@ function finishQuiz() {
     const notaFinal = Math.round(nota * 10) / 10;
     
     let mensaje = '';
-    if (notaFinal >= 6.0) mensaje = '🎉 ¡Excelente! Sigue así.';
-    else if (notaFinal >= 5.0) mensaje = '👍 Muy bien, pero puedes mejorar.';
-    else if (notaFinal >= 4.0) mensaje = '📚 A estudiar un poco más.';
-    else mensaje = '💪 No te rindas, repasa y vuelve a intentarlo.';
+    if (notaFinal >= 6.0) mensaje = '¡Excelente! Sigue así.';
+    else if (notaFinal >= 5.0) mensaje = ' Muy bien, pero puedes mejorar.';
+    else if (notaFinal >= 4.0) mensaje = 'A estudiar un poco más.';
+    else mensaje = 'No te rindas, repasa y vuelve a intentarlo.';
     
     const gradeEl = document.getElementById('res-grade');
     if (gradeEl) gradeEl.innerHTML = notaFinal;
@@ -415,7 +415,7 @@ function finishQuiz() {
         reviewHTML += `
             <div class="review-item ${esCorrecta ? 'r-correct' : 'r-wrong'}">
                 <div class="review-q"><strong>${idx + 1}.</strong> ${preg.texto}</div>
-                <div class="review-ans">📌 Tu respuesta: ${preg.opciones[userResp] || 'Sin responder'}</div>
+                <div class="review-ans">Tu respuesta: ${preg.opciones[userResp] || 'Sin responder'}</div>
                 ${!esCorrecta ? `<div class="review-ans">✅ Correcta: ${preg.opciones[preg.correcta]}</div>` : ''}
                ${preg.explicacion ? `<div class="review-exp">💡 ${preg.explicacion.replace(/\n/g, '<br>')}</div>` : ''}
             </div>
@@ -466,4 +466,23 @@ function guardarTrabajo(index) {
     }
 
     preguntasActuales[index].work = textarea.value;
+}
+
+function esc(texto) {
+    return String(texto)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/\n/g,'\\n')
+        .replace(/\t/g,'\\t')
+        .replace(/ /g,'·');  // punto medio para espacios visibles
+}
+
+function esc(texto) {
+    return String(texto)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/\n/g,'\\n')
+        .replace(/\t/g,'\\t');
 }

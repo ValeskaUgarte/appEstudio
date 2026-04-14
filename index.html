@@ -61,6 +61,15 @@
           <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('so'); startQuiz();">Ingresar</button>
           <div><span class="coming-badge">Material de Clases - 225 Preguntas</span></div>
         </div>
+
+        <div class="subject-card" id="card-linux" onclick="selectSubject('linux')">
+          <div class="subject-icon"></div>
+          <img src="img/Introducción a la Programación02.JPG" width="20%" height="20%" style="display: block;margin: 0 auto ;">
+          <div class="subject-name">Linux</div>
+          <div class="subject-meta"></div>
+          <button class="subject-btn" onclick="event.stopPropagation(); selectSubject('linux'); startQuiz();">Ingresar</button>
+          <div><span class="coming-badge">Material</span></div>
+        </div>
         
         <div class="subject-card" id="card-examen" onclick="selectSubject('examen')">
           <div class="subject-icon"></div>
@@ -379,6 +388,7 @@
   
 <script src="data/seg.js"></script>
 <script src="data/so.js"></script>
+<script src="data/linux.js"></script>
 <script src="data/examen.js"></script>
 <script src="data/algebra.js"></script>
 <script src="data/funciones.js"></script>
