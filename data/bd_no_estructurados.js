@@ -2,6 +2,510 @@ window.BANK = window.BANK || {};
 BANK.bd_no_estructurados = [
 
 
+ //Situación: Sistema Tienda en Línea formativa
+
+ //Formativa 1 - Crear BD y Colección
+
+ {
+    profe: true,
+    unit: "MongoDB - Formativa (Tienda)",
+    diff: "medium",
+    q: "Crea la base de datos 'tienda' y la colección 'clientes'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: use() y createCollection() - cada línea termina con ;</h6>
+</div>`,
+    opts: [
+        "use('tienda');\ndb.createCollection('clientes');",
+        "use('tienda');\ndb.clientes.create();",
+        "use tienda;\ncreate collection clientes;",
+        "db.createDatabase('tienda');\ndb.createCollection('clientes');"
+    ],
+    ans: 0,
+    exp: "En VS Code: use('tienda'); selecciona la base. db.createCollection('clientes'); crea la colección. Cada comando termina con punto y coma."
+},
+
+//Formativa 2 - Insertar primer cliente
+
+{
+    profe: true,
+    unit: "MongoDB - Formativa (Tienda)",
+    diff: "medium",
+    q: "Inserta un cliente: nombre 'Ana López', email 'ana@mail.com', dirección ciudad 'Santiago', país 'Chile', sin pedidos.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertOne, pedidos vacío es []</h6>
+</div>`,
+    opts: [
+        "db.clientes.insertOne({\n  nombre: 'Ana López',\n  email: 'ana@mail.com',\n  direccion: { ciudad: 'Santiago', pais: 'Chile' },\n  pedidos: []\n});",
+        "db.clientes.insertOne({\n  nombre: 'Ana López',\n  email: 'ana@mail.com',\n  direccion: { ciudad: 'Santiago', pais: 'Chile' }\n});",
+        "db.clientes.insert({\n  nombre: 'Ana López'\n});",
+        "db.clientes.insertOne({\n  nombre: 'Ana López'\n});"
+    ],
+    ans: 0,
+    exp: "db.clientes.insertOne({...}); inserta un documento. pedidos: [] es un array vacío."
+},
+
+//Formativa 3 - Insertar cliente con pedidos
+
+{
+    profe: true,
+    unit: "MongoDB - Formativa (Tienda)",
+    diff: "medium",
+    q: "Inserta un cliente: 'Carlos Ruiz', email 'carlos@mail.com', dirección ciudad 'Valparaíso', país 'Chile', con pedido: Laptop, 1 unidad, precio 800.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: pedidos es un array [{}, {}]</h6>
+</div>`,
+    opts: [
+        "db.clientes.insertOne({\n  nombre: 'Carlos Ruiz',\n  email: 'carlos@mail.com',\n  direccion: { ciudad: 'Valparaíso', pais: 'Chile' },\n  pedidos: [{ producto: 'Laptop', cantidad: 1, precio: 800 }]\n});",
+        "db.clientes.insertOne({\n  nombre: 'Carlos Ruiz',\n  email: 'carlos@mail.com',\n  direccion: { ciudad: 'Valparaíso', pais: 'Chile' },\n  pedidos: { producto: 'Laptop', cantidad: 1, precio: 800 }\n});",
+        "db.clientes.insert({\n  nombre: 'Carlos Ruiz',\n  pedidos: 'Laptop'\n});",
+        "db.clientes.insertOne({\n  nombre: 'Carlos Ruiz'\n});"
+    ],
+    ans: 0,
+    exp: "pedidos es un ARRAY, se escribe entre corchetes []. Cada pedido es un objeto {}."
+},
+
+
+//Formativa 4 - Insertar múltiples clientes
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "medium",
+    q: "Situación: Tienda en línea. Inserta dos clientes de una sola vez:\n\n- 'Luis Pérez', email 'luis@mail.com', dirección { ciudad: 'Concepción', pais: 'Chile' }, pedidos: []\n- 'Marta Díaz', email 'marta@mail.com', dirección { ciudad: 'Santiago', pais: 'Chile' }, pedidos: [{ producto: 'Mouse', cantidad: 2, precio: 25 }]",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:150px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertMany con array de documentos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: inserción múltiple</h6>
+</div>`,
+    opts: [
+        "db.clientes.insertMany([{ nombre: 'Luis Pérez', email: 'luis@mail.com', direccion: { ciudad: 'Concepción', pais: 'Chile' }, pedidos: [] }, { nombre: 'Marta Díaz', email: 'marta@mail.com', direccion: { ciudad: 'Santiago', pais: 'Chile' }, pedidos: [{ producto: 'Mouse', cantidad: 2, precio: 25 }] }]);",
+        "db.clientes.insertMany({ nombre: 'Luis Pérez', email: 'luis@mail.com', direccion: { ciudad: 'Concepción', pais: 'Chile' }, pedidos: [] }, { nombre: 'Marta Díaz', email: 'marta@mail.com', direccion: { ciudad: 'Santiago', pais: 'Chile' }, pedidos: [{ producto: 'Mouse', cantidad: 2, precio: 25 }] });",
+        "db.clientes.insert({ nombre: 'Luis Pérez' }); db.clientes.insert({ nombre: 'Marta Díaz' });",
+        "db.clientes.insertOne([{ nombre: 'Luis Pérez' }, { nombre: 'Marta Díaz' }]);"
+    ],
+    ans: 0,
+    exp: "insertMany recibe un ARRAY de documentos. Cada documento tiene su propia estructura con dirección y pedidos."
+},
+
+//Formativa 5 - Ver todos los clientes
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "easy",
+    q: "Situación: Tienda en línea. Muestra todos los clientes de la colección.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:40px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: find sin filtro</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura de documentos</h6>
+</div>`,
+    opts: [
+        "db.clientes.find();",
+        "db.clientes.findAll();",
+        "db.clientes.find({});",
+        "db.clientes.all();"
+    ],
+    ans: 0,
+    exp: "db.clientes.find() devuelve todos los documentos de la colección, incluyendo dirección y pedidos."
+},
+
+//Formativa 6 - Buscar clientes por ciudad
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "medium",
+    q: "Situación: Tienda en línea. Muestra los clientes que viven en la ciudad 'Santiago'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:50px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para subdocumento</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura con filtro en subdocumento</h6>
+</div>`,
+    opts: [
+        "db.clientes.find({ 'direccion.ciudad': 'Santiago' });",
+        "db.clientes.find({ direccion: { ciudad: 'Santiago' } });",
+        "db.clientes.find({ ciudad: 'Santiago' });",
+        "db.clientes.find({ 'direccion.ciudad': 'Santiago' }).pretty();"
+    ],
+    ans: 0,
+    exp: "Para buscar en subdocumentos se usa notación de punto: 'direccion.ciudad'."
+},
+
+//Formativa 7 - Actualizar dirección de un cliente
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "hard",
+    q: "Situación: Tienda en línea. Actualiza la dirección de 'Ana López' a { ciudad: 'Las Condes', pais: 'Chile' }.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:80px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: updateOne con $set y subdocumento</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de subdocumentos</h6>
+</div>`,
+    opts: [
+        "db.clientes.updateOne({ nombre: 'Ana López' }, { $set: { direccion: { ciudad: 'Las Condes', pais: 'Chile' } } });",
+        "db.clientes.updateOne({ nombre: 'Ana López' }, { $set: { 'direccion.ciudad': 'Las Condes', 'direccion.pais': 'Chile' } });",
+        "db.clientes.updateOne({ nombre: 'Ana López' }, { direccion: { ciudad: 'Las Condes', pais: 'Chile' } });",
+        "db.clientes.updateOne({ nombre: 'Ana López' }, { $push: { direccion: { ciudad: 'Las Condes', pais: 'Chile' } } });"
+    ],
+    ans: 0,
+    exp: "Ambas opciones son válidas. $set con el subdocumento completo reemplaza la dirección. La segunda opción actualiza solo los campos específicos."
+},
+
+//Formativa 8 - Agregar pedido a cliente
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "hard",
+    q: "Situación: Tienda en línea. Agrega un nuevo pedido a 'Carlos Ruiz': producto 'Teclado', cantidad 1, precio 60.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:80px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $push agrega al array pedidos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: creación de subdocumentos</h6>
+</div>`,
+    opts: [
+        "db.clientes.updateOne({ nombre: 'Carlos Ruiz' }, { $push: { pedidos: { producto: 'Teclado', cantidad: 1, precio: 60 } } });",
+        "db.clientes.updateOne({ nombre: 'Carlos Ruiz' }, { $addToSet: { pedidos: { producto: 'Teclado', cantidad: 1, precio: 60 } } });",
+        "db.clientes.updateOne({ nombre: 'Carlos Ruiz' }, { $set: { pedidos: { producto: 'Teclado', cantidad: 1, precio: 60 } } });",
+        "db.clientes.insertOne({ nombre: 'Carlos Ruiz', pedidos: { producto: 'Teclado', cantidad: 1, precio: 60 } });"
+    ],
+    ans: 0,
+    exp: "$push agrega un nuevo subdocumento al array pedidos. Se añade al final del array."
+},
+
+
+//Formativa 9 - Eliminar pedido específico
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "hard",
+    q: "Situación: Tienda en línea. Elimina del cliente 'Carlos Ruiz' el pedido del producto 'Mouse' (si existe).",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:80px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $pull elimina del array por coincidencia</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación de subdocumentos</h6>
+</div>`,
+    opts: [
+        "db.clientes.updateOne({ nombre: 'Carlos Ruiz' }, { $pull: { pedidos: { producto: 'Mouse' } } });",
+        "db.clientes.updateOne({ nombre: 'Carlos Ruiz' }, { $pop: { pedidos: -1 } });",
+        "db.clientes.updateOne({ nombre: 'Carlos Ruiz' }, { $unset: { pedidos: { producto: 'Mouse' } } });",
+        "db.clientes.deleteOne({ nombre: 'Carlos Ruiz', 'pedidos.producto': 'Mouse' });"
+    ],
+    ans: 0,
+    exp: "$pull elimina del array pedidos el subdocumento que coincide con { producto: 'Mouse' }. Elimina todas las coincidencias."
+},
+
+//Formativa 10 - Ver solo nombres y pedidos
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Formativa (Tienda)",
+    diff: "medium",
+    q: "Situación: Tienda en línea. Muestra solo el nombre y los pedidos de todos los clientes (excluyendo email y dirección).",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:50px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: proyección { nombre: 1, pedidos: 1, _id: 0 }</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura con proyección</h6>
+</div>`,
+    opts: [
+        "db.clientes.find({}, { nombre: 1, pedidos: 1, _id: 0 });",
+        "db.clientes.find({}, { nombre: 1, pedidos: 1 });",
+        "db.clientes.find().only('nombre', 'pedidos');",
+        "db.clientes.find({}, { nombre: true, pedidos: true });"
+    ],
+    ans: 0,
+    exp: "La proyección { nombre: 1, pedidos: 1, _id: 0 } muestra solo nombre y pedidos. _id: 0 lo oculta porque se muestra por defecto."
+},
+
+//EVALUACIÓN SUMATIVA Situación: Clínica Veterinaria con Historial de Atenciones
+
+//Sumativa 1 - Crear BD y Colección
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "hard",
+    q: "Situación: Clínica Veterinaria. Crea la base de datos 'veterinaria' y la colección 'mascotas'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:60px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: use para base, createCollection para colección</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: gestión de BD y colecciones (2.1.2)</h6>
+</div>`,
+    opts: [
+        "use('veterinaria'); db.createCollection('mascotas');",
+        "use('veterinaria'); db.mascotas.create();",
+        "create database veterinaria; create collection mascotas;",
+        "db.createDatabase('veterinaria'); db.createCollection('mascotas');"
+    ],
+    ans: 0,
+    exp: "use('veterinaria') crea/selecciona la base. db.createCollection('mascotas') crea la colección donde irán las mascotas con su historial."
+},
+
+
+//Sumativa 2 - Insertar primera mascota
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "hard",
+    q: "Situación: Clínica Veterinaria. Inserta una mascota: nombre 'Luna', especie 'perro', edad 3, historial con una atención: fecha '2024-01-15', motivo 'vacuna', veterinario 'Dr. Pérez'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:120px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: historial es un array, la atención va entre llaves dentro de corchetes</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - creación (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.insertOne({ nombre: 'Luna', especie: 'perro', edad: 3, historial: [{ fecha: '2024-01-15', motivo: 'vacuna', veterinario: 'Dr. Pérez' }] });",
+        "db.mascotas.insertOne({ nombre: 'Luna', especie: 'perro', edad: 3, historial: { fecha: '2024-01-15', motivo: 'vacuna', veterinario: 'Dr. Pérez' } });",
+        "db.mascotas.insert({ nombre: 'Luna', especie: 'perro', edad: 3, historial: 'vacuna' });",
+        "db.mascotas.insertOne({ nombre: 'Luna', especie: 'perro', edad: 3 }); db.mascotas.updateOne({ nombre: 'Luna' }, { $push: { historial: { fecha: '2024-01-15', motivo: 'vacuna', veterinario: 'Dr. Pérez' } } });"
+    ],
+    ans: 0,
+    exp: "historial es un ARRAY, por eso se escribe entre corchetes []. Dentro del array, cada atención es un objeto entre llaves {} con fecha, motivo y veterinario."
+},
+
+//Sumativa 3 - Insertar múltiples mascotas
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "hard",
+    q: "Situación: Clínica Veterinaria. Inserta dos mascotas de una sola vez:\n\n- 'Max', gato, edad 5, historial: [{ fecha: '2024-02-10', motivo: 'desparasitación', veterinario: 'Dra. López' }]\n- 'Lola', perro, edad 2, historial: []",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:150px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertMany con array de documentos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - creación (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.insertMany([{ nombre: 'Max', especie: 'gato', edad: 5, historial: [{ fecha: '2024-02-10', motivo: 'desparasitación', veterinario: 'Dra. López' }] }, { nombre: 'Lola', especie: 'perro', edad: 2, historial: [] }]);",
+        "db.mascotas.insertMany({ nombre: 'Max', especie: 'gato', edad: 5, historial: { fecha: '2024-02-10', motivo: 'desparasitación', veterinario: 'Dra. López' } }, { nombre: 'Lola', especie: 'perro', edad: 2, historial: [] });",
+        "db.mascotas.insert({ nombre: 'Max' }); db.mascotas.insert({ nombre: 'Lola' });",
+        "db.mascotas.insertOne([{ nombre: 'Max' }, { nombre: 'Lola' }]);"
+    ],
+    ans: 0,
+    exp: "insertMany recibe un ARRAY de documentos. Cada documento tiene su propio array historial (con atención o vacío)."
+},
+
+//Sumativa 4 - Ver todas las mascotas
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "easy",
+    q: "Situación: Clínica Veterinaria. Muestra todas las mascotas de la colección.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:40px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: find sin filtro</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - lectura (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.find();",
+        "db.mascotas.findAll();",
+        "db.mascotas.find({});",
+        "db.mascotas.all();"
+    ],
+    ans: 0,
+    exp: "db.mascotas.find() devuelve todas las mascotas con su nombre, especie, edad y el array historial completo."
+},
+
+//Sumativa 5 - Buscar mascotas por especie
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "medium",
+    q: "Situación: Clínica Veterinaria. Muestra las mascotas que son 'gato'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:40px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: find con filtro { especie: 'gato' }</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - lectura con filtro (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.find({ especie: 'gato' });",
+        "db.mascotas.find({ especie: 'gato' }).pretty();",
+        "db.mascotas.where({ especie: 'gato' });",
+        "db.mascotas.find().filter({ especie: 'gato' });"
+    ],
+    ans: 0,
+    exp: "find({ especie: 'gato' }) filtra solo las mascotas cuya especie es exactamente 'gato'."
+},
+
+//Sumativa 6 - Agregar atención a historial
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "hard",
+    q: "Situación: Clínica Veterinaria. Agrega una nueva atención al historial de 'Luna': fecha '2024-06-10', motivo 'consulta general', veterinario 'Dra. López'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:80px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $push agrega al array historial</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - creación de subdocumentos (2.1.4)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $push: { historial: { fecha: '2024-06-10', motivo: 'consulta general', veterinario: 'Dra. López' } } });",
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $addToSet: { historial: { fecha: '2024-06-10', motivo: 'consulta general', veterinario: 'Dra. López' } } });",
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $set: { historial: { fecha: '2024-06-10', motivo: 'consulta general', veterinario: 'Dra. López' } } });",
+        "db.mascotas.insertOne({ nombre: 'Luna', historial: { fecha: '2024-06-10', motivo: 'consulta general', veterinario: 'Dra. López' } });"
+    ],
+    ans: 0,
+    exp: "$push agrega un nuevo subdocumento al array historial. Se añade al final del array."
+},
+
+//Sumativa 7 - Actualizar edad de mascota
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "medium",
+    q: "Situación: Clínica Veterinaria. 'Luna' ha cumplido años. Actualiza su edad de 3 a 4 años.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:60px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: updateOne con $set</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - actualización de documentos (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $set: { edad: 4 } });",
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { edad: 4 });",
+        "db.mascotas.update({ nombre: 'Luna' }, { $set: { edad: 4 } });",
+        "db.mascotas.updateMany({ nombre: 'Luna' }, { edad: 4 });"
+    ],
+    ans: 0,
+    exp: "updateOne actualiza el primer documento que coincide. $set es necesario para solo cambiar la edad sin borrar otros campos."
+},
+
+//Sumativa 8 - Eliminar atención del historial
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "hard",
+    q: "Situación: Clínica Veterinaria. Elimina del historial de 'Luna' la atención con fecha '2024-01-15'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:80px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $pull elimina del array por coincidencia</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - eliminación de subdocumentos (2.1.4)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $pull: { historial: { fecha: '2024-01-15' } } });",
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $pop: { historial: -1 } });",
+        "db.mascotas.updateOne({ nombre: 'Luna' }, { $unset: { historial: { fecha: '2024-01-15' } } });",
+        "db.mascotas.deleteOne({ nombre: 'Luna', 'historial.fecha': '2024-01-15' });"
+    ],
+    ans: 0,
+    exp: "$pull elimina del array historial el subdocumento que coincide con { fecha: '2024-01-15' }."
+},
+
+//Sumativa 9 - Mostrar solo nombre e historial
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "medium",
+    q: "Situación: Clínica Veterinaria. Muestra solo el nombre y el historial de todas las mascotas (excluyendo especie y edad).",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:50px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: proyección { nombre: 1, historial: 1, _id: 0 }</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - lectura con proyección (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.find({}, { nombre: 1, historial: 1, _id: 0 });",
+        "db.mascotas.find({}, { nombre: 1, historial: 1 });",
+        "db.mascotas.find().only('nombre', 'historial');",
+        "db.mascotas.find({}, { nombre: true, historial: true });"
+    ],
+    ans: 0,
+    exp: "La proyección { nombre: 1, historial: 1, _id: 0 } muestra solo nombre e historial. _id: 0 lo oculta."
+},
+
+//Sumativa 10 - Eliminar mascota completa
+
+{
+    profe: true,
+    unit: "MongoDB - Evaluación Sumativa (Veterinaria)",
+    diff: "medium",
+    q: "Situación: Clínica Veterinaria. La mascota 'Max' ya no está en la clínica. Elimina su documento completo.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;height:60px;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: deleteOne con filtro por nombre</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: operaciones CRUD - eliminación de documentos (2.1.3)</h6>
+</div>`,
+    opts: [
+        "db.mascotas.deleteOne({ nombre: 'Max' });",
+        "db.mascotas.deleteMany({ nombre: 'Max' });",
+        "db.mascotas.remove({ nombre: 'Max' });",
+        "db.mascotas.drop({ nombre: 'Max' });"
+    ],
+    ans: 0,
+    exp: "deleteOne elimina el primer documento que coincide con { nombre: 'Max' }. deleteMany eliminaría todos los 'Max' si hubiera varios."
+},
+
   //PREGUNTAS PARA CREAR DESDE CERO
 {
     unit: "MongoDB - Crear Base de Datos",
