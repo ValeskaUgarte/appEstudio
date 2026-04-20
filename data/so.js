@@ -441,100 +441,109 @@ BANK.so = [
     unit: "VLSM",
     diff: "hard",
     case: "PRUEBA 1-A — II. EJERCICIOS PRÁCTICOS DE VLSM\nDesarrolle el cálculo de subredes para los siguientes escenarios. Debe ordenar los requerimientos de mayor a menor y especificar: Dirección de Red, Máscara (Prefijo), Primera IP usable, Última IP usable y Broadcast.",
-    q: "Desafío 1 — Sucursal INACAP Osorno.\n" +
-       "Red Base: 192.168.100.0/24.\n" +
+    q: "Desafío 2 — Infraestructura Corporativa.\n" +
+       "Red Base: 172.20.10.0/24.\n" +
        "Requerimientos:\n" +
-       "- Laboratorio de Computación: 50 hosts\n" +
-       "- Red Wi-Fi Docentes: 25 hosts\n" +
-       "- Oficina Director: 5 hosts\n" +
+       "- Departamento de Ventas: 60 hosts\n" +
+       "- Departamento de RRHH: 20 hosts\n" +
+       "- Enlace Punto a Punto Router A a Router B: 2 hosts\n" +
        "Calcula las subredes VLSM ordenadas de mayor a menor.",
     extra: `
 <div class="extra-content">
-<table class="subnet-table">
+<table class="subnet-table" style="width:100%; border-collapse: collapse;">
 <thead>
   <tr>
-    <th>#</th>
-    <th>Segmento</th>
-    <th>Hosts requeridos</th>
-    <th>Bits de host</th>
-    <th>Prefijo</th>
-    <th>Máscara</th>
-    <th>Dirección de Red</th>
-    <th>Primera IP</th>
-    <th>Última IP</th>
-    <th>Broadcast</th>
+    <th style="border:1px solid #ddd; padding:8px;">Orden</th>
+    <th style="border:1px solid #ddd; padding:8px;">Segmento</th>
+    <th style="border:1px solid #ddd; padding:8px;">Hosts</th>
+    <th style="border:1px solid #ddd; padding:8px;">Prefijo</th>
+    <th style="border:1px solid #ddd; padding:8px;">Máscara</th>
+    <th style="border:1px solid #ddd; padding:8px;">Red</th>
+    <th style="border:1px solid #ddd; padding:8px;">Primera IP</th>
+    <th style="border:1px solid #ddd; padding:8px;">Última IP</th>
+    <th style="border:1px solid #ddd; padding:8px;">Broadcast</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>1</td>
-    <td>Laboratorio</td>
-    <td>50</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
+    <td style="border:1px solid #ddd; padding:8px;">1</td>
+    <td style="border:1px solid #ddd; padding:8px;">Ventas</td>
+    <td style="border:1px solid #ddd; padding:8px;">60</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="/??" style="width:60px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="255.x.x.x" style="width:100px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="172.20.10.?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
   </tr>
   <tr>
-    <td>2</td>
-    <td>Wi-Fi Docentes</td>
-    <td>25</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
+    <td style="border:1px solid #ddd; padding:8px;">2</td>
+    <td style="border:1px solid #ddd; padding:8px;">RRHH</td>
+    <td style="border:1px solid #ddd; padding:8px;">20</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="/??" style="width:60px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="255.x.x.x" style="width:100px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="172.20.10.?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
   </tr>
   <tr>
-    <td>3</td>
-    <td>Oficina Director</td>
-    <td>5</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
+    <td style="border:1px solid #ddd; padding:8px;">3</td>
+    <td style="border:1px solid #ddd; padding:8px;">Enlace P2P</td>
+    <td style="border:1px solid #ddd; padding:8px;">2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="/??" style="width:60px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="255.x.x.x" style="width:100px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="172.20.10.?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+    <td style="border:1px solid #ddd; padding:8px;"><input placeholder="?" style="width:110px;"></td>
+  </tr>
+  
+  <tbody>
+  <tr>
+  <table class="subnet-table">
+<thead><tr><th>N°</th><th>Subred</th><th>Primera IP</th><th>Última IP</th><th>Broadcast</th></tr></thead>
+
+  <tr><td>1</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>2</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+  <tr><td>3</td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
   </tr>
 </tbody>
+
 </table>
+<h6 style="margin:8px 0; color:#555; font-size:0.75rem;">Pista: Ordene de mayor a menor. Prefijo = 32 - n donde 2^n - 2 ≥ hosts. Red = broadcast anterior + 1. Primera IP = Red + 1. Broadcast = Red + (2^n - 1). Última IP = Broadcast - 1.</h6>
 </div>
     `,
     opts: [
-        "Subred 1: 192.168.100.0/26 | Subred 2: 192.168.100.64/27 | Subred 3: 192.168.100.96/29",
-        "Subred 1: 192.168.100.0/25 | Subred 2: 192.168.100.128/26 | Subred 3: 192.168.100.192/29",
-        "Subred 1: 192.168.100.0/26 | Subred 2: 192.168.100.64/26 | Subred 3: 192.168.100.128/29",
-        "Subred 1: 192.168.100.0/27 | Subred 2: 192.168.100.32/27 | Subred 3: 192.168.100.64/29"
+        "Opción A:\nVentas: /26, máscara 255.255.255.192, red 172.20.10.0, primera IP 172.20.10.1, última IP 172.20.10.62, broadcast 172.20.10.63\nRRHH: /27, máscara 255.255.255.224, red 172.20.10.64, primera IP 172.20.10.65, última IP 172.20.10.94, broadcast 172.20.10.95\nEnlace P2P: /30, máscara 255.255.255.252, red 172.20.10.96, primera IP 172.20.10.97, última IP 172.20.10.98, broadcast 172.20.10.99",
+        "Opción B:\nVentas: /26, máscara 255.255.255.192, red 172.20.10.0, primera IP 172.20.10.1, última IP 172.20.10.63, broadcast 172.20.10.62\nRRHH: /27, máscara 255.255.255.224, red 172.20.10.64, primera IP 172.20.10.65, última IP 172.20.10.95, broadcast 172.20.10.94\nEnlace P2P: /30, máscara 255.255.255.252, red 172.20.10.96, primera IP 172.20.10.97, última IP 172.20.10.99, broadcast 172.20.10.98",
+        "Opción C:\nVentas: /26, máscara 255.255.255.192, red 172.20.10.0, primera IP 172.20.10.1, última IP 172.20.10.62, broadcast 172.20.10.63\nRRHH: /26, máscara 255.255.255.192, red 172.20.10.64, primera IP 172.20.10.65, última IP 172.20.10.126, broadcast 172.20.10.127\nEnlace P2P: /30, máscara 255.255.255.252, red 172.20.10.128, primera IP 172.20.10.129, última IP 172.20.10.130, broadcast 172.20.10.131",
+        "Opción D:\nVentas: /26, máscara 255.255.255.192, red 172.20.10.0, primera IP 172.20.10.1, última IP 172.20.10.62, broadcast 172.20.10.63\nRRHH: /28, máscara 255.255.255.240, red 172.20.10.64, primera IP 172.20.10.65, última IP 172.20.10.78, broadcast 172.20.10.79\nEnlace P2P: /30, máscara 255.255.255.252, red 172.20.10.80, primera IP 172.20.10.81, última IP 172.20.10.82, broadcast 172.20.10.83"
     ],
     ans: 0,
-    exp: "VLSM: se ordena de mayor a menor requerimiento y se asigna el bloque mínimo suficiente.\n\n" +
-         "SUBRED 1 — Laboratorio (50 hosts):\n" +
-         "  2^n - 2 ≥ 50 → 2^6 = 64 → 64-2 = 62 ✓ → prefijo /26\n" +
+    exp: "**PASO 1: Ordenar requerimientos de mayor a menor**\n" +
+         "  Ventas (60) → RRHH (20) → Enlace P2P (2)\n\n" +
+         "**PASO 2: Calcular subred para Ventas**\n" +
+         "  2^n - 2 ≥ 60 → 2^6 = 64 → n=6 bits de host → prefijo = 32-6 = /26\n" +
          "  Máscara: 255.255.255.192\n" +
-         "  Red:        192.168.100.0\n" +
-         "  Primera IP: 192.168.100.1\n" +
-         "  Última IP:  192.168.100.62\n" +
-         "  Broadcast:  192.168.100.63\n\n" +
-         "SUBRED 2 — Wi-Fi Docentes (25 hosts):\n" +
-         "  2^n - 2 ≥ 25 → 2^5 = 32 → 32-2 = 30 ✓ → prefijo /27\n" +
+         "  Red: 172.20.10.0\n" +
+         "  Primera IP: 172.20.10.1 (red + 1)\n" +
+         "  Broadcast: 172.20.10.63 (red + 63 = 2^6 - 1)\n" +
+         "  Última IP: 172.20.10.62 (broadcast - 1)\n\n" +
+         "**PASO 3: Calcular subred para RRHH**\n" +
+         "  Red = broadcast anterior + 1 = 172.20.10.63 + 1 = 172.20.10.64\n" +
+         "  2^n - 2 ≥ 20 → 2^5 = 32 → n=5 bits de host → prefijo = 32-5 = /27\n" +
          "  Máscara: 255.255.255.224\n" +
-         "  Red:        192.168.100.64\n" +
-         "  Primera IP: 192.168.100.65\n" +
-         "  Última IP:  192.168.100.94\n" +
-         "  Broadcast:  192.168.100.95\n\n" +
-         "SUBRED 3 — Oficina Director (5 hosts):\n" +
-         "  2^n - 2 ≥ 5 → 2^3 = 8 → 8-2 = 6 ✓ → prefijo /29\n" +
-         "  Máscara: 255.255.255.248\n" +
-         "  Red:        192.168.100.96\n" +
-         "  Primera IP: 192.168.100.97\n" +
-         "  Última IP:  192.168.100.102\n" +
-         "  Broadcast:  192.168.100.103"
+         "  Primera IP: 172.20.10.65 (red + 1)\n" +
+         "  Broadcast: 172.20.10.95 (red + 31 = 2^5 - 1)\n" +
+         "  Última IP: 172.20.10.94 (broadcast - 1)\n\n" +
+         "**PASO 4: Calcular subred para Enlace P2P**\n" +
+         "  Red = broadcast anterior + 1 = 172.20.10.95 + 1 = 172.20.10.96\n" +
+         "  2^n - 2 ≥ 2 → 2^2 = 4 → n=2 bits de host → prefijo = 32-2 = /30\n" +
+         "  Máscara: 255.255.255.252\n" +
+         "  Primera IP: 172.20.10.97 (red + 1)\n" +
+         "  Broadcast: 172.20.10.99 (red + 3 = 2^2 - 1)\n" +
+         "  Última IP: 172.20.10.98 (broadcast - 1)"
 },
 
 {
@@ -996,7 +1005,7 @@ BANK.so = [
     profe: true,
     unit: "IPv6",
     diff: "medium",
-    q: "2.- Dadas las siguientes direcciones IPv6, represéntelas según la regla #2: Omitir Ceros Con Dos Puntos.",
+    q: "2.- Dadas las siguientes direcciones IPv6, represéntelas según la regla #2: Omitir Ceros Con Dos Puntos. Y luego aplica la regla #1",
     extra: `
 <div class="extra-content">
 <table class="subnet-table">
@@ -1004,40 +1013,37 @@ BANK.so = [
   <tr>
     <th>IPv6</th>
     <th>IPv6 Aplicando Regla #2</th>
+    <th>IPv6 Aplicando Regla #1</th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td>1050:0000:0000:0006:0000:0600:300C:326B</td>
-    <td><input placeholder=""></td>
+    <td>1050:0000:0000:0006:0000:0600:300C:326B</th>
+    <td><input placeholder="Resultado final"></th>
   </tr>
   <tr>
-    <td>4306:0000:0000:0000:0000:0000:0000:00C3</td>
-    <td><input placeholder=""></td>
+    <td>4306:0000:0000:0000:0000:0000:0000:00C3</th>
+    <td><input placeholder="Resultado final"></th>
   </tr>
 </tbody>
 </table>
 </div>
     `,
     opts: [
-        "1050:0000:0000:0006:0000:0600:300C:326B → 1050::6:0:600:300C:326B | 4306:0000:0000:0000:0000:0000:0000:00C3 → 4306::C3",
-        "1050:0000:0000:0006:0000:0600:300C:326B → 1050:0:0:6::600:300C:326B | 4306:0000:0000:0000:0000:0000:0000:00C3 → 4306:0:0:0:0:0:0:C3",
-        "1050:0000:0000:0006:0000:0600:300C:326B → 1050::6::600:300C:326B | 4306:0000:0000:0000:0000:0000:0000:00C3 → 4306::C3"
+        "1050::6:0:600:300C:326B | 4306::C3",
+        "1050:0:0:6:0:600:300C:326B | 4306:0:0:0:0:0:0:C3",
+        "1050::6::600:300C:326B | 4306::C3",
+        "1050:0:0:6::600:300C:326B | 4306::C3"
     ],
     ans: 0,
-    exp: "Regla #2: Omitir secuencias continuas de hextetos en cero y reemplazarlas por :: (solo una vez por dirección).\n\n" +
-         "1050:0000:0000:0006:0000:0600:300C:326B\n" +
-         "  Paso 1: Omitir ceros iniciales en cada hexteto → 1050:0:0:6:0:600:300C:326B\n" +
-         "  Paso 2: Identificar la secuencia MÁS LARGA de hextetos con valor 0\n" +
-         "    Hextetos 2 y 3 son 0:0 (2 hextetos consecutivos)\n" +
-         "    Hexteto 5 es 0 (1 hexteto solo)\n" +
-         "    La más larga es la de los hextetos 2 y 3\n" +
-         "  Resultado: 1050::6:0:600:300C:326B\n\n" +
-         "4306:0000:0000:0000:0000:0000:0000:00C3\n" +
-         "  Paso 1: Omitir ceros iniciales en cada hexteto → 4306:0:0:0:0:0:0:C3\n" +
-         "  Paso 2: Los hextetos 2 al 7 son todos ceros (6 hextetos consecutivos)\n" +
-         "  Resultado: 4306::C3"
+    exp: "Primero se aplica regla #1 (omitir ceros a la izquierda):\n" +
+         "  1050:0000:0000:0006:0000:0600:300C:326B → 1050:0:0:6:0:600:300C:326B\n" +
+         "  4306:0000:0000:0000:0000:0000:0000:00C3 → 4306:0:0:0:0:0:0:C3\n\n" +
+         "Luego se aplica regla #2 (reemplazar la secuencia más larga de ceros por ::):\n" +
+         "  1050:0:0:6:0:600:300C:326B → secuencia '0:0' (posiciones 2 y 3) → 1050::6:0:600:300C:326B\n" +
+         "  4306:0:0:0:0:0:0:C3 → secuencia de 6 ceros consecutivos (posiciones 2 a 7) → 4306::C3"
 },
+
 
 
 
@@ -1364,74 +1370,28 @@ BANK.so = [
 },
 
 {
-    profe: false,
+    profe: true,
     unit: "IPv6 - Regla #2",
     diff: "medium",
-    q: "Aplica Regla #2 a la dirección: 1050:0000:0000:0006:0000:0600:300C:326B",
+    q: "Dadas las siguientes direcciones IPv6, represéntelas según la regla #2: Omitir Ceros Con Dos Puntos\n\n1050:0000:0000:0000:0005:0000:0000:326B",
     extra: `
 <div class="extra-content">
-<table class="subnet-table">
-<thead>
-  <tr>
-    <th>Paso</th>
-    <th>1°</th>
-    <th>2°</th>
-    <th>3°</th>
-    <th>4°</th>
-    <th>5°</th>
-    <th>6°</th>
-    <th>7°</th>
-    <th>8°</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>Original</td>
-    <td>1050</td>
-    <td>0000</td>
-    <td>0000</td>
-    <td>0006</td>
-    <td>0000</td>
-    <td>0600</td>
-    <td>300C</td>
-    <td>326B</td>
-  </tr>
-  <tr>
-    <td>Regla #1</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Regla #2</td>
-    <td colspan="8"><input style="width:100%"></td>
-  </tr>
-</tbody>
-</table>
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">terminal&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
 </div>
-    `,
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: Reemplaza la secuencia de ceros más larga por :: (una sola vez)</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: IPv6 compresión</h6>
+</div>`,
     opts: [
-        "1050::6:0:600:300C:326B",
-        "1050:0:0:6::600:300C:326B",
-        "1050::6:600:300C:326B",
-        "1050:0:0:6:0:600:300C:326B"
+        "1050::5::326B",
+        "1050::5:0:0:326B",
+        "1050::5:0000:0000:326B",
+        "1050:0:0:0:5::326B"
     ],
-    ans: 0,
-    exp: "PASO 1: Aplicar Regla #1 (quitar ceros iniciales de cada hexteto).\n" +
-         "  1050:0:0:6:0:600:300C:326B\n\n" +
-         "PASO 2: Identificar secuencias de ceros consecutivos para Regla #2.\n" +
-         "  Secuencia A: posiciones 2-3 → :0:0: (2 bloques)\n" +
-         "  Secuencia B: posición 5    → :0:   (1 bloque)\n\n" +
-         "PASO 3: Aplicar Regla #2. Se sustituye la secuencia MÁS LARGA por '::'.\n" +
-         "  La secuencia A (2 bloques) es más larga → se reemplaza por '::'\n" +
-         "  La secuencia B (1 bloque)  permanece como :0:\n\n" +
-         "RESULTADO: 1050::6:0:600:300C:326B"
+    ans: 2,
+    exp: "La dirección tiene dos secuencias de ceros: tres hextetos y dos hextetos. Se elige la más larga (tres hextetos) para reemplazar por ::. Los otros dos ceros se mantienen como 0000:0000. Resultado: 1050::5:0000:0000:326B"
 },
+
 
 {
     profe: false,
@@ -1984,7 +1944,7 @@ BANK.so = [
     profe: true,
     unit: "IPv6 - Regla #2",
     diff: "medium",
-    q: "Dadas las siguientes direcciones IPV6 , represéntelas según la regla #2: Omitir Ceros Con Dos Puntos 1050:0000:0000:0000:0005:0000:0000:326B",
+    q: "Dadas las siguientes direcciones IPV6 , represéntelas según la regla #2: Omitir Ceros Con Dos Puntos y luego aplica la regla #1 1050:0000:0000:0000:0005:0000:0000:326B",
     extra: `
 <div class="extra-content">
 <table class="subnet-table">
@@ -2181,66 +2141,25 @@ BANK.so = [
 
 {
     profe: true,
-    unit: "IPv6 - Análisis de dirección",
+    unit: "IPv6 - Regla #2",
     diff: "medium",
-    q: "Dada la dirección IPv6 987F::FF2A:0/64, responde: ¿cuántos bits de red tiene?, ¿cuál es la porción de red?, ¿cuál es la porción de interfaz?",
+    q: "Dada la siguiente dirección IPv6, represéntela aplicando SOLO la regla #2 (Omitir ceros con dos puntos):\n\n1050:0000:0000:0000:0005:0000:0000:326B",
     extra: `
 <div class="extra-content">
-<table class="subnet-table">
-<thead>
-  <tr>
-    <th>Concepto</th>
-    <th>Desarrollo</th>
-    <th>Resultado</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>Dirección expandida</td>
-    <td><input style="width:100%" placeholder="expandir usando Regla #1"></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Bits de red (prefijo)</td>
-    <td><input style="width:100%" placeholder="se indica con /XX"></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Bits de interfaz</td>
-    <td><input style="width:100%" placeholder="128 - bits de red = ?"></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Porción de red (primeros 64 bits)</td>
-    <td colspan="2"><input style="width:100%" placeholder="primeros 4 hextetos"></td>
-  </tr>
-  <tr>
-    <td>Porción de interfaz (últimos 64 bits)</td>
-    <td colspan="2"><input style="width:100%" placeholder="últimos 4 hextetos"></td>
-  </tr>
-</tbody>
-</table>
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">terminal&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
 </div>
-    `,
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: Busca la secuencia de ceros más larga y reemplázala por ::</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: IPv6 - Compresión con regla #2</h6>
+</div>`,
     opts: [
-        "Bits de red: 64 | Porción de red: 987F:0000:0000:0000 | Porción de interfaz: 0000:FF2A:0000:0000",
-        "Bits de red: 64 | Porción de red: 987F:0000:FF2A:0000 | Porción de interfaz: 0000:0000:0000:0000",
-        "Bits de red: 128 | Porción de red: toda la dirección | Porción de interfaz: ninguna",
-        "Bits de red: 32 | Porción de red: 987F:0000 | Porción de interfaz: 0000:0000:FF2A:0000:0000:0000"
+        "1050::5:0:0:326B",
+        "1050:0:0:0:5::326B",
+        "1050::5:0000:0000:326B",
+        "1050:0:0:0:5:0:0:326B"
     ],
-    ans: 0,
-    exp: "PASO 1: Expandir la dirección 987F::FF2A:0/64.\n" +
-         "  Hextetos explícitos: 987F, FF2A, 0 → 3 hextetos\n" +
-         "  '::' representa 8-3 = 5 hextetos de ceros.\n" +
-         "  El '::' va después de 987F → los ceros van en posiciones 2 a 6.\n" +
-         "  Expandida: 987F:0000:0000:0000:0000:FF2A:0000:0000\n\n" +
-         "PASO 2: Bits de red.\n" +
-         "  El prefijo /64 indica que los primeros 64 bits son la porción de red.\n" +
-         "  Bits de interfaz = 128 - 64 = 64 bits.\n\n" +
-         "PASO 3: Dividir la dirección en porciones.\n" +
-         "  64 bits = 4 hextetos de 16 bits cada uno.\n" +
-         "  Porción de RED      (hextetos 1-4): 987F:0000:0000:0000\n" +
-         "  Porción de INTERFAZ (hextetos 5-8): 0000:FF2A:0000:0000"
+    ans: 2,
+    exp: "La secuencia más larga de ceros es '0000:0000:0000' (tres hextetos). Se reemplaza por '::'. Los otros dos ceros se mantienen como '0000:0000' porque solo se puede usar '::' una vez. Resultado: 1050::5:0000:0000:326B"
 },
 
 {
@@ -2842,69 +2761,26 @@ BANK.so = [
     //Regla 2
 
     {
-        profe: true,
-        unit: "IPv6",
-        diff: "medium",
-        q: "Aplica regla #2: 1050:0000:0000:0000:0005:0000:0000:326B",
-        extra: `
+    profe: true,
+    unit: "IPv6 - Regla #2",
+    diff: "medium",
+    q: "Aplica regla #2 (omitir ceros con dos puntos, una sola vez) a la siguiente dirección IPv6:\n\n1050:0000:0000:0000:0005:0000:0000:326B",
+    extra: `
 <div class="extra-content">
-<table class="subnet-table">
-<thead>
-  <tr>
-    <th>Paso</th>
-    <th>1°</th>
-    <th>2°</th>
-    <th>3°</th>
-    <th>4°</th>
-    <th>5°</th>
-    <th>6°</th>
-    <th>7°</th>
-    <th>8°</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>Original</td>
-    <td>1050</td>
-    <td>0000</td>
-    <td>0000</td>
-    <td>0000</td>
-    <td>0005</td>
-    <td>0000</td>
-    <td>0000</td>
-    <td>326B</td>
-  </tr>
-  <tr>
-    <td>Regla #1</td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-    <td><input></td>
-  </tr>
-  <tr>
-    <td>Regla #2</td>
-    <td colspan="8"><input style="width:100%"></td>
-  </tr>
-</tbody>
-</table>
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">terminal&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
 </div>
-    `,
-        opts: [
-            "1050::5:0:0:326B",
-            "1050:0:0:0:5::326B",
-            "1050::5:326B",
-            "1050:0000::5:326B"
-        ],
-        ans: 0,
-        exp: "PASO 1: Identificar secuencias de ceros. Secuencia A (3 bloques): :0000:0000:0000:. Secuencia B (2 bloques): :0000:0000:.\n" +
-            "PASO 2: Aplicar Regla #2. Se debe sustituir la secuencia MÁS LARGA por '::'.\n" +
-            "PASO 3: Resolución. Los tres ceros iniciales se vuelven '::'. Los dos ceros finales se muestran como :0:0:.\n" +
-            "RESULTADO: 1050::5:0:0:326B"
-    },
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: Reemplaza la secuencia de ceros más larga por ::</h6>
+</div>`,
+    opts: [
+        "1050::5:0000:0000:326B",
+        "1050::5::326B",
+        "1050:0:0:0:5::326B",
+        "1050::5:0:0:326B"
+    ],
+    ans: 0,
+    exp: "La dirección tiene dos secuencias de ceros: '0000:0000:0000' (tres hextetos) y '0000:0000' (dos hextetos). Se elige la más larga (tres hextetos) y se reemplaza por '::'. Resultado: 1050::5:0000:0000:326B"
+},
 
     //SUBNETTING /29
 
@@ -3085,19 +2961,6 @@ BANK.so = [
             "PASO 5: Definir subredes. .0, .64, .128, .192."
     },
 
-
-    {
-        profe: true,
-        unit: "IPv4",
-        diff: "medium",
-        q: "La IP 10.50.1.1 es:",
-        opts: ["Clase A Pública", "Clase C Privada", "Clase A Privada", "Clase B Reservada"],
-        ans: 2,
-        exp: "PASO 1: Identificar el primer octeto. El número 10 pertenece al rango de Clase A (1-127).\n" +
-            "PASO 2: Verificar estándares RFC 1918. El rango 10.0.0.0 hasta 10.255.255.255 está reservado para uso privado.\n" +
-            "RESULTADO: Clase A Privada."
-    },
-
     {
         profe: true,
         unit: "Subnetting",
@@ -3227,17 +3090,7 @@ BANK.so = [
         exp: "IPv6 tiene 128 bits, mucho más que IPv4 (32 bits).\n  A diferencia de IPv4 que utiliza 32 bits, el protocolo IPv6 emplea una longitud de 128 bits binarios. Esta estructura se organiza en 8 hextetos de 16 bits cada uno, permitiendo un espacio de direccionamiento masivo de aproximadamente 340 sextillones de direcciones únicas."
     },
 
-    {
-        profe: true,
-        unit: "IPv4",
-        diff: "medium",
-        q: "La IP 10.50.1.1 es:",
-        opts: ["Clase A Pública", "Clase C Privada", "Clase A Privada", "Clase B Reservada"],
-        ans: 2,
-        exp: "10.0.0.0 – 10.255.255.255 es rango privado clase A.\n Esta dirección pertenece a la Clase A porque su primer octeto (10) se encuentra en el rango de 1 a 127. Según el estándar RFC 1918, el bloque completo que inicia con 10 está reservado exclusivamente para redes privadas, lo que invalida la opción de que sea pública."
-    },
-
-    {
+      {
         profe: true,
         unit: "Subnetting",
         diff: "medium",
@@ -3257,15 +3110,6 @@ BANK.so = [
         exp: "2^(32-26)=64 → 64-2=62 hosts útiles.\n La operación lógica AND a nivel de bits compara la dirección IP con su máscara de subred. Dado que la máscara tiene bits en '1' para la red y '0' para el host, el resultado 'limpia' la parte de host, dejando únicamente los bits que identifican la dirección de red original."
     },
 
-    {
-        profe: true,
-        unit: "Comandos",
-        diff: "easy",
-        q: "Comando para probar conectividad ICMP:",
-        opts: ["nslookup", "netstat", "ping", "nmap"],
-        ans: 2,
-        exp: "ping envía paquetes ICMP para verificar conexión.\n El comando ping utiliza el protocolo ICMP (Internet Control Message Protocol) enviando paquetes 'Echo Request' hacia una dirección IP de destino. Si el host está activo y no hay bloqueos, este responde con un 'Echo Reply', lo que permite verificar la disponibilidad de la ruta y medir los tiempos de latencia."
-    },
 
     {
         profe: true,
@@ -3282,33 +3126,7 @@ BANK.so = [
         exp: "Permite asignar IPs según necesidad sin desperdicio."
     },
 
-    {
-        profe: true,
-        unit: "Linux",
-        diff: "medium",
-        q: "Archivo para configurar IP en Debian:",
-        opts: [
-            "nano /etc/network/interfaces",
-            "nano /etc/dhcp/dhclient.conf",
-            "nano /etc/sysconfig/network",
-            "nano /etc/hostname"
-        ],
-        ans: 0,
-        exp: "Ese archivo controla la configuración de red en Debian.\n PASO 1: Identificar la distribución. En Debian/Ubuntu, la configuración persistente de interfaces se maneja en /etc/network/.\n" +
-            "PASO 2: Localizar archivo. El archivo 'interfaces' define el direccionamiento estático (address, netmask, gateway) o dinámico (dhcp).\n" +
-            "RESULTADO: /etc/network/interfaces"
-    },
-
-    {
-        profe: true,
-        unit: "Linux",
-        diff: "easy",
-        q: "Comando para ver IPs y MAC:",
-        opts: ["ip route show", "ip addr show", "systemctl status", "hostname -I"],
-        ans: 1,
-        exp: "ip addr show muestra interfaces completas (IP + MAC).\n El comando 'ip addr show' (o su abreviatura 'ip a') despliega la configuración de todas las interfaces de red. Para cada interfaz, muestra la dirección IPv4 e IPv6 asociada, así como la dirección física o MAC (etiquetada como link/ether), permitiendo verificar el estado de enlace y los parámetros de capa 2 y 3"
-    },
-
+      
     {
         profe: true,
         unit: "Redes",
@@ -3349,36 +3167,7 @@ BANK.so = [
         exp: "Sincroniza la lista de paquetes disponibles.\n El comando 'apt-get update' no instala ni actualiza software per se, sino que descarga y sincroniza los índices de los repositorios configurados en el sistema. Esto asegura que el gestor de paquetes conozca las versiones más recientes disponibles y sus dependencias antes de realizar una instalación o una actualización real con 'upgrade'."
     },
 
-    {
-        profe: true,
-        unit: "OSI",
-        diff: "easy",
-        q: "MAC pertenece a:",
-        opts: [
-            "Capa 1",
-            "Capa 2",
-            "Capa 3",
-            "Capa 4"
-        ],
-        ans: 1,
-        exp: "La MAC es de la capa de enlace (capa 2).\n  La dirección MAC (Media Access Control) opera en la Capa 2 del modelo OSI, conocida como la Capa de Enlace de Datos. Es un identificador físico único grabado en el hardware de la interfaz de red (NIC) que permite la comunicación local entre dispositivos dentro de un mismo segmento de red o dominio de difusión."
-    },
 
-
-    {
-        profe: true,
-        unit: "Linux",
-        diff: "easy",
-        q: "Reiniciar red en Debian:",
-        opts: [
-            "apt install networking",
-            "ifconfig up",
-            "systemctl restart networking",
-            "reboot /all"
-        ],
-        ans: 2,
-        exp: "Ese comando reinicia el servicio de red.\n En distribuciones modernas basadas en systemd como Debian, el comando 'systemctl restart networking' detiene e inicia nuevamente el demonio encargado de gestionar las interfaces. Esto aplica los cambios realizados en archivos de configuración como /etc/network/interfaces sin necesidad de reiniciar el equipo completo."
-    },
     // ==================== VLSM ====================
 
     {
@@ -6195,20 +5984,31 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
   </tr>
 </thead>
 <tbody>
-  <tr><td>2001:0DB8:0000:0000:1234:0000:0000:0001</td><td><input></td></tr>
-  <tr><td>FE80:0000:0000:0000:0000:0000:0000:000A</td><td><input></td></tr>
+  <tr><td>2001:0DB8:0000:0000:1234:0000:0000:0001</th>
+  <td style="background: #1e1e1e; color: #ffffff; font-family: monospace; padding: 8px;"><input placeholder="Escribe aquí"></th>
+ </tr>
+ <tr>
+  <td>FE80:0000:0000:0000:0000:0000:0000:000A</td>
+  <td style="background: #1e1e1e; color: #ffffff; font-family: monospace; padding: 8px;"><input placeholder="Escribe aquí"></th>
+ </tr>
 </tbody>
 </table>
 </div>`,
     opts: [
-      "2001:db8::1234:0:0:1 | fe80::a",
-      "2001:db8:0:0:1234::1 | fe80::10",
+      "2001:db8:0:0:1234::1 | fe80::a",
+      "2001:db8::1234:0:0:1 | fe80::10",
       "2001:db8::1234::1 | fe80:0::a",
       "2001:db8:0000::1234:0000::1 | fe80::a"
     ],
     ans: 0,
-    exp: "REGLA: Solo se puede usar '::' una vez. En la primera dirección se usa en el grupo más largo de ceros. En la segunda, se usa para colapsar todos los ceros intermedios."
-  },
+    exp: "Regla #1 (omitir ceros iniciales):\n" +
+         "  2001:0DB8:0000:0000:1234:0000:0000:0001 → 2001:DB8:0:0:1234:0:0:1\n" +
+         "  FE80:0000:0000:0000:0000:0000:0000:000A → FE80:0:0:0:0:0:0:A\n\n" +
+         "Regla #2 (:: una sola vez en la secuencia de ceros más larga):\n" +
+         "  2001:DB8:0:0:1234:0:0:1 → hay dos secuencias de dos ceros, se usa :: en la segunda → 2001:db8:0:0:1234::1\n" +
+         "  FE80:0:0:0:0:0:0:A → seis ceros consecutivos → fe80::a\n\n" +
+         "Nota: Se usa minúsculas como convención estándar."
+},
 
     // ==================== CÁLCULO DE MÁSCARA ====================
     {
@@ -7406,7 +7206,7 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
     avanzado: true,
     unit: "Subnetting - VLSM Avanzado",
     diff: "hard",
-    q: "La empresa NetSecure necesita 100 subredes con la IP en binario 11001010.00110111.10011000.11100010. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil.",
+    q: "La empresa NetSecure necesita 100 subredes con la IP en binario 11001010.00110111.10011000.11100010. Calcula: máscara final, blocksize, hosts por subred, primera y última red útil, y completa el cuadro de subredes.",
     extra: `
 <div class="extra-content">
 <table class="subnet-table">
@@ -7422,31 +7222,31 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
   </tr>
   <tr>
     <td>IP en decimal</th>
-    <td colspan="5">202.55.152.226</td>
+    <td colspan="5"><input style="width:100%" placeholder="convierte cada octeto"></td>
   </tr>
   <tr>
     <td>Clase</th>
-    <td colspan="5">C</td>
+    <td colspan="5"><input style="width:100%" placeholder="A, B o C"></td>
   </tr>
   <tr>
     <td>Máscara por defecto</th>
-    <td colspan="5">255.255.255.0 (/24)</td>
+    <td colspan="5"><input style="width:100%"></td>
   </tr>
   <tr>
     <td>Bits prestados (para 100 subredes)</th>
-    <td colspan="5">7 (2^7 = 128 ≥ 100)</td>
+    <td colspan="5"><input style="width:100%" placeholder="2^n ≥ 100"></td>
   </tr>
   <tr>
     <td>Máscara final (prefijo)</th>
-    <td colspan="5">/31 (255.255.255.254)</td>
+    <td colspan="5"><input style="width:100%"></td>
   </tr>
   <tr>
     <td>Blocksize</th>
-    <td colspan="5">2</td>
+    <td colspan="5"><input style="width:100%"></td>
   </tr>
   <tr>
     <td>Hosts por subred (2^n - 2)</th>
-    <td colspan="5">0</td>
+    <td colspan="5"><input style="width:100%"></td>
   </tr>
 </tbody>
 </table>
@@ -7461,17 +7261,9 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
     <th>Broadcast</th>
   </tr>
 </thead>
-<tbody>
-  <tr><td>1</td><td>202.55.152.0</td><td>202.55.152.1</td><td>202.55.152.0</td><td>202.55.152.1</td></tr>
-  <tr><td>2</td><td>202.55.152.2</td><td>202.55.152.3</td><td>202.55.152.2</td><td>202.55.152.3</td></tr>
-  <tr><td>3</td><td>202.55.152.4</td><td>202.55.152.5</td><td>202.55.152.4</td><td>202.55.152.5</td></tr>
-  <tr><td>4</td><td>202.55.152.6</td><td>202.55.152.7</td><td>202.55.152.6</td><td>202.55.152.7</td></tr>
-  <tr><td>5</td><td>202.55.152.8</td><td>202.55.152.9</td><td>202.55.152.8</td><td>202.55.152.9</td></tr>
-  <tr><td colspan="5" style="text-align:center">... (90 subredes más, incrementando de 2 en 2)</td></tr>
-  <tr><td>100</td><td>202.55.152.198</td><td>202.55.152.199</td><td>202.55.152.198</td><td>202.55.152.199</td></tr>
-</tbody>
+<tbody id="subnet-rows"></tbody>
 </table>
-<p style="font-size:12px; color:gray;">Nota: /31 es un enlace punto a punto, no tiene hosts útiles (0 hosts)</p>
+<p style="font-size:12px; color:gray;">Complete las primeras 5 subredes y la última (subred 100)</p>
 </div>
     `,
     opts: [
@@ -7485,7 +7277,7 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
          "PASO 2: 202 está entre 192-223 → Clase C → máscara /24\n" +
          "PASO 3: 2^n ≥ 100 → n = 7 bits → /24 + 7 = /31 → 255.255.255.254\n" +
          "PASO 4: Blocksize = 2^(32-31) = 2^1 = 2 → hosts = 0 (solo enlace punto a punto)\n" +
-         "PASO 5: Subredes desde 202.55.152.0 hasta 202.55.152.198 (100 subredes con blocksize 2)"
+         "PASO 5: Subred 1: 202.55.152.0/31 | Subred 2: 202.55.152.2/31 | Subred 100: 202.55.152.198/31"
 },
 
 // EJERCICIO 1 - Clase C - Fácil
@@ -8207,6 +7999,152 @@ Quedan 20 IPs libres desde 10.10.1.236 hasta 10.10.1.255.`
          "  Red 12: 72.176.0.0 | 72.176.0.1 - 72.191.255.254| BC: 72.191.255.255\n\n" +
          "Primera red útil: 72.0.0.0 | Última red útil: 72.176.0.0"
 },
+
+{
+    profe: true,
+    unit: "IPv6 - Reglas de Compresión",
+    diff: "hard",
+    q: "Complete la tabla aplicando las reglas de compresión IPv6 según se indica en cada fila:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table" style="width:100%; border-collapse: collapse;">
+<thead>
+  <tr>
+    <th style="border:1px solid #ddd; padding:8px;">IPv6 Extendida</th>
+    <th style="border:1px solid #ddd; padding:8px;">Regla a aplicar</th>
+    <th style="border:1px solid #ddd; padding:8px;">IPv6 Abreviada</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">1050:0000:0000:0000:0005:0000:0000:326B</td>
+    <td style="border:1px solid #ddd; padding:8px;">Solo Regla #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">2001:0DB8:0000:0000:0000:0000:0000:0001</td>
+    <td style="border:1px solid #ddd; padding:8px;">Regla #1 y #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">FE80:0000:0000:0000:0000:0000:0000:1234</td>
+    <td style="border:1px solid #ddd; padding:8px;">Regla #1 y #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">FF02:0000:0000:0000:0000:0000:0000:0001</td>
+    <td style="border:1px solid #ddd; padding:8px;">Solo Regla #1</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">2001:0DB8:0000:1234:0000:0000:0000:0001</td>
+    <td style="border:1px solid #ddd; padding:8px;">Regla #1 y #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+</tbody>
+</table>
+<h6 style="margin:8px 0; color:#555; font-size:0.75rem;">Pista: Regla #1 = omitir ceros iniciales en cada hexteto. Regla #2 = reemplazar la secuencia continua de ceros más larga por :: (solo una vez).</h6>
+</div>`,
+    opts: [
+        "1050::5:0000:0000:326B | 2001:db8::1 | fe80::1234 | ff02:0:0:0:0:0:0:1 | 2001:db8:0:1234::1",
+        "1050::5::326B | 2001:db8::1 | fe80::1234 | ff02::1 | 2001:db8::1234::1",
+        "1050:0:0:0:5::326B | 2001:db8:0:0:0:0:0:1 | fe80:0:0:0:0:0:0:1234 | ff02:0:0:0:0:0:0:1 | 2001:db8:0:1234::1",
+        "1050::5:0000:0000:326B | 2001:db8::1 | fe80::1234 | ff02::1 | 2001:db8:0:1234::1"
+    ],
+    ans: 3,
+    exp: "**Fila 1 - Solo Regla #2:**\n" +
+         "  1050:0000:0000:0000:0005:0000:0000:326B\n" +
+         "  Secuencia más larga de ceros: '0000:0000:0000' (tres hextetos) → reemplazar por '::'\n" +
+         "  Resultado: 1050::5:0000:0000:326B\n\n" +
+         "**Fila 2 - Regla #1 y #2:**\n" +
+         "  2001:0DB8:0000:0000:0000:0000:0000:0001\n" +
+         "  Regla #1: 2001:DB8:0:0:0:0:0:1\n" +
+         "  Regla #2: seis ceros consecutivos → 2001:db8::1\n\n" +
+         "**Fila 3 - Regla #1 y #2:**\n" +
+         "  FE80:0000:0000:0000:0000:0000:0000:1234\n" +
+         "  Regla #1: FE80:0:0:0:0:0:0:1234\n" +
+         "  Regla #2: seis ceros consecutivos → fe80::1234\n\n" +
+         "**Fila 4 - Solo Regla #1:**\n" +
+         "  FF02:0000:0000:0000:0000:0000:0000:0001\n" +
+         "  Solo omitir ceros iniciales → FF02:0:0:0:0:0:0:1\n" +
+         "  En minúsculas: ff02:0:0:0:0:0:0:1\n\n" +
+         "**Fila 5 - Regla #1 y #2:**\n" +
+         "  2001:0DB8:0000:1234:0000:0000:0000:0001\n" +
+         "  Regla #1: 2001:DB8:0:1234:0:0:0:1\n" +
+         "  Regla #2: tres ceros consecutivos (hextetos 5-7) → 2001:db8:0:1234::1"
+},
+
+{
+    profe: true,
+    unit: "IPv6 - Reglas de Compresión",
+    diff: "hard",
+    q: "Complete la tabla aplicando las reglas de compresión IPv6 según se indica en cada fila:",
+    extra: `
+<div class="extra-content">
+<table class="subnet-table" style="width:100%; border-collapse: collapse;">
+<thead>
+  <tr>
+    <th style="border:1px solid #ddd; padding:8px;">IPv6 Extendida</th>
+    <th style="border:1px solid #ddd; padding:8px;">Regla a aplicar</th>
+    <th style="border:1px solid #ddd; padding:8px;">IPv6 Abreviada</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">2001:0DB8:0000:0000:ABCD:0000:0000:1234</td>
+    <td style="border:1px solid #ddd; padding:8px;">Regla #1 y #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">FC00:0000:0000:0000:0000:0000:0000:000A</td>
+    <td style="border:1px solid #ddd; padding:8px;">Solo Regla #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">3001:0BC0:0000:0000:0000:0C00:0000:0001</td>
+    <td style="border:1px solid #ddd; padding:8px;">Regla #1 y #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">FF02:0000:0000:0000:0000:0000:0000:0002</td>
+    <td style="border:1px solid #ddd; padding:8px;">Solo Regla #1</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+  <tr>
+    <td style="border:1px solid #ddd; padding:8px;">ABCD:0000:0000:1234:0000:0000:0000:5678</td>
+    <td style="border:1px solid #ddd; padding:8px;">Regla #1 y #2</td>
+    <td style="border:1px solid #ddd; padding:8px;"><input style="width:100%;" placeholder="Escriba aquí"></td>
+  </tr>
+</tbody>
+</table>
+<h6 style="margin:8px 0; color:#555; font-size:0.75rem;">Pista: Regla #1 = omitir ceros iniciales en cada hexteto. Regla #2 = reemplazar la secuencia continua de ceros más larga por :: (solo una vez).</h6>
+</div>`,
+    opts: [
+        "2001:db8::abcd:0:0:1234 | fc00::a | 3001:bc0::c00:0:1 | ff02:0:0:0:0:0:0:2 | abcd::1234:0:0:0:5678",
+        "2001:db8:0:0:abcd::1234 | fc00::a | 3001:bc0::c00:0:1 | ff02::2 | abcd::1234::5678",
+        "2001:db8::abcd:0:0:1234 | fc00::a | 3001:bc0:0:0:0:c00::1 | ff02:0:0:0:0:0:0:2 | abcd:0:0:1234::5678",
+        "2001:db8:0:0:abcd::1234 | fc00:0:0:0:0:0:0:a | 3001:bc0::c00:0:1 | ff02::2 | abcd::1234:0:0:0:5678"
+    ],
+    ans: 0,
+    exp: "**1. 2001:0DB8:0000:0000:ABCD:0000:0000:1234**\n" +
+         "  Regla #1: 2001:DB8:0:0:ABCD:0:0:1234\n" +
+         "  Regla #2: Dos secuencias: dos ceros (hextetos 3-4) y dos ceros (hextetos 6-7). Son iguales → se usa :: en la primera\n" +
+         "  Resultado: 2001:db8::abcd:0:0:1234\n\n" +
+         "**2. FC00:0000:0000:0000:0000:0000:0000:000A**\n" +
+         "  Solo Regla #2 (no se omiten ceros iniciales porque ya están en cero)\n" +
+         "  Seis ceros consecutivos (hextetos 2-7) → fc00::a\n\n" +
+         "**3. 3001:0BC0:0000:0000:0000:0C00:0000:0001**\n" +
+         "  Regla #1: 3001:BC0:0:0:0:C00:0:1\n" +
+         "  Regla #2: Secuencia de tres ceros (hextetos 3-5) es la más larga → 3001:bc0::c00:0:1\n\n" +
+         "**4. FF02:0000:0000:0000:0000:0000:0000:0002**\n" +
+         "  Solo Regla #1: omitir ceros iniciales en cada hexteto\n" +
+         "  Resultado: ff02:0:0:0:0:0:0:2\n\n" +
+         "**5. ABCD:0000:0000:1234:0000:0000:0000:5678**\n" +
+         "  Regla #1: ABCD:0:0:1234:0:0:0:5678\n" +
+         "  Regla #2: Tres ceros consecutivos (hextetos 5-7) → abcd::1234:0:0:0:5678"
+},
+
+
 
 ];
 

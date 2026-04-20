@@ -1,8 +1,2047 @@
 window.BANK = window.BANK || {};
 BANK.bd_no_estructurados = [
 
+    //SITUACION 1 CURSOS ONLINE
 
- //Situación: Sistema Tienda en Línea formativa
+    {
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "easy",
+    q: "Situación: Cursos online. Inserta un curso con _id: 1, nombre 'Introducción a MongoDB', instructor embebido y arreglo de estudiantes.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: usa insertOne con subdocumento e array embebido</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: inserción con subdocumentos y arreglos</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').insertOne({ _id: 1, nombre: 'Introducción a MongoDB', instructor: { nombre: 'María López', correo: 'maria@edu.com' }, estudiantes: [] });",
+        "db.getCollection('cursos').insert({ nombre: 'Introducción a MongoDB' });",
+        "db.getCollection('cursos').insertMany({ _id: 1, nombre: 'Introducción a MongoDB' });",
+        "db.cursos.add({ _id: 1, nombre: 'Introducción a MongoDB' });"
+    ],
+    ans: 0,
+    exp: "Se usa insertOne() con el documento completo incluyendo subdocumento instructor y arreglo estudiantes embebido."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "easy",
+    q: "Situación: Cursos online. Inserta tres cursos a la vez con distintos instructores usando un solo comando.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: inserción múltiple con un arreglo de documentos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: inserción múltiple</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').insertMany([{ _id: 2, nombre: 'Introducción a BD' }, { _id: 3, nombre: 'Visualización de datos' }, { _id: 4, nombre: 'Datos NoSQL' }]);",
+        "db.getCollection('cursos').insertOne([{ _id: 2 }, { _id: 3 }, { _id: 4 }]);",
+        "db.getCollection('cursos').insert({ _id: 2 }, { _id: 3 }, { _id: 4 });",
+        "db.getCollection('cursos').addMany([{ _id: 2 }, { _id: 3 }]);"
+    ],
+    ans: 0,
+    exp: "insertMany() recibe un arreglo [] con todos los documentos a insertar en una sola operación."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "easy",
+    q: "Situación: Cursos online. Obtén todos los cursos cuyo nombre sea 'Introducción a MongoDB'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: búsqueda por campo exacto</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura con filtro simple</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').find({ nombre: 'Introducción a MongoDB' }).toArray();",
+        "db.getCollection('cursos').find('Introducción a MongoDB');",
+        "db.getCollection('cursos').search({ nombre: 'Introducción a MongoDB' });",
+        "db.getCollection('cursos').findOne('Introducción a MongoDB');"
+    ],
+    ans: 0,
+    exp: "find() recibe un objeto filtro con el campo y valor exacto a buscar."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "easy",
+    q: "Situación: Cursos online. Actualiza el estado del curso con _id: 1 a 'finalizado'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: usa $set para modificar un campo específico</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización con operador $set</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $set: { estado: 'finalizado' } });",
+        "db.getCollection('cursos').update({ _id: 1 }, { estado: 'finalizado' });",
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { estado: 'finalizado' });",
+        "db.getCollection('cursos').set({ _id: 1 }, { estado: 'finalizado' });"
+    ],
+    ans: 0,
+    exp: "updateOne() requiere el operador $set para modificar solo el campo indicado sin reemplazar todo el documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "medium",
+    q: "Situación: Cursos online. Agrega un nuevo estudiante { nombre: 'Luis Rojas', progreso: 90 } al arreglo estudiantes del curso con _id: 1.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: operador para agregar elementos a un arreglo</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de subdocumento en arreglo</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $push: { estudiantes: { nombre: 'Luis Rojas', progreso: 90 } } });",
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $set: { estudiantes: { nombre: 'Luis Rojas', progreso: 90 } } });",
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $add: { estudiantes: { nombre: 'Luis Rojas', progreso: 90 } } });",
+        "db.getCollection('cursos').push({ _id: 1 }, { estudiantes: { nombre: 'Luis Rojas', progreso: 90 } });"
+    ],
+    ans: 0,
+    exp: "$push agrega un nuevo elemento al final de un arreglo existente sin reemplazar los anteriores."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "medium",
+    q: "Situación: Cursos online. Elimina al estudiante 'Ana Díaz' del arreglo estudiantes del curso con _id: 1.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: operador para eliminar elementos de un arreglo por condición</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación de elemento en arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $pull: { estudiantes: { nombre: 'Ana Díaz' } } });",
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $pop: { estudiantes: { nombre: 'Ana Díaz' } } });",
+        "db.getCollection('cursos').updateOne({ _id: 1 }, { $remove: { estudiantes: { nombre: 'Ana Díaz' } } });",
+        "db.getCollection('cursos').deleteOne({ 'estudiantes.nombre': 'Ana Díaz' });"
+    ],
+    ans: 0,
+    exp: "$pull elimina del arreglo todos los elementos que cumplan la condición indicada."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "medium",
+    q: "Situación: Cursos online. Obtén los cursos donde al menos un estudiante tenga progreso mayor a 70.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para campo dentro de arreglo + operador de comparación</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro en campo de subdocumento dentro de arreglo</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').find({ 'estudiantes.progreso': { $gt: 70 } }).toArray();",
+        "db.getCollection('cursos').find({ estudiantes: { progreso: { $gt: 70 } } }).toArray();",
+        "db.getCollection('cursos').find({ 'estudiantes.progreso': { $gte: 70 } }).toArray();",
+        "db.getCollection('cursos').find({ progreso: { $gt: 70 } }).toArray();"
+    ],
+    ans: 0,
+    exp: "Se usa notación de punto 'estudiantes.progreso' para acceder al campo dentro del arreglo, y $gt para mayor estricto."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "hard",
+    q: "Situación: Cursos online. Muestra la cantidad de estudiantes inscritos en cada curso.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: pipeline de agregación con $project y $size</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: agregación con operador de tamaño de arreglo</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').aggregate([{ $project: { nombre: 1, totalEstudiantes: { $size: '$estudiantes' } } }]);",
+        "db.getCollection('cursos').aggregate([{ $count: { estudiantes: '$estudiantes' } }]);",
+        "db.getCollection('cursos').find({}, { nombre: 1, totalEstudiantes: { $size: '$estudiantes' } });",
+        "db.getCollection('cursos').aggregate([{ $group: { _id: '$nombre', total: { $sum: '$estudiantes' } } }]);"
+    ],
+    ans: 0,
+    exp: "aggregate() con $project y $size permite calcular el tamaño de un arreglo y mostrarlo como campo nuevo."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "hard",
+    q: "Situación: Cursos online. Calcula el progreso promedio de los estudiantes en cada curso.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $avg sobre un campo de arreglo de subdocumentos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: agregación con promedio sobre arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').aggregate([{ $project: { nombre: 1, promedioProgreso: { $avg: '$estudiantes.progreso' } } }]);",
+        "db.getCollection('cursos').aggregate([{ $group: { _id: '$nombre', promedio: { $avg: '$progreso' } } }]);",
+        "db.getCollection('cursos').aggregate([{ $project: { promedio: { $mean: '$estudiantes.progreso' } } }]);",
+        "db.getCollection('cursos').find({}, { promedioProgreso: { $avg: '$estudiantes.progreso' } });"
+    ],
+    ans: 0,
+    exp: "$avg sobre 'estudiantes.progreso' dentro de $project calcula el promedio del campo progreso en todo el arreglo embebido."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "easy",
+    q: "Situación: Cursos online. Obtén todos los cursos ordenados por fecha de creación de más reciente a más antiguo.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: encadena .sort() con valor -1 para descendente</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura con ordenamiento</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').find({}).sort({ fechaCreacion: -1 }).toArray();",
+        "db.getCollection('cursos').find({}).sort({ fechaCreacion: 1 }).toArray();",
+        "db.getCollection('cursos').find({}).orderBy({ fechaCreacion: -1 }).toArray();",
+        "db.getCollection('cursos').sort({ fechaCreacion: -1 });"
+    ],
+    ans: 0,
+    exp: ".sort({ campo: -1 }) ordena de mayor a menor (descendente). Con 1 sería ascendente."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 1 (Cursos Online)",
+    diff: "medium",
+    q: "Situación: Cursos online. Muestra los cursos que tengan el campo correo dentro del subdocumento instructor.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: operador que verifica existencia de un campo</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro con $exists en subdocumento</h6>
+</div>`,
+    opts: [
+        "db.getCollection('cursos').find({ 'instructor.correo': { $exists: true } }).toArray();",
+        "db.getCollection('cursos').find({ 'instructor.correo': { $has: true } }).toArray();",
+        "db.getCollection('cursos').find({ instructor: { correo: { $exists: true } } }).toArray();",
+        "db.getCollection('cursos').find({ 'instructor.correo': true }).toArray();"
+    ],
+    ans: 0,
+    exp: "$exists: true verifica que el campo exista en el documento. Se usa notación de punto para llegar al campo del subdocumento."
+},
+
+//SITUACION 2 RESERVAS DE HOTEL
+
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "easy",
+    q: "Situación: Reservas de hotel. Inserta el documento base con _id: 1, huésped 'Luis Torres', dos habitaciones embebidas y estado 'confirmada'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertOne con subdocumento huesped y arreglo habitaciones</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: inserción con subdocumentos y arreglos</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').insertOne({ _id: 1, huesped: { nombre: 'Luis Torres', correo: 'luis@email.com' }, habitaciones: [{ tipo: 'Suite', precioPorNoche: 120000, noches: 2 }], fechaIngreso: ISODate('2025-07-01'), estado: 'confirmada' });",
+        "db.getCollection('reservas').insert({ huesped: 'Luis Torres', habitaciones: 'Suite' });",
+        "db.getCollection('reservas').insertMany({ _id: 1, huesped: { nombre: 'Luis Torres' } });",
+        "db.reservas.add({ _id: 1, huesped: 'Luis Torres' });"
+    ],
+    ans: 0,
+    exp: "insertOne() con subdocumento huesped embebido y arreglo habitaciones con sus campos tipo, precioPorNoche y noches."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "easy",
+    q: "Situación: Reservas de hotel. Obtén todas las reservas que incluyan una habitación de tipo 'Suite'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para campo dentro de arreglo embebido</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura con filtro en arreglo de subdocumentos</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').find({ 'habitaciones.tipo': 'Suite' }).toArray();",
+        "db.getCollection('reservas').find({ habitaciones: 'Suite' }).toArray();",
+        "db.getCollection('reservas').find({ tipo: 'Suite' }).toArray();",
+        "db.getCollection('reservas').find({ habitaciones: { tipo: 'Suite' } }).toArray();"
+    ],
+    ans: 0,
+    exp: "Para buscar dentro de un arreglo de subdocumentos se usa notación de punto: 'habitaciones.tipo'."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "easy",
+    q: "Situación: Reservas de hotel. Cambia el estado de la reserva con _id: 1 a 'cancelada'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: updateOne con $set para modificar solo el campo estado</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de campo simple</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $set: { estado: 'cancelada' } });",
+        "db.getCollection('reservas').update({ _id: 1 }, { estado: 'cancelada' });",
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { estado: 'cancelada' });",
+        "db.getCollection('reservas').set({ _id: 1 }, { estado: 'cancelada' });"
+    ],
+    ans: 0,
+    exp: "updateOne() con $set modifica solo el campo indicado sin afectar el resto del documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "medium",
+    q: "Situación: Reservas de hotel. Agrega la habitación { tipo: 'Suite', precioPorNoche: 120000, noches: 1 } a la reserva con _id: 1.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $push agrega elementos a un arreglo existente</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $push: { habitaciones: { tipo: 'Suite', precioPorNoche: 120000, noches: 1 } } });",
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $set: { habitaciones: { tipo: 'Suite' } } });",
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $add: { habitaciones: { tipo: 'Suite' } } });",
+        "db.getCollection('reservas').push({ _id: 1 }, { habitaciones: { tipo: 'Suite' } });"
+    ],
+    ans: 0,
+    exp: "$push añade el nuevo subdocumento al arreglo habitaciones sin eliminar las habitaciones anteriores."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "medium",
+    q: "Situación: Reservas de hotel. Elimina la habitación de tipo 'Individual' de la reserva con _id: 1.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $pull elimina elementos de un arreglo que cumplan una condición</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación de elemento en arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $pull: { habitaciones: { tipo: 'Individual' } } });",
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $pop: { habitaciones: { tipo: 'Individual' } } });",
+        "db.getCollection('reservas').updateOne({ _id: 1 }, { $remove: { habitaciones: { tipo: 'Individual' } } });",
+        "db.getCollection('reservas').deleteOne({ 'habitaciones.tipo': 'Individual' });"
+    ],
+    ans: 0,
+    exp: "$pull elimina del arreglo todos los subdocumentos que coincidan con la condición { tipo: 'Individual' }."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "hard",
+    q: "Situación: Reservas de hotel. Calcula el total de cada reserva (precioPorNoche × noches) y muestra las que superen los 200000.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: pipeline con $project + $map + $multiply, luego $match</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: agregación con cálculo sobre arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').aggregate([{ $project: { huesped: 1, total: { $sum: { $map: { input: '$habitaciones', as: 'hab', in: { $multiply: ['$$hab.precioPorNoche', '$$hab.noches'] } } } } } }, { $match: { total: { $gt: 200000 } } }]);",
+        "db.getCollection('reservas').aggregate([{ $match: { total: { $gt: 200000 } } }]);",
+        "db.getCollection('reservas').find({ total: { $gt: 200000 } }).toArray();",
+        "db.getCollection('reservas').aggregate([{ $group: { _id: '$huesped', total: { $sum: '$precioPorNoche' } } }, { $match: { total: { $gt: 200000 } } }]);"
+    ],
+    ans: 0,
+    exp: "Se usa $map para iterar el arreglo habitaciones, $multiply para precio × noches, $sum para sumar todo, y $match para filtrar."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "medium",
+    q: "Situación: Reservas de hotel. Obtén reservas cuya fechaIngreso esté entre el 2025-07-01 y el 2025-09-30.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $gte y $lte para rango de fechas con ISODate</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro por rango de fechas</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').find({ fechaIngreso: { $gte: ISODate('2025-07-01'), $lte: ISODate('2025-09-30') } }).toArray();",
+        "db.getCollection('reservas').find({ fechaIngreso: { $gt: '2025-07-01', $lt: '2025-09-30' } }).toArray();",
+        "db.getCollection('reservas').find({ fechaIngreso: { between: ['2025-07-01', '2025-09-30'] } }).toArray();",
+        "db.getCollection('reservas').find({ fechaIngreso: ISODate('2025-07-01') }).toArray();"
+    ],
+    ans: 0,
+    exp: "$gte (mayor o igual) y $lte (menor o igual) definen un rango. Las fechas deben ir con ISODate() para comparación correcta."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 2 (Reservas de Hotel)",
+    diff: "easy",
+    q: "Situación: Reservas de hotel. Busca reservas donde el nombre del huésped contenga 'Luis'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $regex para búsqueda parcial de texto, $options: 'i' para ignorar mayúsculas</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: búsqueda con expresión regular en subdocumento</h6>
+</div>`,
+    opts: [
+        "db.getCollection('reservas').find({ 'huesped.nombre': { $regex: 'Luis', $options: 'i' } }).toArray();",
+        "db.getCollection('reservas').find({ 'huesped.nombre': 'Luis' }).toArray();",
+        "db.getCollection('reservas').find({ huesped: { nombre: /Luis/ } }).toArray();",
+        "db.getCollection('reservas').find({ nombre: { $contains: 'Luis' } }).toArray();"
+    ],
+    ans: 0,
+    exp: "$regex permite búsqueda parcial de texto. $options: 'i' hace la búsqueda insensible a mayúsculas/minúsculas."
+},
+
+
+//SITUACION 3 PEDIDOS DE COMIDA
+
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "easy",
+    q: "Situación: Pedidos de comida. Inserta el pedido base con _id: 1, cliente 'Sofía Rojas', platos embebidos Pizza y Bebida, y estado 'en preparación'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertOne con subdocumento cliente y arreglo platos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: inserción con subdocumentos y arreglos</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').insertOne({ _id: 1, cliente: { nombre: 'Sofía Rojas', direccion: 'Av. Siempre Viva 123' }, platos: [{ nombre: 'Pizza', cantidad: 1, precio: 10000 }, { nombre: 'Bebida', cantidad: 2, precio: 2000 }], fecha: ISODate('2025-06-20'), estado: 'en preparación' });",
+        "db.getCollection('pedidos').insert({ cliente: 'Sofía Rojas', platos: 'Pizza' });",
+        "db.getCollection('pedidos').insertMany({ _id: 1, cliente: { nombre: 'Sofía Rojas' } });",
+        "db.pedidos.add({ _id: 1, cliente: 'Sofía Rojas' });"
+    ],
+    ans: 0,
+    exp: "insertOne() con subdocumento cliente embebido, arreglo platos con nombre, cantidad y precio, y fecha con ISODate."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "easy",
+    q: "Situación: Pedidos de comida. Obtén todos los pedidos que incluyan el plato 'Pizza'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para campo nombre dentro del arreglo platos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro en campo de arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').find({ 'platos.nombre': 'Pizza' }).toArray();",
+        "db.getCollection('pedidos').find({ platos: 'Pizza' }).toArray();",
+        "db.getCollection('pedidos').find({ nombre: 'Pizza' }).toArray();",
+        "db.getCollection('pedidos').find({ platos: { nombre: 'Pizza' } }).toArray();"
+    ],
+    ans: 0,
+    exp: "Notación de punto 'platos.nombre' busca dentro de cada elemento del arreglo platos el campo nombre igual a 'Pizza'."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "easy",
+    q: "Situación: Pedidos de comida. Cambia el estado del pedido con _id: 1 a 'entregado'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: updateOne con $set</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de campo simple</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $set: { estado: 'entregado' } });",
+        "db.getCollection('pedidos').update({ _id: 1 }, { estado: 'entregado' });",
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { estado: 'entregado' });",
+        "db.getCollection('pedidos').set({ _id: 1 }, { estado: 'entregado' });"
+    ],
+    ans: 0,
+    exp: "updateOne() con $set modifica solo el campo estado sin reemplazar el documento completo."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "medium",
+    q: "Situación: Pedidos de comida. Agrega el plato { nombre: 'Postre', cantidad: 1, precio: 3000 } al pedido con _id: 1.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $push para agregar elementos al arreglo platos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $push: { platos: { nombre: 'Postre', cantidad: 1, precio: 3000 } } });",
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $set: { platos: { nombre: 'Postre' } } });",
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $add: { platos: { nombre: 'Postre' } } });",
+        "db.getCollection('pedidos').push({ _id: 1 }, { platos: { nombre: 'Postre' } });"
+    ],
+    ans: 0,
+    exp: "$push agrega el nuevo subdocumento al arreglo platos manteniendo los platos anteriores intactos."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "medium",
+    q: "Situación: Pedidos de comida. Elimina el plato 'Bebida' del pedido con _id: 1.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $pull elimina elementos del arreglo por condición</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación de elemento en arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $pull: { platos: { nombre: 'Bebida' } } });",
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $pop: { platos: { nombre: 'Bebida' } } });",
+        "db.getCollection('pedidos').updateOne({ _id: 1 }, { $remove: { platos: { nombre: 'Bebida' } } });",
+        "db.getCollection('pedidos').deleteOne({ 'platos.nombre': 'Bebida' });"
+    ],
+    ans: 0,
+    exp: "$pull elimina del arreglo platos todos los elementos donde nombre sea 'Bebida'."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "hard",
+    q: "Situación: Pedidos de comida. Calcula el total de cada pedido (cantidad × precio) y muestra los que superen los 15000.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $map para iterar platos, $multiply para cantidad × precio, $sum para total, $match para filtrar</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: agregación con cálculo sobre arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').aggregate([{ $project: { cliente: 1, total: { $sum: { $map: { input: '$platos', as: 'plato', in: { $multiply: ['$$plato.cantidad', '$$plato.precio'] } } } } } }, { $match: { total: { $gt: 15000 } } }]);",
+        "db.getCollection('pedidos').aggregate([{ $match: { total: { $gt: 15000 } } }]);",
+        "db.getCollection('pedidos').find({ total: { $gt: 15000 } }).toArray();",
+        "db.getCollection('pedidos').aggregate([{ $group: { _id: '$cliente', total: { $sum: '$precio' } } }, { $match: { total: { $gt: 15000 } } }]);"
+    ],
+    ans: 0,
+    exp: "$map recorre el arreglo platos, $multiply multiplica cantidad × precio por cada plato, $sum suma todo y $match filtra los mayores a 15000."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "medium",
+    q: "Situación: Pedidos de comida. Muestra la cantidad de platos en cada pedido.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $project con $size sobre el arreglo platos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: agregación con tamaño de arreglo</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').aggregate([{ $project: { cliente: 1, totalPlatos: { $size: '$platos' } } }]);",
+        "db.getCollection('pedidos').aggregate([{ $count: { platos: '$platos' } }]);",
+        "db.getCollection('pedidos').find({}, { totalPlatos: { $size: '$platos' } });",
+        "db.getCollection('pedidos').aggregate([{ $group: { _id: '$cliente', total: { $sum: '$platos' } } }]);"
+    ],
+    ans: 0,
+    exp: "$size dentro de $project calcula el número de elementos en el arreglo platos para cada documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "easy",
+    q: "Situación: Pedidos de comida. Obtén los pedidos realizados exactamente en la fecha 2025-06-20.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: filtro exacto con ISODate</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro por fecha exacta</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').find({ fecha: ISODate('2025-06-20') }).toArray();",
+        "db.getCollection('pedidos').find({ fecha: '2025-06-20' }).toArray();",
+        "db.getCollection('pedidos').find({ fecha: { $eq: '2025-06-20' } }).toArray();",
+        "db.getCollection('pedidos').find({ fecha: new Date('2025-06-20') }).toArray();"
+    ],
+    ans: 0,
+    exp: "ISODate() es el formato correcto para comparar fechas en MongoDB. Usar solo el string de texto no funciona para comparación de fechas."
+},
+{
+    profe: true,
+    unit: "MongoDB - Situación 3 (Pedidos de Comida)",
+    diff: "easy",
+    q: "Situación: Pedidos de comida. Obtén los pedidos donde la dirección del cliente contenga 'Siempre Viva'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $regex con notación de punto para subdocumento cliente</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: búsqueda con expresión regular en subdocumento</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pedidos').find({ 'cliente.direccion': { $regex: 'Siempre Viva', $options: 'i' } }).toArray();",
+        "db.getCollection('pedidos').find({ direccion: { $contains: 'Siempre Viva' } }).toArray();",
+        "db.getCollection('pedidos').find({ 'cliente.direccion': 'Siempre Viva' }).toArray();",
+        "db.getCollection('pedidos').find({ cliente: { direccion: /Siempre Viva/ } }).toArray();"
+    ],
+    ans: 0,
+    exp: "$regex busca coincidencia parcial en texto. $options: 'i' ignora mayúsculas. Notación de punto accede al subdocumento cliente."
+},
+
+//CENTROMEDIC0
+
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Crea la base de datos centro_medico y selecciónala para trabajar.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: comando para cambiar o crear una base de datos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: gestión de base de datos</h6>
+</div>`,
+    opts: [
+        "use('centro_medico');",
+        "db.createDatabase('centro_medico');",
+        "create database centro_medico;",
+        "db.use('centro_medico');"
+    ],
+    ans: 0,
+    exp: "use('nombre_bd') selecciona la base de datos. Si no existe, MongoDB la crea automáticamente al insertar el primer documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Inserta un paciente con rut, nombre, edad, dirección embebida, teléfono e historial con al menos una atención.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertOne con subdocumento direccion y arreglo historial</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: inserción con múltiples subdocumentos</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').insertOne({ rut: '12.345.678-9', nombre: 'María González', edad: 45, direccion: { ciudad: 'Santiago', comuna: 'Maipú' }, telefono: '+56912345678', historial: [{ fecha: '2026-03-10', motivo: 'Dolor abdominal', diagnostico: 'Gastritis', tratamiento: 'Omeprazol', medico: 'Dr. Pérez' }] });",
+        "db.getCollection('pacientes').insert({ rut: '12.345.678-9', nombre: 'María González' });",
+        "db.getCollection('pacientes').insertMany({ rut: '12.345.678-9', historial: [] });",
+        "db.pacientes.add({ rut: '12.345.678-9', nombre: 'María González' });"
+    ],
+    ans: 0,
+    exp: "insertOne() con subdocumento direccion embebido y arreglo historial con los campos fecha, motivo, diagnóstico, tratamiento y médico."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Obtén todos los pacientes de la colección.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: find sin filtros devuelve todos los documentos</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura sin filtro</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').find({}).toArray();",
+        "db.getCollection('pacientes').findAll();",
+        "db.getCollection('pacientes').find();",
+        "db.getCollection('pacientes').getAll().toArray();"
+    ],
+    ans: 0,
+    exp: "find({}) con filtro vacío retorna todos los documentos. .toArray() lo muestra correctamente en Compass."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Busca un paciente por su RUT exacto '12.345.678-9'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: filtro exacto por campo rut</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: lectura con filtro simple</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').find({ rut: '12.345.678-9' }).toArray();",
+        "db.getCollection('pacientes').findOne('12.345.678-9');",
+        "db.getCollection('pacientes').find({ id: '12.345.678-9' }).toArray();",
+        "db.getCollection('pacientes').search({ rut: '12.345.678-9' });"
+    ],
+    ans: 0,
+    exp: "find() con filtro { rut: '12.345.678-9' } busca el documento exacto. findOne() también sirve pero find().toArray() es más explícito."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Lista los pacientes que viven en la comuna 'Maipú'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para acceder al campo dentro del subdocumento direccion</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro en subdocumento embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').find({ 'direccion.comuna': 'Maipú' }).toArray();",
+        "db.getCollection('pacientes').find({ direccion: { comuna: 'Maipú' } }).toArray();",
+        "db.getCollection('pacientes').find({ comuna: 'Maipú' }).toArray();",
+        "db.getCollection('pacientes').find({ 'direccion.comuna': { $eq: 'Maipú' } }).toArray();"
+    ],
+    ans: 0,
+    exp: "Notación de punto 'direccion.comuna' accede al campo comuna dentro del subdocumento embebido direccion."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "medium",
+    q: "Centro médico. Muestra los pacientes que tengan el diagnóstico 'Gastritis' en alguna atención de su historial.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para campo dentro del arreglo historial</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: filtro en arreglo de subdocumentos</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').find({ 'historial.diagnostico': 'Gastritis' }).toArray();",
+        "db.getCollection('pacientes').find({ historial: { diagnostico: 'Gastritis' } }).toArray();",
+        "db.getCollection('pacientes').find({ diagnostico: 'Gastritis' }).toArray();",
+        "db.getCollection('pacientes').find({ 'historial.diagnostico': { $has: 'Gastritis' } }).toArray();"
+    ],
+    ans: 0,
+    exp: "MongoDB automáticamente busca en todos los elementos del arreglo historial cuando se usa notación de punto 'historial.diagnostico'."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "medium",
+    q: "Centro médico. Muestra solo el historial médico del paciente con rut '12.345.678-9', sin mostrar el _id.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: segundo parámetro de find() es proyección, 1 incluye y 0 excluye</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: proyección de campos en lectura</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').find({ rut: '12.345.678-9' }, { historial: 1, _id: 0 }).toArray();",
+        "db.getCollection('pacientes').find({ rut: '12.345.678-9' }, { historial: true }).toArray();",
+        "db.getCollection('pacientes').find({ rut: '12.345.678-9' }).select('historial').toArray();",
+        "db.getCollection('pacientes').find({ rut: '12.345.678-9' }, { exclude: '_id', include: 'historial' }).toArray();"
+    ],
+    ans: 0,
+    exp: "El segundo parámetro de find() es la proyección: 1 incluye el campo, 0 lo excluye. _id se excluye explícitamente con 0."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Actualiza el teléfono del paciente con rut '12.345.678-9' a '+56999999999'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: updateOne con $set para modificar solo el campo telefono</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de campo simple</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').updateOne({ rut: '12.345.678-9' }, { $set: { telefono: '+56999999999' } });",
+        "db.getCollection('pacientes').update({ rut: '12.345.678-9' }, { telefono: '+56999999999' });",
+        "db.getCollection('pacientes').updateOne({ rut: '12.345.678-9' }, { telefono: '+56999999999' });",
+        "db.getCollection('pacientes').set({ rut: '12.345.678-9' }, { telefono: '+56999999999' });"
+    ],
+    ans: 0,
+    exp: "updateOne() con $set actualiza solo el campo indicado. Sin $set se reemplazaría todo el documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "medium",
+    q: "Centro médico. Agrega una nueva atención médica al historial del paciente con rut '15.678.432-1'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $push para agregar al arreglo historial</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').updateOne({ rut: '15.678.432-1' }, { $push: { historial: { fecha: '2026-04-15', motivo: 'Control general', diagnostico: 'Saludable', tratamiento: 'Ninguno', medico: 'Dra. Soto' } } });",
+        "db.getCollection('pacientes').updateOne({ rut: '15.678.432-1' }, { $set: { historial: { fecha: '2026-04-15' } } });",
+        "db.getCollection('pacientes').updateOne({ rut: '15.678.432-1' }, { $add: { historial: { fecha: '2026-04-15' } } });",
+        "db.getCollection('pacientes').push({ rut: '15.678.432-1' }, { historial: { fecha: '2026-04-15' } });"
+    ],
+    ans: 0,
+    exp: "$push agrega el nuevo subdocumento de atención al arreglo historial sin eliminar las atenciones anteriores."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "hard",
+    q: "Centro médico. Modifica el diagnóstico de la atención del '2026-03-10' del paciente con rut '12.345.678-9' a 'Gastritis crónica'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: operador $ posicional para modificar el elemento del arreglo que coincidió en el filtro</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: actualización de campo dentro de subdocumento en arreglo</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').updateOne({ rut: '12.345.678-9', 'historial.fecha': '2026-03-10' }, { $set: { 'historial.$.diagnostico': 'Gastritis crónica' } });",
+        "db.getCollection('pacientes').updateOne({ rut: '12.345.678-9' }, { $set: { 'historial.diagnostico': 'Gastritis crónica' } });",
+        "db.getCollection('pacientes').updateOne({ rut: '12.345.678-9' }, { $set: { historial: { diagnostico: 'Gastritis crónica' } } });",
+        "db.getCollection('pacientes').updateOne({ rut: '12.345.678-9', fecha: '2026-03-10' }, { $set: { diagnostico: 'Gastritis crónica' } });"
+    ],
+    ans: 0,
+    exp: "El operador posicional $ hace referencia al elemento del arreglo que coincidió con la condición del filtro. 'historial.$.diagnostico' modifica solo ese elemento."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "easy",
+    q: "Centro médico. Elimina el paciente con rut '11.111.111-1'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: deleteOne elimina el primer documento que coincida</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación de documento</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').deleteOne({ rut: '11.111.111-1' });",
+        "db.getCollection('pacientes').remove({ rut: '11.111.111-1' });",
+        "db.getCollection('pacientes').drop({ rut: '11.111.111-1' });",
+        "db.getCollection('pacientes').delete({ rut: '11.111.111-1' });"
+    ],
+    ans: 0,
+    exp: "deleteOne() elimina el primer documento que coincida con el filtro. remove() está obsoleto en versiones recientes de MongoDB."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "medium",
+    q: "Centro médico. Elimina la atención del '2026-02-15' del historial del paciente con rut '15.678.432-1'.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $pull con la condición de fecha para eliminar el subdocumento del arreglo</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación de elemento en arreglo embebido</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').updateOne({ rut: '15.678.432-1' }, { $pull: { historial: { fecha: '2026-02-15' } } });",
+        "db.getCollection('pacientes').updateOne({ rut: '15.678.432-1' }, { $pop: { historial: { fecha: '2026-02-15' } } });",
+        "db.getCollection('pacientes').deleteOne({ rut: '15.678.432-1', 'historial.fecha': '2026-02-15' });",
+        "db.getCollection('pacientes').updateOne({ rut: '15.678.432-1' }, { $remove: { historial: { fecha: '2026-02-15' } } });"
+    ],
+    ans: 0,
+    exp: "$pull con la condición { fecha: '2026-02-15' } elimina del arreglo historial el subdocumento que tenga esa fecha."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "medium",
+    q: "Centro médico. Elimina todos los pacientes que no tengan ninguna atención en su historial.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $size para verificar arreglo vacío, deleteMany para eliminar múltiples</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: eliminación múltiple con condición en arreglo</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').deleteMany({ historial: { $size: 0 } });",
+        "db.getCollection('pacientes').deleteMany({ historial: [] });",
+        "db.getCollection('pacientes').deleteMany({ historial: { $empty: true } });",
+        "db.getCollection('pacientes').remove({ historial: { $size: 0 } });"
+    ],
+    ans: 0,
+    exp: "deleteMany() elimina todos los documentos que coincidan. $size: 0 filtra los que tienen el arreglo historial vacío."
+},
+{
+    profe: true,
+    unit: "MongoDB - Centro Médico (Fichas Clínicas)",
+    diff: "hard",
+    q: "Centro médico. Muestra los pacientes con más de 2 atenciones médicas en su historial, ordenados de mayor a menor cantidad.",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: $project con $size, luego $match con $gt y finalmente $sort</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Rango: agregación con filtro y ordenamiento</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').aggregate([{ $project: { nombre: 1, totalAtenciones: { $size: '$historial' } } }, { $match: { totalAtenciones: { $gt: 2 } } }, { $sort: { totalAtenciones: -1 } }]);",
+        "db.getCollection('pacientes').find({ historial: { $gt: 2 } }).sort({ historial: -1 }).toArray();",
+        "db.getCollection('pacientes').aggregate([{ $match: { historial: { $gt: 2 } } }, { $sort: { historial: -1 } }]);",
+        "db.getCollection('pacientes').aggregate([{ $group: { _id: '$nombre', total: { $sum: '$historial' } } }, { $sort: { total: -1 } }]);"
+    ],
+    ans: 0,
+    exp: "Pipeline de 3 etapas: $project calcula el tamaño, $match filtra los mayores a 2, $sort ordena descendente por totalAtenciones."
+},
+
+
+ //CONCEPTOS GENERALES NOSQL Y MONGODB
+
+ {
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Qué tipo de base de datos es MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// ¿Cuál describe mejor a MongoDB?</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en cómo almacena los datos</h6>
+</div>`,
+    opts: [
+        "Base de datos orientada a documentos que almacena datos en formato BSON (similar a JSON).",
+        "Base de datos relacional que almacena datos en tablas con filas y columnas.",
+        "Base de datos de grafos que almacena nodos y relaciones entre ellos.",
+        "Base de datos clave-valor que solo almacena pares simples de llave y valor."
+    ],
+    ans: 0,
+    exp: "MongoDB es una base de datos NoSQL orientada a documentos. Almacena datos en BSON (Binary JSON), lo que permite estructuras flexibles y anidadas sin esquema fijo."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Cuál es la diferencia principal entre una colección en MongoDB y una tabla en SQL?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// SQL → tabla | MongoDB → ?</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en si los documentos deben tener la misma estructura</h6>
+</div>`,
+    opts: [
+        "Una colección no impone un esquema fijo, los documentos pueden tener distintos campos entre sí.",
+        "Una colección siempre requiere que todos los documentos tengan exactamente los mismos campos.",
+        "Una colección solo puede almacenar datos de tipo texto, no números ni fechas.",
+        "Una colección equivale a una fila en SQL, no a una tabla completa."
+    ],
+    ans: 0,
+    exp: "En SQL las tablas tienen esquema rígido (todas las filas deben seguir la misma estructura). En MongoDB una colección agrupa documentos que pueden tener campos distintos, lo que da flexibilidad para modelar datos variables."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Qué es un documento en MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// { nombre: "Ana", edad: 30 } → esto es un...</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: equivalente a una fila en SQL</h6>
+</div>`,
+    opts: [
+        "La unidad básica de datos en MongoDB, similar a un objeto JSON con pares campo-valor.",
+        "Un archivo de texto plano que contiene las instrucciones de la base de datos.",
+        "El equivalente a una base de datos completa en MongoDB.",
+        "Una consulta guardada para reutilizarse en el futuro."
+    ],
+    ans: 0,
+    exp: "Un documento es la unidad básica de datos en MongoDB, equivalente a una fila en SQL. Se representa como un objeto con pares campo-valor, y puede contener subdocumentos y arreglos anidados."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Para qué sirve el campo _id en un documento de MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// { _id: ObjectId('...'), nombre: "Ana" }</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en identificación única</h6>
+</div>`,
+    opts: [
+        "Es el identificador único de cada documento dentro de una colección. MongoDB lo genera automáticamente si no se especifica.",
+        "Es un campo opcional que sirve solo para ordenar los documentos alfabéticamente.",
+        "Es el nombre de la colección a la que pertenece el documento.",
+        "Es un contador automático que indica cuántos documentos hay en la colección."
+    ],
+    ans: 0,
+    exp: "_id es obligatorio y único por documento. Si no se especifica al insertar, MongoDB genera un ObjectId automáticamente. Equivale a la clave primaria (PRIMARY KEY) en SQL."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Qué ventaja tiene embeber subdocumentos (como instructor o cliente) dentro de un documento en lugar de usar una colección separada?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// { cliente: { nombre: "Ana", direccion: "..." } }</span>
+<span style="color:#888;">// vs colección separada de clientes</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en cuántas consultas necesitas para obtener toda la información</h6>
+</div>`,
+    opts: [
+        "Se obtiene toda la información en una sola consulta sin necesidad de hacer joins entre colecciones.",
+        "Los subdocumentos embebidos ocupan menos espacio en disco que las colecciones separadas.",
+        "Los subdocumentos embebidos permiten usar SQL directamente sobre esos datos.",
+        "MongoDB solo puede hacer consultas sobre datos embebidos, no sobre colecciones relacionadas."
+    ],
+    ans: 0,
+    exp: "Embeber datos relacionados en un mismo documento permite recuperar toda la información en una sola lectura. En SQL se necesitarían JOINs entre tablas. Es ideal cuando los datos siempre se consultan juntos."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Cuándo conviene usar un arreglo embebido (como historial o estudiantes) dentro de un documento?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// { historial: [ {fecha: ...}, {fecha: ...} ] }</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en la relación entre el documento padre y los elementos del arreglo</h6>
+</div>`,
+    opts: [
+        "Cuando los elementos del arreglo pertenecen exclusivamente al documento padre y siempre se consultan juntos.",
+        "Cuando los elementos del arreglo se comparten entre muchos documentos distintos.",
+        "Cuando el arreglo puede crecer indefinidamente sin ningún límite de tamaño.",
+        "Cuando se necesita hacer consultas complejas de agregación sobre los elementos del arreglo."
+    ],
+    ans: 0,
+    exp: "Los arreglos embebidos son ideales para datos de 'uno a muchos' donde los elementos pertenecen al documento padre (ej: atenciones de un paciente, platos de un pedido). Si los elementos se comparten entre documentos, es mejor usar referencias."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Qué diferencia hay entre insertOne() e insertMany() en MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// insertOne({...}) vs insertMany([{...},{...}])</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: observa qué recibe cada uno como parámetro</h6>
+</div>`,
+    opts: [
+        "insertOne() inserta un solo documento, insertMany() recibe un arreglo e inserta múltiples documentos a la vez.",
+        "insertOne() es más lento que insertMany() porque valida cada campo del documento.",
+        "insertMany() solo funciona si todos los documentos tienen exactamente los mismos campos.",
+        "insertOne() e insertMany() son equivalentes, la diferencia es solo sintáctica."
+    ],
+    ans: 0,
+    exp: "insertOne() recibe un objeto {} e inserta un documento. insertMany() recibe un arreglo [] y permite insertar varios documentos en una sola operación, lo que es más eficiente que múltiples insertOne()."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Por qué es importante usar $set en updateOne() en lugar de pasar el documento directamente?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// ¿Qué pasa si haces esto?</span>
+<span style="color:#888;">// updateOne({_id:1}, { estado: 'activo' })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en qué le pasa al resto de los campos del documento</h6>
+</div>`,
+    opts: [
+        "Sin $set, MongoDB reemplaza el documento completo por el objeto pasado, perdiendo todos los demás campos.",
+        "Sin $set, MongoDB lanza un error y no realiza ninguna modificación.",
+        "Sin $set, MongoDB actualiza todos los documentos de la colección en lugar de solo uno.",
+        "No hay diferencia, $set es solo una convención de estilo sin efecto real."
+    ],
+    ans: 0,
+    exp: "Sin $set, updateOne() reemplaza el documento completo. Si haces updateOne({_id:1}, {estado:'activo'}), el documento quedará solo con {_id:1, estado:'activo'} y perderá todos los demás campos. $set modifica solo los campos especificados."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Cuál es la diferencia entre $push y $set al actualizar un arreglo embebido?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// $push vs $set sobre un arreglo</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en qué le pasa a los elementos anteriores del arreglo</h6>
+</div>`,
+    opts: [
+        "$push agrega un elemento al arreglo conservando los existentes. $set reemplaza el arreglo completo por el nuevo valor.",
+        "$push reemplaza el arreglo completo. $set agrega un elemento al final sin borrar los anteriores.",
+        "$push y $set hacen lo mismo sobre arreglos, solo cambia la sintaxis.",
+        "$push solo funciona con arreglos de números, $set funciona con cualquier tipo de dato."
+    ],
+    ans: 0,
+    exp: "$push añade un elemento al final del arreglo sin tocar los anteriores. $set reemplaza el arreglo completo. Para agregar atenciones, platos o habitaciones sin perder los existentes, siempre se usa $push."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Para qué sirve el operador $pull en MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// $pull: { estudiantes: { nombre: 'Ana' } }</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: es la operación contraria a $push</h6>
+</div>`,
+    opts: [
+        "Elimina del arreglo todos los elementos que cumplan la condición especificada.",
+        "Extrae un elemento del arreglo y lo devuelve como resultado de la consulta.",
+        "Elimina el arreglo completo del documento.",
+        "Mueve un elemento de un arreglo a otro arreglo dentro del mismo documento."
+    ],
+    ans: 0,
+    exp: "$pull elimina del arreglo todos los subdocumentos o valores que coincidan con la condición. Es la operación inversa de $push. deleteOne() elimina documentos completos, $pull elimina elementos dentro de un arreglo."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "hard",
+    q: "¿Qué hace el operador posicional $ en una actualización como { $set: { 'historial.$.diagnostico': 'Nuevo' } }?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// updateOne(</span>
+<span style="color:#888;">//   { rut: '...', 'historial.fecha': '2026-03-10' },</span>
+<span style="color:#888;">//   { $set: { 'historial.$.diagnostico': 'Nuevo' } }</span>
+<span style="color:#888;">// )</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: el $ actúa como un índice dinámico</h6>
+</div>`,
+    opts: [
+        "Representa la posición del primer elemento del arreglo que coincidió con la condición del filtro, permitiendo modificar solo ese elemento.",
+        "Representa todos los elementos del arreglo y aplica la modificación a cada uno de ellos.",
+        "Es una variable global que siempre apunta al último elemento insertado en el arreglo.",
+        "Indica que se debe crear un nuevo elemento en el arreglo si no existe ninguno que coincida."
+    ],
+    ans: 0,
+    exp: "El operador $ posicional hace referencia al índice del elemento que coincidió con la condición del filtro. Permite modificar un campo dentro de un subdocumento específico del arreglo sin afectar los demás elementos."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Qué diferencia hay entre deleteOne() y deleteMany() en MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// deleteOne({ estado: 'inactivo' })</span>
+<span style="color:#888;">// deleteMany({ estado: 'inactivo' })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en cuántos documentos elimina cada uno</h6>
+</div>`,
+    opts: [
+        "deleteOne() elimina el primer documento que coincida con el filtro. deleteMany() elimina todos los documentos que coincidan.",
+        "deleteOne() elimina todos los documentos de la colección. deleteMany() elimina solo el último.",
+        "deleteOne() requiere el campo _id obligatoriamente. deleteMany() acepta cualquier filtro.",
+        "No hay diferencia funcional, deleteMany() es simplemente un alias más moderno de deleteOne()."
+    ],
+    ans: 0,
+    exp: "deleteOne() elimina un solo documento (el primero que coincida). deleteMany() elimina todos los que coincidan con el filtro. Para limpiar registros masivos como pacientes sin historial se usa deleteMany()."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "hard",
+    q: "¿Qué hace un pipeline de agregación en MongoDB y en qué se diferencia de un find()?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// aggregate([{ $project: {...} }, { $match: {...} }])</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en transformaciones encadenadas</h6>
+</div>`,
+    opts: [
+        "Un pipeline procesa los documentos en etapas secuenciales donde la salida de una etapa es la entrada de la siguiente, permitiendo transformar, calcular y filtrar datos.",
+        "Un pipeline es simplemente un find() con múltiples filtros aplicados al mismo tiempo.",
+        "Un pipeline solo sirve para contar documentos, no puede calcular sumas ni promedios.",
+        "Un pipeline funciona igual que find() pero es más lento porque procesa los datos dos veces."
+    ],
+    ans: 0,
+    exp: "aggregate() procesa documentos en etapas ($project, $match, $sort, $group). Cada etapa transforma los datos y los pasa a la siguiente. find() solo filtra y proyecta, no puede calcular campos nuevos ni hacer operaciones matemáticas sobre arreglos."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "hard",
+    q: "¿Para qué se usa $map dentro de un pipeline de agregación en MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// $map: { input: '$platos', as: 'p', in: { $multiply: ['$$p.cantidad', '$$p.precio'] } }</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: recorre cada elemento del arreglo y aplica una operación</h6>
+</div>`,
+    opts: [
+        "Itera sobre cada elemento de un arreglo y aplica una expresión, retornando un nuevo arreglo con los resultados transformados.",
+        "Crea un mapa de índices para acelerar las búsquedas dentro de arreglos embebidos.",
+        "Une dos arreglos de documentos distintos en uno solo.",
+        "Filtra los elementos de un arreglo que cumplan una condición, eliminando los que no la cumplan."
+    ],
+    ans: 0,
+    exp: "$map recorre cada elemento del arreglo (como $platos), aplica la expresión definida en 'in' a cada uno (como multiplicar cantidad × precio), y retorna un nuevo arreglo con los resultados. Luego $sum puede sumar ese arreglo."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Qué hace $exists: true en una consulta de MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// find({ 'instructor.correo': { $exists: true } })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: útil en colecciones donde no todos los documentos tienen los mismos campos</h6>
+</div>`,
+    opts: [
+        "Filtra los documentos que tengan ese campo presente, independientemente de su valor.",
+        "Verifica que el campo exista y que su valor no sea null ni vacío.",
+        "Crea el campo en los documentos que no lo tengan con un valor por defecto.",
+        "Lanza un error si el campo no existe en algún documento de la colección."
+    ],
+    ans: 0,
+    exp: "$exists: true retorna solo los documentos que tienen ese campo definido. Es útil en MongoDB porque al no tener esquema fijo, algunos documentos pueden no tener ciertos campos. $exists: false retorna los que no tienen el campo."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Qué hace $regex en una consulta de MongoDB y cuándo se usa?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// find({ nombre: { $regex: 'Luis', $options: 'i' } })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: búsqueda parcial de texto</h6>
+</div>`,
+    opts: [
+        "Permite buscar documentos cuyo campo contenga un patrón de texto, sin necesitar coincidencia exacta.",
+        "Convierte el valor del campo a una expresión regular antes de guardarlo.",
+        "Solo funciona con campos de tipo ObjectId, no con texto normal.",
+        "Reemplaza todos los valores del campo que coincidan con el patrón por un nuevo valor."
+    ],
+    ans: 0,
+    exp: "$regex permite búsqueda de texto parcial usando expresiones regulares. $options: 'i' hace la búsqueda insensible a mayúsculas. Es útil para buscar por nombre, dirección o cualquier campo de texto sin conocer el valor exacto."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Para qué sirve el método .sort() encadenado a un find() en MongoDB?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// find({}).sort({ fechaCreacion: -1 })</span>
+<span style="color:#888;">// ¿qué significa el -1?</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: 1 es ascendente, -1 es descendente</h6>
+</div>`,
+    opts: [
+        "Ordena los documentos resultantes según el campo indicado. 1 es orden ascendente (A→Z, antiguo→reciente) y -1 es descendente (Z→A, reciente→antiguo).",
+        "Limita la cantidad de documentos retornados al número indicado (1 o -1).",
+        "Agrupa los documentos por el campo indicado antes de retornarlos.",
+        ".sort() solo funciona con campos de tipo fecha, no con texto ni números."
+    ],
+    ans: 0,
+    exp: ".sort({ campo: 1 }) ordena ascendente, .sort({ campo: -1 }) ordena descendente. Se encadena después de find() y antes de .toArray(). Funciona con fechas, números y texto."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "easy",
+    q: "¿Cuál es la diferencia entre usar MongoDB Compass y VS Code con la extensión MongoDB para trabajar con bases de datos?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// Compass = GUI visual</span>
+<span style="color:#888;">// VS Code + extensión = editor + playground</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en el flujo de trabajo de un desarrollador</h6>
+</div>`,
+    opts: [
+        "Compass es una interfaz gráfica visual ideal para explorar datos. VS Code con la extensión MongoDB Playground permite escribir y ejecutar scripts .js directamente desde el editor de código.",
+        "Compass permite escribir código JavaScript avanzado. VS Code solo muestra los datos en formato tabla sin permitir consultas.",
+        "Son exactamente iguales en funcionalidades, la diferencia es solo estética.",
+        "VS Code solo sirve para conectarse a MongoDB Atlas en la nube, Compass solo para conexiones locales."
+    ],
+    ans: 0,
+    exp: "Compass es ideal para explorar visualmente colecciones, ver documentos y ejecutar queries rápidas. VS Code con MongoDB for VS Code permite crear archivos .mongodb, escribir scripts completos con sintaxis resaltada y ejecutarlos como playground, lo que es más cómodo para desarrollar."
+},
+{
+    profe: true,
+    unit: "MongoDB - Conceptos NoSQL",
+    diff: "medium",
+    q: "¿Qué ventaja tiene usar ISODate() para almacenar fechas en MongoDB en lugar de guardarlas como string de texto?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// ISODate('2025-07-01') vs '2025-07-01'</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en qué operaciones puedes hacer con fechas reales vs texto</h6>
+</div>`,
+    opts: [
+        "ISODate almacena la fecha como tipo Date real, permitiendo comparaciones de rango ($gte, $lte), ordenamiento cronológico y cálculos de diferencia entre fechas.",
+        "ISODate ocupa menos espacio en disco que un string de texto con la misma fecha.",
+        "ISODate convierte automáticamente la fecha al idioma del usuario cuando se muestra.",
+        "No hay diferencia práctica, MongoDB trata los strings de fecha igual que ISODate."
+    ],
+    ans: 0,
+    exp: "Guardar fechas como ISODate() permite usar operadores de comparación ($gte, $lte) para filtrar por rangos de fechas, ordenarlas cronológicamente con .sort() y hacer cálculos. Con strings de texto solo se puede comparar exactamente, no por rango."
+},
+
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "easy",
+    q: "¿Qué extensión necesitas instalar en VS Code para trabajar con MongoDB Playground?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// Marketplace de VS Code</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: es la extensión oficial de MongoDB Inc.</h6>
+</div>`,
+    opts: [
+        "MongoDB for VS Code (MongoDB Inc.)",
+        "NoSQL Database (Microsoft)",
+        "Database Client (cweijan)",
+        "MongoDB Driver (npm)"
+    ],
+    ans: 0,
+    exp: "La extensión oficial es 'MongoDB for VS Code' de MongoDB Inc. Permite conectarse a una instancia local o Atlas, explorar colecciones y ejecutar archivos .mongodb como Playground."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "easy",
+    q: "¿Con qué extensión de archivo se guarda un script de MongoDB Playground en VS Code?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// situacion1_cursos.???</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: no es .sql ni .json</h6>
+</div>`,
+    opts: [
+        ".mongodb",
+        ".js",
+        ".json",
+        ".sql"
+    ],
+    ans: 0,
+    exp: "Los scripts de MongoDB Playground se guardan con extensión .mongodb. VS Code los reconoce automáticamente y activa el modo Playground con autocompletado y botón Run."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "easy",
+    q: "¿Cómo se selecciona la base de datos a usar dentro de un archivo .mongodb en VS Code?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// primera línea del archivo</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: se escribe al inicio del script</h6>
+</div>`,
+    opts: [
+        "use('nombre_base_de_datos');",
+        "db.connect('nombre_base_de_datos');",
+        "SELECT DATABASE nombre_base_de_datos;",
+        "db.createDatabase('nombre_base_de_datos');"
+    ],
+    ans: 0,
+    exp: "use('nombre_bd') al inicio del archivo selecciona la base de datos. Si no existe, MongoDB la crea automáticamente al insertar el primer documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "easy",
+    q: "¿Cómo se ejecuta un script .mongodb en VS Code?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// archivo centro_medico.mongodb abierto en VS Code</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: hay un botón verde en la parte superior del archivo</h6>
+</div>`,
+    opts: [
+        "Con el botón 'Run Playground' (triángulo verde) que aparece en la parte superior del archivo .mongodb.",
+        "Con el comando npm run mongodb en la terminal.",
+        "Haciendo clic derecho y seleccionando 'Execute SQL'.",
+        "Con el atajo Ctrl+F5 igual que cualquier archivo JavaScript."
+    ],
+    ans: 0,
+    exp: "Al abrir un archivo .mongodb, VS Code muestra un botón 'Run Playground' en la parte superior. También se puede usar el atajo Ctrl+Shift+P y buscar 'MongoDB: Run All Playground Blocks'."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "easy",
+    q: "¿Dónde aparece el resultado al ejecutar un Playground en VS Code?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// después de Run Playground...</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: se abre automáticamente al lado del script</h6>
+</div>`,
+    opts: [
+        "En un panel lateral derecho que VS Code abre automáticamente con el resultado en formato JSON.",
+        "En la terminal integrada de VS Code como texto plano.",
+        "En el navegador web en la dirección localhost:27017.",
+        "En un archivo .txt que se crea automáticamente en la misma carpeta."
+    ],
+    ans: 0,
+    exp: "El resultado aparece en un panel que VS Code abre a la derecha del archivo .mongodb, mostrando la salida del último bloque ejecutado en formato JSON legible."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "medium",
+    q: "¿Por qué al ejecutar todo el script en VS Code solo se muestra el resultado de la última operación?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// el script tiene insertOne, insertMany, find...</span>
+<span style="color:#888;">// pero solo muestra el resultado del find</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: comportamiento del Playground de VS Code</h6>
+</div>`,
+    opts: [
+        "El Playground de VS Code ejecuta todas las operaciones pero solo muestra en el panel el resultado de la última línea del script.",
+        "VS Code cancela las operaciones anteriores y solo ejecuta la última.",
+        "Es un error de VS Code que se soluciona reinstalando la extensión.",
+        "Solo ejecuta la última operación para evitar sobrecargar la base de datos."
+    ],
+    ans: 0,
+    exp: "VS Code ejecuta todas las operaciones del script en orden, pero el panel de resultados solo muestra la salida de la última instrucción. Por eso se pone el find() o aggregate() que se quiere ver al final del script."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "medium",
+    q: "¿Cómo se evita el error de duplicate key al ejecutar el script varias veces en VS Code?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// E11000 duplicate key error</span>
+<span style="color:#888;">// dup key: { _id: 1 }</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: limpiar antes de insertar</h6>
+</div>`,
+    opts: [
+        "Poner db.getCollection('nombre').drop() al inicio del script para eliminar la colección antes de cada ejecución.",
+        "Cambiar el _id por un número diferente cada vez que se ejecuta.",
+        "Usar insertOrUpdate() en lugar de insertOne().",
+        "Desconectarse y reconectarse a MongoDB antes de ejecutar."
+    ],
+    ans: 0,
+    exp: "drop() al inicio del script elimina la colección completa antes de insertar. Así cada ejecución parte desde cero sin errores de _id duplicado. Es la práctica estándar en scripts de desarrollo y prueba."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "easy",
+    q: "¿Cuál es la cadena de conexión estándar para conectarse a MongoDB local desde VS Code?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// MongoDB corre localmente en tu máquina</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: puerto por defecto de MongoDB</h6>
+</div>`,
+    opts: [
+        "mongodb://localhost:27017",
+        "http://localhost:3000/mongodb",
+        "mongodb://localhost:8080",
+        "localhost://mongodb:27017"
+    ],
+    ans: 0,
+    exp: "MongoDB corre por defecto en el puerto 27017. La cadena de conexión local es mongodb://localhost:27017. En VS Code se ingresa al crear una nueva conexión en el panel de MongoDB."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "medium",
+    q: "En VS Code, ¿cómo se estructura correctamente un archivo .mongodb para la situación de un centro médico?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// ¿cuál es el orden correcto?</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: primero seleccionar BD, luego limpiar, luego insertar, luego consultar</h6>
+</div>`,
+    opts: [
+        "use('centro_medico') → drop() → insertOne/insertMany → operaciones CRUD → find/aggregate al final.",
+        "insertOne/insertMany → use('centro_medico') → find() → drop().",
+        "drop() → use('centro_medico') → find() → insertOne.",
+        "find() → use('centro_medico') → drop() → insertMany."
+    ],
+    ans: 0,
+    exp: "El orden correcto es: 1) use() para seleccionar la BD, 2) drop() para limpiar, 3) insertar los datos, 4) operaciones de update/delete, 5) la consulta que quieres ver al final para que aparezca en el panel de resultados."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "medium",
+    q: "¿Cómo se accede al panel de MongoDB en VS Code para explorar las colecciones visualmente?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// barra lateral izquierda de VS Code</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: ícono de hoja con la letra M</h6>
+</div>`,
+    opts: [
+        "Desde el ícono de MongoDB en la barra lateral izquierda, donde aparecen las conexiones, bases de datos y colecciones en forma de árbol.",
+        "Desde el menú Terminal > New MongoDB Terminal.",
+        "Abriendo el archivo package.json y ejecutando npm start.",
+        "Desde View > Extensions > MongoDB > Open Panel."
+    ],
+    ans: 0,
+    exp: "La extensión agrega un ícono en la barra lateral izquierda de VS Code. Al hacer clic se despliega un árbol con las conexiones, y dentro de cada una las bases de datos, colecciones y documentos para explorar visualmente."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Workflow",
+    diff: "hard",
+    q: "Al desarrollar en VS Code, ¿qué ventaja tiene escribir el script completo en un .mongodb en lugar de ejecutar cada comando por separado en Compass?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// script completo vs comandos sueltos</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: piensa en reproducibilidad y trabajo en equipo</h6>
+</div>`,
+    opts: [
+        "El script .mongodb es reproducible, versionable con Git, se puede compartir con el equipo y recrea toda la base de datos desde cero con un solo Run.",
+        "Los scripts .mongodb ejecutan más rápido que Compass porque usan menos memoria RAM.",
+        "En VS Code se pueden ejecutar scripts SQL y MongoDB al mismo tiempo en el mismo archivo.",
+        "Compass no permite insertar más de 10 documentos a la vez, VS Code no tiene ese límite."
+    ],
+    ans: 0,
+    exp: "Un archivo .mongodb es código que se puede guardar, versionar con Git y compartir. Cualquier persona del equipo puede ejecutarlo y obtener exactamente la misma base de datos. Compass es útil para explorar pero no para reproducir el trabajo."
+},
+
+
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "easy",
+    q: "Necesitas crear y seleccionar la base de datos 'centro_medico' en tu archivo .mongodb. ¿Qué escribes en la primera línea?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// primera línea del archivo .mongodb</span>
+<span style="color:#ffffff;">___('centro_medico');</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa el comando</h6>
+</div>`,
+    opts: [
+        "use('centro_medico');",
+        "connect('centro_medico');",
+        "db.create('centro_medico');",
+        "database('centro_medico');"
+    ],
+    ans: 0,
+    exp: "use('nombre') selecciona la base de datos. Si no existe la crea automáticamente al insertar el primer documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "easy",
+    q: "Antes de insertar datos quieres limpiar la colección 'pacientes' para evitar errores de _id duplicado. ¿Qué escribes?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">use('centro_medico');</span>
+<span style="color:#ffffff;">db.getCollection('pacientes').___();</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa el comando</h6>
+</div>`,
+    opts: [
+        "db.getCollection('pacientes').drop();",
+        "db.getCollection('pacientes').delete();",
+        "db.getCollection('pacientes').clear();",
+        "db.getCollection('pacientes').remove();"
+    ],
+    ans: 0,
+    exp: "drop() elimina la colección completa. Es lo que se pone al inicio del script para que cada ejecución parta desde cero sin errores de duplicado."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "easy",
+    q: "Inserta un paciente con rut, nombre y edad en la colección 'pacientes'. ¿Qué comando usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').___(</span>
+<span style="color:#ffffff;">  { rut: '12.345.678-9', nombre: 'María', edad: 45 }</span>
+<span style="color:#888;">);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa el comando: insertar un solo documento</h6>
+</div>`,
+    opts: [
+        "insertOne",
+        "insertMany",
+        "insert",
+        "add"
+    ],
+    ans: 0,
+    exp: "insertOne() inserta un solo documento. Recibe un objeto {} con los campos del documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "easy",
+    q: "Necesitas insertar 3 pacientes a la vez. ¿Qué comando usas y cómo se pasan los documentos?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').___(</span>
+<span style="color:#ffffff;">  [ {rut:'...'}, {rut:'...'}, {rut:'...'} ]</span>
+<span style="color:#888;">);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa el comando: insertar múltiples documentos</h6>
+</div>`,
+    opts: [
+        "insertMany",
+        "insertOne",
+        "insertAll",
+        "insert"
+    ],
+    ans: 0,
+    exp: "insertMany() recibe un arreglo [ ] con todos los documentos a insertar. Cada documento va separado por coma dentro del arreglo."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "easy",
+    q: "Quieres ver todos los documentos de la colección 'pacientes'. ¿Qué escribes?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#ffffff;">db.getCollection('pacientes').___({}).toArray();</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: leer todos los documentos</h6>
+</div>`,
+    opts: [
+        "find",
+        "get",
+        "search",
+        "select"
+    ],
+    ans: 0,
+    exp: "find({}) con filtro vacío retorna todos los documentos. .toArray() muestra el resultado correctamente en el panel de VS Code."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "easy",
+    q: "Busca el paciente cuyo rut sea exactamente '12.345.678-9'. ¿Qué escribes dentro del find()?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').find(</span>
+<span style="color:#ffffff;">  { ___ }</span>
+<span style="color:#888;">).toArray();</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa el filtro</h6>
+</div>`,
+    opts: [
+        "{ rut: '12.345.678-9' }",
+        "{ id: '12.345.678-9' }",
+        "{ _id: '12.345.678-9' }",
+        "{ rut == '12.345.678-9' }"
+    ],
+    ans: 0,
+    exp: "El filtro es un objeto con el campo y el valor exacto que buscas. rut es el nombre del campo como está guardado en el documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Busca los pacientes que vivan en la comuna 'Maipú'. La dirección es un subdocumento embebido: { direccion: { comuna: 'Maipú' } }. ¿Qué filtro usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// el documento tiene esto:</span>
+<span style="color:#888;">// direccion: { ciudad: 'Santiago', comuna: 'Maipú' }</span>
+<span style="color:#ffffff;">find({ ___ })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: notación de punto para llegar al campo dentro del subdocumento</h6>
+</div>`,
+    opts: [
+        "{ 'direccion.comuna': 'Maipú' }",
+        "{ direccion: { comuna: 'Maipú' } }",
+        "{ comuna: 'Maipú' }",
+        "{ direccion.comuna: 'Maipú' }"
+    ],
+    ans: 0,
+    exp: "Para buscar dentro de un subdocumento se usa notación de punto entre comillas: 'direccion.comuna'. Sin comillas da error de sintaxis en JavaScript."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Busca los pacientes que tengan el diagnóstico 'Gastritis' en alguna atención de su historial (arreglo embebido). ¿Qué filtro usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">// historial: [ { diagnostico: 'Gastritis', ... }, ... ]</span>
+<span style="color:#ffffff;">find({ ___ })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: misma notación de punto pero sobre un arreglo</h6>
+</div>`,
+    opts: [
+        "{ 'historial.diagnostico': 'Gastritis' }",
+        "{ historial: { diagnostico: 'Gastritis' } }",
+        "{ diagnostico: 'Gastritis' }",
+        "{ historial: [ { diagnostico: 'Gastritis' } ] }"
+    ],
+    ans: 0,
+    exp: "La notación de punto 'historial.diagnostico' busca en todos los elementos del arreglo historial. MongoDB revisa cada subdocumento del arreglo automáticamente."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Actualiza el teléfono del paciente con rut '12.345.678-9' a '+56999999999'. ¿Qué escribes?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').___(</span>
+<span style="color:#888;">  { rut: '12.345.678-9' },</span>
+<span style="color:#ffffff;">  { ___: { telefono: '+56999999999' } }</span>
+<span style="color:#888;">);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: comando y operador</h6>
+</div>`,
+    opts: [
+        "updateOne + $set",
+        "updateOne + $push",
+        "update + $set",
+        "updateOne + $add"
+    ],
+    ans: 0,
+    exp: "updateOne() busca el primer documento que coincida. $set modifica solo el campo indicado sin tocar el resto del documento."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Agrega una nueva atención médica al arreglo historial del paciente con rut '12.345.678-9'. ¿Qué operador usas dentro del updateOne()?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').updateOne(</span>
+<span style="color:#888;">  { rut: '12.345.678-9' },</span>
+<span style="color:#ffffff;">  { ___: { historial: { fecha: '2026-04-15', diagnostico: 'Saludable' } } }</span>
+<span style="color:#888;">);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: operador para agregar al arreglo</h6>
+</div>`,
+    opts: [
+        "$push",
+        "$set",
+        "$add",
+        "$insert"
+    ],
+    ans: 0,
+    exp: "$push agrega el nuevo elemento al final del arreglo conservando todas las atenciones anteriores. $set reemplazaría el arreglo completo."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Elimina del arreglo historial la atención cuya fecha sea '2026-02-15' del paciente con rut '15.678.432-1'. ¿Qué operador usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').updateOne(</span>
+<span style="color:#888;">  { rut: '15.678.432-1' },</span>
+<span style="color:#ffffff;">  { ___: { historial: { fecha: '2026-02-15' } } }</span>
+<span style="color:#888;">);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: operador para eliminar un elemento del arreglo</h6>
+</div>`,
+    opts: [
+        "$pull",
+        "$pop",
+        "$remove",
+        "$delete"
+    ],
+    ans: 0,
+    exp: "$pull elimina del arreglo todos los elementos que coincidan con la condición. Es la operación inversa de $push."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Elimina el paciente con rut '11.111.111-1' de la colección. ¿Qué escribes?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#ffffff;">db.getCollection('pacientes').___({ rut: '11.111.111-1' });</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: eliminar un documento</h6>
+</div>`,
+    opts: [
+        "deleteOne",
+        "deleteMany",
+        "remove",
+        "drop"
+    ],
+    ans: 0,
+    exp: "deleteOne() elimina el primer documento que coincida con el filtro. drop() elimina la colección completa, no un documento específico."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Elimina todos los pacientes que tengan el historial vacío []. ¿Qué comando usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#ffffff;">db.getCollection('pacientes').___({ historial: { $size: 0 } });</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: eliminar múltiples documentos</h6>
+</div>`,
+    opts: [
+        "deleteMany",
+        "deleteOne",
+        "drop",
+        "remove"
+    ],
+    ans: 0,
+    exp: "deleteMany() elimina todos los documentos que cumplan el filtro. $size: 0 filtra los que tienen el arreglo historial vacío."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "hard",
+    q: "Modifica el diagnóstico de la atención del '2026-03-10' dentro del historial del paciente con rut '12.345.678-9'. ¿Qué escribes en el $set?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').updateOne(</span>
+<span style="color:#888;">  { rut: '12.345.678-9', 'historial.fecha': '2026-03-10' },</span>
+<span style="color:#ffffff;">  { $set: { '___': 'Gastritis crónica' } }</span>
+<span style="color:#888;">);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: operador posicional $ para apuntar al elemento que coincidió</h6>
+</div>`,
+    opts: [
+        "historial.$.diagnostico",
+        "historial.diagnostico",
+        "historial[0].diagnostico",
+        "historial.*.diagnostico"
+    ],
+    ans: 0,
+    exp: "El $ posicional representa el índice del elemento del arreglo que coincidió en el filtro. 'historial.$.diagnostico' modifica solo ese subdocumento sin tocar los demás."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "hard",
+    q: "Quieres mostrar la cantidad de atenciones de cada paciente. ¿Qué pipeline de agregación escribes?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('pacientes').aggregate([</span>
+<span style="color:#ffffff;">  { $project: { nombre: 1, total: { ___: '$historial' } } }</span>
+<span style="color:#888;">]);</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: operador que cuenta elementos de un arreglo</h6>
+</div>`,
+    opts: [
+        "$size",
+        "$count",
+        "$sum",
+        "$length"
+    ],
+    ans: 0,
+    exp: "$size dentro de $project retorna el número de elementos del arreglo historial. Se usa dentro de aggregate() no de find()."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "hard",
+    q: "Calcula el total de cada pedido multiplicando cantidad × precio de cada plato. ¿Qué operadores necesitas en el pipeline?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">{ $project: { total: { ___: { ___: {</span>
+<span style="color:#888;">  input: '$platos', as: 'p',</span>
+<span style="color:#ffffff;">  in: { ___: ['$$p.cantidad', '$$p.precio'] }</span>
+<span style="color:#888;">} } } } }</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa los 3 operadores</h6>
+</div>`,
+    opts: [
+        "$sum + $map + $multiply",
+        "$count + $forEach + $multiply",
+        "$total + $map + $times",
+        "$sum + $filter + $multiply"
+    ],
+    ans: 0,
+    exp: "$map recorre cada elemento del arreglo, $multiply multiplica los campos de cada elemento, $sum suma todos los resultados del $map para obtener el total."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Busca todos los pedidos cuya dirección del cliente contenga la palabra 'Siempre' sin importar mayúsculas. ¿Qué operadores usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">find({ 'cliente.direccion': { ___: 'Siempre', ___: 'i' } })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: búsqueda parcial de texto</h6>
+</div>`,
+    opts: [
+        "$regex + $options",
+        "$contains + $case",
+        "$like + $options",
+        "$search + $flags"
+    ],
+    ans: 0,
+    exp: "$regex permite buscar texto parcial. $options: 'i' hace la búsqueda insensible a mayúsculas/minúsculas. Son los dos operadores que siempre van juntos para búsqueda de texto flexible."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Ordena los cursos por fecha de creación del más reciente al más antiguo. ¿Qué encadenas después del find()?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">db.getCollection('cursos').find({}).___(</span>
+<span style="color:#ffffff;">  { fechaCreacion: ___ }</span>
+<span style="color:#888;">).toArray();</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: método y valor para orden descendente</h6>
+</div>`,
+    opts: [
+        "sort + -1",
+        "orderBy + -1",
+        "sort + 0",
+        "order + 'desc'"
+    ],
+    ans: 0,
+    exp: ".sort({ campo: -1 }) ordena descendente (más reciente primero). Con 1 sería ascendente (más antiguo primero)."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "medium",
+    q: "Filtra las reservas cuya fechaIngreso esté entre el 2025-07-01 y el 2025-09-30. ¿Qué operadores usas?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">find({ fechaIngreso: {</span>
+<span style="color:#ffffff;">  ___: ISODate('2025-07-01'),</span>
+<span style="color:#ffffff;">  ___: ISODate('2025-09-30')</span>
+<span style="color:#888;">} })</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa: operadores de rango</h6>
+</div>`,
+    opts: [
+        "$gte + $lte",
+        "$gt + $lt",
+        "$from + $to",
+        "$min + $max"
+    ],
+    ans: 0,
+    exp: "$gte (mayor o igual) y $lte (menor o igual) definen un rango incluyendo los extremos. $gt y $lt excluyen los extremos. Para fechas siempre se usa ISODate()."
+},
+{
+    profe: true,
+    unit: "MongoDB - VS Code Práctica",
+    diff: "hard",
+    q: "Muestra solo los pacientes con más de 2 atenciones en su historial, ordenados de mayor a menor. ¿Cómo armas el pipeline?",
+    extra: `
+<div class="extra-content">
+<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
+<span style="color:#888;">aggregate([</span>
+<span style="color:#ffffff;">  { $project: { nombre: 1, total: { $size: '$historial' } } },</span>
+<span style="color:#ffffff;">  { ___: { total: { $gt: 2 } } },</span>
+<span style="color:#ffffff;">  { ___: { total: -1 } }</span>
+<span style="color:#888;">])</span>
+</div>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Completa las etapas del pipeline</h6>
+</div>`,
+    opts: [
+        "$match + $sort",
+        "$filter + $order",
+        "$where + $sort",
+        "$match + $group"
+    ],
+    ans: 0,
+    exp: "$match filtra los documentos igual que find() pero dentro del pipeline. $sort ordena los resultados. El orden de las etapas importa: primero calcular, luego filtrar, luego ordenar."
+},
+
 
  //Formativa 1 - Crear BD y Colección
 
@@ -11,22 +2050,41 @@ BANK.bd_no_estructurados = [
     unit: "MongoDB - Formativa (Tienda)",
     diff: "medium",
     q: "Crea la base de datos 'tienda' y la colección 'clientes'.",
+    extra: "...",
+    opts: [
+        "use('tienda');\ndb.createCollection('clientes');",
+        "use('tienda');\ndb.clientes.create();",
+        "create database tienda;\ncreate collection clientes;",
+        "db.createDatabase('tienda');\ndb.createCollection('clientes');"
+    ],
+    ans: 0,
+    exp: "use('tienda') crea la base. db.createCollection('clientes') crea la colección."
+},
+
+ {
+    profe: true,
+    unit: "MongoDB - Formativa",
+    diff: "medium",
+    q: "Dado el siguiente documento de cliente, escribe el comando para insertarlo en la colección 'clientes':\n\n{ _id: 1, nombre: \"Ana López\", email: \"ana@mail.com\", direccion: { ciudad: \"Santiago\", pais: \"Chile\" }, pedidos: [] }",
     extra: `
 <div class="extra-content">
 <div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
 <span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
 </div>
-<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: use() y createCollection() - cada línea termina con ;</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: Usa insertOne con el documento dado</h6>
 </div>`,
     opts: [
-        "use('tienda');\ndb.createCollection('clientes');",
-        "use('tienda');\ndb.clientes.create();",
-        "use tienda;\ncreate collection clientes;",
-        "db.createDatabase('tienda');\ndb.createCollection('clientes');"
+        "db.clientes.insertOne({ _id: 1, nombre: 'Ana López', email: 'ana@mail.com', direccion: { ciudad: 'Santiago', pais: 'Chile' }, pedidos: [] });",
+        "db.clientes.insert({ _id: 1, nombre: 'Ana López' });",
+        "db.clientes.insertOne({ nombre: 'Ana López', email: 'ana@mail.com' });",
+        "db.clientes.insertOne({ _id: 1 });"
     ],
     ans: 0,
-    exp: "En VS Code: use('tienda'); selecciona la base. db.createCollection('clientes'); crea la colección. Cada comando termina con punto y coma."
+    exp: "db.clientes.insertOne() inserta un documento. El documento incluye _id: 1 proporcionado en el enunciado."
 },
+
+
+
 
 //Formativa 2 - Insertar primer cliente
 
@@ -34,22 +2092,22 @@ BANK.bd_no_estructurados = [
     profe: true,
     unit: "MongoDB - Formativa (Tienda)",
     diff: "medium",
-    q: "Inserta un cliente: nombre 'Ana López', email 'ana@mail.com', dirección ciudad 'Santiago', país 'Chile', sin pedidos.",
+    q: "Usando el _id del cliente, actualiza la dirección del cliente con _id: 1 a { ciudad: 'Las Condes', pais: 'Chile' }.",
     extra: `
 <div class="extra-content">
 <div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
 <span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
 </div>
-<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: insertOne, pedidos vacío es []</h6>
+<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: updateOne con filtro por _id</h6>
 </div>`,
     opts: [
-        "db.clientes.insertOne({\n  nombre: 'Ana López',\n  email: 'ana@mail.com',\n  direccion: { ciudad: 'Santiago', pais: 'Chile' },\n  pedidos: []\n});",
-        "db.clientes.insertOne({\n  nombre: 'Ana López',\n  email: 'ana@mail.com',\n  direccion: { ciudad: 'Santiago', pais: 'Chile' }\n});",
-        "db.clientes.insert({\n  nombre: 'Ana López'\n});",
-        "db.clientes.insertOne({\n  nombre: 'Ana López'\n});"
+        "db.clientes.updateOne({ _id: 1 }, { $set: { direccion: { ciudad: 'Las Condes', pais: 'Chile' } } });",
+        "db.clientes.updateOne({ nombre: 'Ana López' }, { $set: { direccion: 'Las Condes' } });",
+        "db.clientes.update({ _id: 1 }, { direccion: 'Las Condes' });",
+        "db.clientes.updateOne({ _id: 1 }, { $push: { direccion: 'Las Condes' } });"
     ],
     ans: 0,
-    exp: "db.clientes.insertOne({...}); inserta un documento. pedidos: [] es un array vacío."
+    exp: "Se usa _id: 1 como filtro porque es el identificador único. $set actualiza el subdocumento direccion."
 },
 
 //Formativa 3 - Insertar cliente con pedidos
@@ -58,23 +2116,18 @@ BANK.bd_no_estructurados = [
     profe: true,
     unit: "MongoDB - Formativa (Tienda)",
     diff: "medium",
-    q: "Inserta un cliente: 'Carlos Ruiz', email 'carlos@mail.com', dirección ciudad 'Valparaíso', país 'Chile', con pedido: Laptop, 1 unidad, precio 800.",
-    extra: `
-<div class="extra-content">
-<div class="console-box" style="background:#1e1e1e;color:#ffffff;font-family:monospace;padding:1rem;border-radius:8px;margin-bottom:1rem;">
-<span style="color:#888;">playground.mongodb&gt;</span> <span contenteditable="true" style="outline:none;color:#ffffff;"></span>
-</div>
-<h6 style="margin:4px 0;color:#888;font-size:0.75rem;">Pista: pedidos es un array [{}, {}]</h6>
-</div>`,
+    q: "Inserta el siguiente cliente en la colección 'clientes':\n{ _id: 2, nombre: 'Carlos Ruiz', email: 'carlos@mail.com', direccion: { ciudad: 'Valparaíso', pais: 'Chile' }, pedidos: [{ producto: 'Laptop', cantidad: 1, precio: 800 }] }",
+    extra: "...",
     opts: [
-        "db.clientes.insertOne({\n  nombre: 'Carlos Ruiz',\n  email: 'carlos@mail.com',\n  direccion: { ciudad: 'Valparaíso', pais: 'Chile' },\n  pedidos: [{ producto: 'Laptop', cantidad: 1, precio: 800 }]\n});",
-        "db.clientes.insertOne({\n  nombre: 'Carlos Ruiz',\n  email: 'carlos@mail.com',\n  direccion: { ciudad: 'Valparaíso', pais: 'Chile' },\n  pedidos: { producto: 'Laptop', cantidad: 1, precio: 800 }\n});",
-        "db.clientes.insert({\n  nombre: 'Carlos Ruiz',\n  pedidos: 'Laptop'\n});",
-        "db.clientes.insertOne({\n  nombre: 'Carlos Ruiz'\n});"
+        "db.clientes.insertOne({ _id: 2, nombre: 'Carlos Ruiz', email: 'carlos@mail.com', direccion: { ciudad: 'Valparaíso', pais: 'Chile' }, pedidos: [{ producto: 'Laptop', cantidad: 1, precio: 800 }] });",
+        "db.clientes.insertOne({ nombre: 'Carlos Ruiz', pedidos: 'Laptop' });",
+        "db.clientes.insertOne({ _id: 2 });",
+        "db.clientes.insert({ _id: 2, nombre: 'Carlos Ruiz' });"
     ],
     ans: 0,
-    exp: "pedidos es un ARRAY, se escribe entre corchetes []. Cada pedido es un objeto {}."
+    exp: "insertOne inserta el documento con _id: 2 y su pedido."
 },
+
 
 
 //Formativa 4 - Insertar múltiples clientes
